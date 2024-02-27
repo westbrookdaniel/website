@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"html/template"
 	"os"
 	"strings"
@@ -18,6 +19,16 @@ func main() {
 	println("Building posts...\n")
 
 	if err := os.Mkdir("build", 0755); err != nil {
+		if !os.IsExist(err) {
+			panic(err)
+		}
+	}
+	if err := os.Mkdir("build/posts", 0755); err != nil {
+		if !os.IsExist(err) {
+			panic(err)
+		}
+	}
+	if err := os.Mkdir("build/meta", 0755); err != nil {
 		if !os.IsExist(err) {
 			panic(err)
 		}
@@ -58,7 +69,7 @@ func buildPost(slug string) (string, error) {
 		return "", err
 	}
 
-	if err := os.WriteFile("build/"+slug+".html", html, 0644); err != nil {
+	if err := os.WriteFile("build/posts/"+slug+".html", html, 0644); err != nil {
 		return "", err
 	}
 
@@ -89,6 +100,15 @@ func getPostHTML(slug string) ([]byte, error) {
 	meta := templates.Meta{}
 
 	if err := frontmatter.Get(ctx).Decode(&meta); err != nil {
+		return nil, err
+	}
+
+	metaJson, err := json.Marshal(meta)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := os.WriteFile("build/meta/"+slug+".json", metaJson, 0644); err != nil {
 		return nil, err
 	}
 

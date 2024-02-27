@@ -22,7 +22,7 @@ func main() {
 
 	http.HandleFunc("GET /blog/{slug}", func(w http.ResponseWriter, r *http.Request) {
 		slug := r.PathValue("slug")
-		html, err := os.ReadFile("build/" + slug + ".html")
+		html, err := os.ReadFile("build/posts/" + slug + ".html")
 		if err != nil {
 			templates.Templates.ExecuteTemplate(w, "404.html", nil)
 			return
