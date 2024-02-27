@@ -13,7 +13,6 @@ import (
 )
 
 var templates = template.Must(template.ParseGlob("templates/*.html"))
-var posts = template.Must(template.ParseGlob("posts/*.md"))
 
 type Meta struct {
 	Title       string `yaml:"title"`
@@ -24,7 +23,7 @@ type Meta struct {
 
 type Post struct {
 	Slug        string
-	Content     string
+	Content     template.HTML
 	Title       string
 	Description string
 	Date        string
@@ -59,7 +58,7 @@ func main() {
 
 func getPost(slug string) (string, error) {
 	// check in /build for a prebuilt html file
-	data, err := os.ReadFile("/build/" + slug + ".html")
+	data, err := os.ReadFile("build/" + slug + ".html")
 	if err == nil {
 		return string(data), nil
 	}
@@ -71,7 +70,7 @@ func getPost(slug string) (string, error) {
 	}
 
 	// save the post in /build
-	if err := os.WriteFile("/build/"+slug+".html", html, 0644); err != nil {
+	if err := os.WriteFile("build/"+slug+".html", html, 0644); err != nil {
 		return "", err
 	}
 
@@ -81,7 +80,7 @@ func getPost(slug string) (string, error) {
 func getPostHTML(slug string) ([]byte, error) {
 	// if it doesn't exist, check in /posts for the md file
 	// if it exists, convert it into html and return it
-	data, err := os.ReadFile("/posts/" + slug + ".md")
+	data, err := os.ReadFile("posts/" + slug + ".md")
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +108,7 @@ func getPostHTML(slug string) ([]byte, error) {
 
 	post := Post{
 		Slug:        slug,
-		Content:     content,
+		Content:     template.HTML(content),
 		Title:       meta.Title,
 		Description: meta.Description,
 		Date:        meta.Date,
@@ -118,6 +117,7 @@ func getPostHTML(slug string) ([]byte, error) {
 
 	var html bytes.Buffer
 	templates.ExecuteTemplate(&html, "post.html", post)
+	print(html.String())
 
 	return html.Bytes(), nil
 }
