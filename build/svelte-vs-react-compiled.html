@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>post - westbrookdaniel</title>
+  </head>
+  <body>
+    <h1>svelte-vs-react-compiled</h1>
+    <p>Svelte Vs React: Using Compiled Code</p>
+    <p>ASTs, Parsers, and how Svelte and React are using them</p>
+    <p>2023-11-04T00:00:00.000Z</p>
+    <p>Compiled JavaScript is at the forefront of modern web development, promising improved performance and smaller bundle sizes. One of the key concepts underlying these compiled frameworks/languages is...</p>
+
+    <br />
+
+    <p>Compiled JavaScript is at the forefront of modern web development, promising improved
+performance and smaller bundle sizes. One of the key concepts underlying these compiled frameworks/languages is
+the use of Abstract Syntax Trees (ASTs) to represent the structure of code in a
+tree-like format. Understanding how ASTs work, along with the role of parsers, is crucial for diving
+into how a framework like <a href="https://svelte.dev/">Svelte</a> works.</p>
+<h2>Abstract Syntax Trees (ASTs)</h2>
+<p>ASTs are the backbone of compiled JS frameworks/languages. They are data structures that break down code
+into a hierarchical tree, providing a structured representation of its syntax. They allow developers to
+analyze, manipulate, and optimize code efficiently, ultimately leading to improved runtime performance.
+When compiling, optimisations can be made that can add functionality or memoisation in an optimial way.
+You can see react exploring this in their <a href="https://www.youtube.com/watch?v=lGEMwh32soc">React Forget</a> project.</p>
+<h2>Parsers</h2>
+<p>To build ASTs, parsers are the gatekeepers. Parsers are responsible for transforming the source
+code into a structured AST. These tools analyze and understand the code's structure, ensuring that
+it adheres to the language's grammar rules, and covert it into a walkable tree. Some popular parsers are
+<a href="https://github.com/inikulin/parse5">parse5</a> for HTML and <a href="https://github.com/acornjs/acorn">acorn</a> for JavaScript.</p>
+<h2>The Role of Compilation in Svelte</h2>
+<p>Svelte is a prime example of a compiled language for web application development. During compilation,
+Svelte takes your components and transforms them into highly optimized JavaScript code. Svelte is able minimize runtime overhead
+and generate efficient code that's ready to run in the browser.</p>
+<p>Compile-time transformations are a cornerstone of Svelte's efficiency. They enable Svelte to optimize
+your code during compilation rather than at runtime, as well as add reactivity, scoped styles and many other features.
+This approach results in faster load times and better performance, two essential goals for modern web framework or app.</p>
+<h2>React's Transition Towards React Server Components (RSC)</h2>
+<p>React is also evolving, in its shift towards React Server Components (RSC). RSC introduces concepts
+like &quot;use server&quot; and &quot;use client&quot; to optimize the rendering of components. These new directives are compile-time transformations,
+that involve transforming the AST and/or compiling code to achieve a streamlined server-first approach to React development.</p>
+<h2>The Future</h2>
+<p>With React's future in RSC and Svelte's growing popularity, it's quite clear that compiled code will be a more common occurance
+for JS developers in the coming years. Although, it's still unclear how much of the burden will be on framework authors
+to warrant ignoring how they work. If you want to dive deeper on how compiled frameworks like Svelte work,
+I'd highly recommend the article from back in 2020 called <a href="https://dev.to/joshnuss/svelte-compiler-under-the-hood-4j20">The Svelte compiler: How it works</a>.</p>
+
+  </body>
+</html>

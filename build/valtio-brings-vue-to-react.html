@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>post - westbrookdaniel</title>
+  </head>
+  <body>
+    <h1>valtio-brings-vue-to-react</h1>
+    <p>Valtio Brings Vue&#39;s State to React</p>
+    <p>Be more flexible about where you use state</p>
+    <p>2021-10-16T01:22:51.335Z</p>
+    <p>What&#39;s great about Vue is that it has a very simple way to manage state. One of the best things about Vue&#39;s state is it doesn&#39;t have the same restrictions as hooks. For example, the below code is invalid in React because hooks must be used...</p>
+
+    <br />
+
+    <p>What's great about Vue is that it has a very simple way to manage state. One of the best things about Vue's
+state is it doesn't have the same restrictions as hooks. For example, the below code is invalid in
+React because hooks must be used inside of a functional component.</p>
+<pre><code class="language-jsx">const [count, setCount] = useState(0);
+
+export default function Component() {
+  return &lt;div&gt;{count}&lt;/div&gt;;
+}
+</code></pre>
+<p>In Vue, you don't need to worry about where you create refs, you even import one from another file
+and Vue won't care.</p>
+<pre><code class="language-js">const count = ref(0);
+</code></pre>
+<p>In React, you generally want to use
+<a href="https://reactjs.org/docs/composition-vs-inheritance.html">component composition</a> first to avoid
+the above problem. Although, this can not always be avoided. The default way of solving this is <code>useContext</code>.
+This is an example from the <a href="https://reactjs.org/docs/hooks-reference.html#usecontext">react docs</a>
+on how to use context:</p>
+<pre><code class="language-jsx">const themes = {
+  light: {
+    foreground: &quot;#000000&quot;,
+    background: &quot;#eeeeee&quot;,
+  },
+  dark: {
+    foreground: &quot;#ffffff&quot;,
+    background: &quot;#222222&quot;,
+  },
+};
+
+const ThemeContext = React.createContext(themes.light);
+
+function App() {
+  return (
+    &lt;ThemeContext.Provider value={themes.dark}&gt;
+      &lt;Toolbar /&gt;
+    &lt;/ThemeContext.Provider&gt;
+  );
+}
+
+function Toolbar(props) {
+  return (
+    &lt;div&gt;
+      &lt;ThemedButton /&gt;
+    &lt;/div&gt;
+  );
+}
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return (
+    &lt;button style={{ background: theme.background, color: theme.foreground }}&gt;
+      I am styled by theme context!
+    &lt;/button&gt;
+  );
+}
+</code></pre>
+<p>And here is the same example but with Valtio, a new state management tool from pmndrs:</p>
+<pre><code class="language-jsx">const themes = {
+  light: {
+    foreground: &quot;#000000&quot;,
+    background: &quot;#eeeeee&quot;,
+  },
+  dark: {
+    foreground: &quot;#ffffff&quot;,
+    background: &quot;#222222&quot;,
+  },
+};
+
+const theme = proxy(themes.dark);
+
+function App() {
+  return &lt;Toolbar /&gt;;
+}
+
+function Toolbar(props) {
+  return (
+    &lt;div&gt;
+      &lt;ThemedButton /&gt;
+    &lt;/div&gt;
+  );
+}
+
+function ThemedButton() {
+  const snap = useSnapshot(theme);
+  return (
+    &lt;button style={{ background: snap.background, color: snap.foreground }}&gt;
+      I am styled by theme context!
+    &lt;/button&gt;
+  );
+}
+</code></pre>
+<p>Valtio gives us some tools to manage state in ways similar to Vue. In the example above, we create
+state through the use of <code>proxy</code> and then access it on our component with <code>useSnapshot</code>. You'll notice
+that there is no need to wrap our component in a <code>ThemeContext.Provider</code>, everything just works.</p>
+<p>You may be wondering how you would go about changing the theme in this example. This is where Valtio shines,
+because it allows you make any changes (including mutations) just like you would in vanilla javascript.</p>
+<pre><code class="language-jsx">const theme = proxy(themes.dark);
+
+function setLightTheme() {
+  theme.background = themes.light.background;
+  theme.foreground = themes.light.foreground;
+}
+</code></pre>
+<p>Or simplified further when taking into account that Valtio only updates your React component
+when <em>only the state you accessed changes</em>. We can utilize this to simplify the code for updating the theme,
+without having to worry about the impact of extra re-renders.</p>
+<pre><code class="language-jsx">const theme = proxy({
+  ...themes,
+  current: themes.dark,
+});
+
+function setLightTheme() {
+  theme.current = theme.light;
+}
+</code></pre>
+<p>The flexibility of Valtio makes it very useful, but it's important to note that Valtio is not a replacement for
+<code>useState</code>. This is only necessary for state that is shared across components. I would recommend you
+visit <a href="https://github.com/pmndrs/valtio">Valtio's Github Page</a> to see all the features of Valtio and check out
+the other awesome packages from pmndrs like <a href="https://github.com/pmndrs/react-three-fiber">react-three-fibre</a>. If you've used Valtio before, I would love to know what your experiences are and if you'd recommend it.</p>
+
+  </body>
+</html>

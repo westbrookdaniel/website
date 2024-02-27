@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>post - westbrookdaniel</title>
+  </head>
+  <body>
+    <h1>react-abort-controllers</h1>
+    <p>Using AbortControllers to Cancel Fetch in React</p>
+    <p>How to use the web api to cancel fetch easily</p>
+    <p>2021-04-12T12:29:28.834Z</p>
+    <p>In react we can use fetch in a useEffect to get a request when the page loads... This uses the web api AbortController as the signal for fetch. By returning a function from useEffect we can trigger the abort controller on dismount...</p>
+
+    <br />
+
+    <p>In React we can use fetch in a <code>useEffect</code> hook to make a request when the page loads. So why is the code below problematic?</p>
+<pre><code class="language-jsx">const Example = () =&gt; {
+  useEffect(() =&gt; {
+    fetch(&quot;https://jsonplaceholder.typicode.com/posts/1&quot;)
+      .then((res) =&gt; res.json())
+      .then((json) =&gt; setMessage(json.title))
+      .catch((error) =&gt; console.error(error.message));
+  }, []);
+  return &lt;div&gt;{message}&lt;/div&gt;;
+};
+</code></pre>
+<p>If we unmount the component while this fetch is in process we will get the following error.</p>
+<pre><code class="language-md">Warning: Can't perform a React state update on an unmounted component.
+This is a no-op, but it indicates a memory leak in your application.
+To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount
+method.
+</code></pre>
+<p>What does this mean? <code>update on an unmounted component</code> summarizes it well. We are trying to change
+the state of a component that no longer exists, because it was removed. This can lead to our app
+breaking in weird ways, as well as wasting resources on unnecessary actions.
+So let's fix it by canceling the fetch.</p>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  const controller = new AbortController();
+
+  fetch(&quot;https://jsonplaceholder.typicode.com/posts/1&quot;, {
+    signal: controller.signal,
+  })
+    .then((res) =&gt; res.json())
+    .then((json) =&gt; setMessage(json.title))
+    .catch((error) =&gt; console.error(error.message));
+
+  return () =&gt; controller.abort();
+}, []);
+</code></pre>
+<p>Here we use the web api <code>AbortController</code> as the signal for fetch. By returning a function from <code>useEffect</code> we
+can trigger the abort controller on dismount (see the React <a href="https://reactjs.org/docs/hooks-effect.html#example-using-hooks-1">docs</a>).
+The <code>AbortSignal</code> (<code>controller.signal</code>) is then passed into the fetch as an argument and voilà!</p>
+<p>Although, there is a problem with this solution. When the component is unmounted while a fetch call is in progress, this
+message is logged to the console:</p>
+<pre><code class="language-md">The user aborted a request.
+</code></pre>
+<p>This happens because aborting the fetch doesn't magically delete the promise, so it fails with an
+<code>AbortError</code> which is getting logged in <code>catch</code>.</p>
+<pre><code class="language-jsx">useEffect(() =&gt; {
+  const controller = new AbortController();
+
+  fetch(&quot;https://jsonplaceholder.typicode.com/posts/1&quot;, {
+    signal: controller.signal,
+  })
+    .then((res) =&gt; res.json())
+    .then((json) =&gt; setMessage(json.title))
+    .catch((error) =&gt; {
+      if (error.name !== &quot;AbortError&quot;) {
+        console.error(error.message);
+      }
+    });
+
+  return () =&gt; controller.abort();
+}, []);
+</code></pre>
+<p>By ignoring the error if it has the name <code>AbortError</code>, we've solved the problem! You can read
+more about <code>AbortController</code> on <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController">MDN</a>.
+You can also see its browser support on <a href="https://caniuse.com/abortcontroller">caniuse</a>.</p>
+<p>Jumping back to the code, this request this still doesn't expose a loading state or indicate to the ui if it has failed.
+If you don't want to deal with all of this, you're probably better off just using
+<a href="https://react-query.tanstack.com/"><code>react-query</code></a> instead (which also does it in a lot less code).</p>
+<pre><code class="language-jsx">const { data, isLoading /* etc... */ } = useQuery(&quot;title&quot;, () =&gt;
+  fetch(&quot;https://jsonplaceholder.typicode.com/posts/1&quot;)
+    .then((res) =&gt; res.json())
+    .then((res) =&gt; res.title),
+);
+</code></pre>
+<p>How much easier is that! You can find an example of all of these methods implemented on
+<a href="https://codesandbox.io/s/mutable-pine-psldb?file=/src/Comp.js">CodeSandbox</a>.</p>
+
+  </body>
+</html>
