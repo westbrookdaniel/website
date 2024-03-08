@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
 
@@ -17,7 +18,8 @@ func main() {
 	})
 
 	http.HandleFunc("GET /blog", func(w http.ResponseWriter, r *http.Request) {
-		templates.Templates.ExecuteTemplate(w, "blog.html", nil)
+		metas := readMetas()
+		templates.Templates.ExecuteTemplate(w, "blog.html", metas)
 	})
 
 	http.HandleFunc("GET /blog/{slug}", func(w http.ResponseWriter, r *http.Request) {
@@ -31,4 +33,20 @@ func main() {
 	})
 
 	http.ListenAndServe("localhost:3000", nil)
+}
+
+func readMetas() []templates.Meta {
+	b, err := os.ReadFile("./build/meta.json")
+	if err != nil {
+		panic(err)
+	}
+
+	metas := make([]templates.Meta, 0)
+
+	err = json.Unmarshal(b, &metas)
+	if err != nil {
+		panic(err)
+	}
+
+	return metas
 }

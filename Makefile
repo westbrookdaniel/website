@@ -4,5 +4,7 @@ watch:
 server:
 	go run ./cmd/server
 
-build:
+build: FORCE
 	go run ./cmd/build
+
+FORCE:

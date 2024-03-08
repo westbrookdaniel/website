@@ -35,14 +35,14 @@ func main() {
 
 	posts := getPostFileNames()
 
-	metas := make([]templates.Meta, len(posts))
+	metas := make([]templates.Meta, 0, len(posts))
 
-	for i, slug := range posts {
+	for _, slug := range posts {
 		println(slug)
 
 		html, meta := parsePost(slug)
 
-		metas[i] = meta
+		metas = append(metas, meta)
 
 		if err := os.WriteFile("build/posts/"+slug+".html", html, 0644); err != nil {
 			panic(err)
@@ -97,19 +97,26 @@ func parsePost(slug string) ([]byte, templates.Meta) {
 	}
 
 	content := string(buff.Bytes())
-	meta := templates.Meta{}
-
-	if err := frontmatter.Get(ctx).Decode(&meta); err != nil {
+	front := templates.Front{}
+	if err := frontmatter.Get(ctx).Decode(&front); err != nil {
 		panic(err)
+	}
+
+	meta := templates.Meta{
+		Slug:        slug,
+		Title:       front.Title,
+		Description: front.Description,
+		Date:        front.Date,
+		Snippet:     front.Snippet,
 	}
 
 	post := templates.Post{
 		Slug:        slug,
 		Content:     template.HTML(content),
-		Title:       meta.Title,
-		Description: meta.Description,
-		Date:        meta.Date,
-		Snippet:     meta.Snippet,
+		Title:       front.Title,
+		Description: front.Description,
+		Date:        front.Date,
+		Snippet:     front.Snippet,
 	}
 
 	var html bytes.Buffer
