@@ -1,6 +1,9 @@
 package templates
 
-import "html/template"
+import (
+	"html/template"
+	"time"
+)
 
 type Front struct {
 	Title       string `yaml:"title"`
@@ -13,7 +16,7 @@ type Meta struct {
 	Slug        string `json:"slug"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Date        string `json:"date"`
+	Date        time.Time `json:"date"`
 	Snippet     string `json:"snippet"`
 }
 
@@ -22,7 +25,7 @@ type Post struct {
 	Content     template.HTML
 	Title       string
 	Description string
-	Date        string
+	Date        time.Time
 	Snippet     string
 }
 

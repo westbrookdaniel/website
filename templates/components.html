@@ -48,7 +48,7 @@
   <li>
     <a href="/blog/{{.Slug}}">{{ .Title }}</a>
     <p>{{ .Description }}</p>
-    <p>{{ .Date }}</p>
+    <p>{{ .Date.Format "02 Jan 2006" }}</p>
   </li>
   {{end}}
 </ul>

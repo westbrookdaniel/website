@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/westbrookdaniel/website/internal/templates"
 
@@ -100,13 +101,20 @@ func parsePost(slug string) ([]byte, templates.Meta) {
 		panic(err)
 	}
 
+	date, err := time.Parse(layout, front.Date)
+	if err != nil {
+		panic(err)
+	}
+
 	meta := templates.Meta{
 		Slug:        slug,
 		Title:       front.Title,
 		Description: front.Description,
-		Date:        front.Date,
+		Date:        date,
 		Snippet:     front.Snippet,
 	}
 
 	return buff.Bytes(), meta
 }
+
+const layout = "2006-01-02T15:04:05.999Z"

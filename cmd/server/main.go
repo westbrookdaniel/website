@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"slices"
-	"time"
 
 	"github.com/westbrookdaniel/website/internal/templates"
 )
@@ -58,8 +57,6 @@ func main() {
 	http.ListenAndServe("localhost:3000", nil)
 }
 
-const layout = "2006-01-02T15:04:05.999Z"
-
 func readMetas() []templates.Meta {
 	b, err := os.ReadFile("./build/meta.json")
 	if err != nil {
@@ -74,12 +71,7 @@ func readMetas() []templates.Meta {
 	}
 
 	slices.SortFunc(metas, func(a templates.Meta, b templates.Meta) int {
-		aTime, err := time.Parse(layout, a.Date)
-		bTime, err := time.Parse(layout, b.Date)
-		if err != nil {
-			panic(err)
-		}
-		return bTime.Compare(aTime)
+		return b.Date.Compare(a.Date)
 	})
 
 	return metas
