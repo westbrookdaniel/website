@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"html/template"
 	"os"
 	"strings"
 
@@ -96,7 +95,6 @@ func parsePost(slug string) ([]byte, templates.Meta) {
 		panic(err)
 	}
 
-	content := string(buff.Bytes())
 	front := templates.Front{}
 	if err := frontmatter.Get(ctx).Decode(&front); err != nil {
 		panic(err)
@@ -110,17 +108,5 @@ func parsePost(slug string) ([]byte, templates.Meta) {
 		Snippet:     front.Snippet,
 	}
 
-	post := templates.Post{
-		Slug:        slug,
-		Content:     template.HTML(content),
-		Title:       front.Title,
-		Description: front.Description,
-		Date:        front.Date,
-		Snippet:     front.Snippet,
-	}
-
-	var html bytes.Buffer
-	templates.Templates.ExecuteTemplate(&html, "post.html", post)
-
-	return html.Bytes(), meta
+	return buff.Bytes(), meta
 }

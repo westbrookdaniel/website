@@ -29,7 +29,19 @@ func main() {
 			templates.Templates.ExecuteTemplate(w, "404.html", nil)
 			return
 		}
-		w.Write(html)
+
+		metas := readMetas()
+		var meta templates.Meta
+		for _, m := range metas {
+			if m.Slug == slug {
+				meta = m
+				break
+			}
+		}
+
+		post := templates.CreatePost(meta, html)
+
+		templates.Templates.ExecuteTemplate(w, "post.html", post)
 	})
 
 	http.ListenAndServe("localhost:3000", nil)

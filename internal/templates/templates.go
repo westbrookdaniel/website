@@ -27,3 +27,14 @@ type Post struct {
 }
 
 var Templates = template.Must(template.ParseGlob("templates/*.html"))
+
+func CreatePost(meta Meta, content []byte) Post {
+	return Post{
+		Slug:        meta.Slug,
+		Content:     template.HTML(content),
+		Title:       meta.Title,
+		Description: meta.Description,
+		Date:        meta.Date,
+		Snippet:     meta.Snippet,
+	}
+}
