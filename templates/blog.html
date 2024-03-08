@@ -10,15 +10,7 @@
     <h1>I Wrote These</h1>
     <p>Thought you might want to read them</p>
 
-    <ul>
-      {{range .}}
-      <li>
-        <a href="/blog/{{.Slug}}">{{ .Title }}</a>
-        <p>{{ .Description }}</p>
-        <p>{{ .Date }}</p>
-      </li>
-      {{end}}
-    </ul>
+    {{ template "posts" . }}
 
     {{ template "footer" }}
   </body>

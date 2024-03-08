@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"os"
+	"slices"
+	"time"
 
 	"github.com/westbrookdaniel/website/internal/templates"
 )
@@ -13,7 +15,8 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 		templates.Templates.ExecuteTemplate(w, "404.html", nil)
 		return
 	}
-	templates.Templates.ExecuteTemplate(w, "index.html", nil)
+	metas := readMetas()
+	templates.Templates.ExecuteTemplate(w, "index.html", metas[:3])
 }
 
 func handleBlog(w http.ResponseWriter, r *http.Request) {
@@ -55,6 +58,8 @@ func main() {
 	http.ListenAndServe("localhost:3000", nil)
 }
 
+const layout = "2006-01-02T15:04:05.999Z"
+
 func readMetas() []templates.Meta {
 	b, err := os.ReadFile("./build/meta.json")
 	if err != nil {
@@ -67,6 +72,15 @@ func readMetas() []templates.Meta {
 	if err != nil {
 		panic(err)
 	}
+
+	slices.SortFunc(metas, func(a templates.Meta, b templates.Meta) int {
+		aTime, err := time.Parse(layout, a.Date)
+		bTime, err := time.Parse(layout, b.Date)
+		if err != nil {
+			panic(err)
+		}
+		return bTime.Compare(aTime)
+	})
 
 	return metas
 }

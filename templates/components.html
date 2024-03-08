@@ -41,3 +41,15 @@
   <p>Made By Daniel Westbrook</p>
 </footer>
 {{ end }}
+
+{{ define "posts" }}
+<ul>
+  {{range .}}
+  <li>
+    <a href="/blog/{{.Slug}}">{{ .Title }}</a>
+    <p>{{ .Description }}</p>
+    <p>{{ .Date }}</p>
+  </li>
+  {{end}}
+</ul>
+{{ end }}
