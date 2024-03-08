@@ -15,9 +15,7 @@ import (
 	"go.abhg.dev/goldmark/frontmatter"
 )
 
-func main() {
-	println("Building posts...\n")
-
+func checkFoldersExist() {
 	if err := os.Mkdir("build", 0755); err != nil {
 		if !os.IsExist(err) {
 			panic(err)
@@ -28,31 +26,46 @@ func main() {
 			panic(err)
 		}
 	}
-	if err := os.Mkdir("build/meta", 0755); err != nil {
-		if !os.IsExist(err) {
+}
+
+func main() {
+	println("Building posts...\n")
+
+	checkFoldersExist()
+
+	posts := getPostFileNames()
+
+	metas := make([]templates.Meta, len(posts))
+
+	for i, slug := range posts {
+		println(slug)
+
+		html, meta := parsePost(slug)
+
+		metas[i] = meta
+
+		if err := os.WriteFile("build/posts/"+slug+".html", html, 0644); err != nil {
 			panic(err)
 		}
 	}
 
-	posts, err := getPosts()
+	println("\nBuilding meta...")
+
+	metasJson, err := json.Marshal(metas)
 	if err != nil {
 		panic(err)
 	}
-
-	for _, post := range posts {
-		println(post)
-		if _, err := buildPost(post); err != nil {
-			panic(err)
-		}
+	if err := os.WriteFile("build/meta.json", metasJson, 0644); err != nil {
+		panic(err)
 	}
 
 	println("\nDone!")
 }
 
-func getPosts() ([]string, error) {
+func getPostFileNames() []string {
 	files, err := os.ReadDir("posts")
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	posts := make([]string, 0, len(files))
@@ -60,26 +73,13 @@ func getPosts() ([]string, error) {
 		posts = append(posts, strings.TrimSuffix(file.Name(), ".md"))
 	}
 
-	return posts, nil
+	return posts
 }
 
-func buildPost(slug string) (string, error) {
-	html, err := getPostHTML(slug)
-	if err != nil {
-		return "", err
-	}
-
-	if err := os.WriteFile("build/posts/"+slug+".html", html, 0644); err != nil {
-		return "", err
-	}
-
-	return string(html), nil
-}
-
-func getPostHTML(slug string) ([]byte, error) {
+func parsePost(slug string) ([]byte, templates.Meta) {
 	data, err := os.ReadFile("posts/" + slug + ".md")
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	var buff bytes.Buffer
@@ -93,23 +93,14 @@ func getPostHTML(slug string) ([]byte, error) {
 
 	ctx := parser.NewContext()
 	if err := md.Convert(data, &buff, parser.WithContext(ctx)); err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	content := string(buff.Bytes())
 	meta := templates.Meta{}
 
 	if err := frontmatter.Get(ctx).Decode(&meta); err != nil {
-		return nil, err
-	}
-
-	metaJson, err := json.Marshal(meta)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := os.WriteFile("build/meta/"+slug+".json", metaJson, 0644); err != nil {
-		return nil, err
+		panic(err)
 	}
 
 	post := templates.Post{
@@ -124,5 +115,5 @@ func getPostHTML(slug string) ([]byte, error) {
 	var html bytes.Buffer
 	templates.Templates.ExecuteTemplate(&html, "post.html", post)
 
-	return html.Bytes(), nil
+	return html.Bytes(), meta
 }
