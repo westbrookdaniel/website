@@ -1,8 +1,20 @@
-{{ template "layoutStart" }}
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "head" }}
+    <title>{{ .Title }} - Daniel Westbrook</title>
+  </head>
+  <body>
+    {{ template "header" }}
 
-<h1>{{ .Title }}</h1>
-<p>{{ .Date }}</p>
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Date }}</p>
+    <p>{{ .Description }}</p>
 
-{{ .Content }}
+    {{ .Content }}
 
-{{ template "layoutEnd" }}
+    <a href="/blog">All Posts</a>
+
+    {{ template "footer" }}
+  </body>
+</html>

@@ -1,5 +1,46 @@
-{{ template "layoutStart" }}
+<!doctype html>
+<html lang="en">
+  <head>
+    {{ template "head" }}
+    <title>Daniel Westbrook - Web Developer</title>
+  </head>
+  <body>
+    {{ template "header" }}
 
-<h1>westbrookdaniel.com</h1>
+    <h1>Daniel Westbrook</h1>
+    <div>
+      <p>
+        Currently developing at
+        <a
+          href="https://www.glxdigital.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GLX Digital</a
+        >
+      </p>
+      <p>
+        You can find my other projects on my
+        <a
+          href="https://github.com/westbrookdaniel/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Github</a
+        >
+      </p>
 
-{{ template "layoutEnd" }}
+      <h2>About Me</h2>
+      <p>
+        Hey there, I'm Daniel Westbrook and I love building awesome web apps
+        with React (and more). I'm always looking for ways to make my code
+        faster, cleaner and more fun to work with. When I take a break from
+        coding, I play sports like hockey and tennis, and unwind with music and
+        video games.
+      </p>
+
+      <h2>Some Things I've Written</h2>
+      <a href="/blog">See All</a>
+    </div>
+
+    {{ template "footer" }}
+  </body>
+</html>
