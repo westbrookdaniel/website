@@ -1,7 +1,7 @@
 ---
 title: 'Auditing React Performance'
 description: 'How to use the React DevTools Profiler'
-date: 1653045254642
+date: '2022-05-20T11:14:14.642Z'
 snippet: "Finding what's making your react app slow can be hard, but hopefully, I can give provide some tools and places you can look to improve your performance with less hassle. There are three main tools I always use when debugging performance..."
 ---
 
