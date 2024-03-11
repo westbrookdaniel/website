@@ -15,28 +15,33 @@
 {{ define "footer" }}
 <footer>
   <div>
-    <a href="mailto:westy12dan@gmail.com" aria-label="Email">E</a>
+    <a href="mailto:westy12dan@gmail.com" aria-label="Email">
+      {{ template "email" }}
+    </a>
     <a
       href="https://www.linkedin.com/in/daniel-westbrook-692227196/"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="LinkedIn"
-      >L</a
     >
+      {{ template "linkedin" }}
+    </a>
     <a
       href="https://github.com/westbrookdaniel/"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Github"
-      >G</a
     >
+      {{ template "github" }}
+    </a>
     <a
       href="https://x.com/DanielW29381255"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="x.com"
-      >X</a
     >
+      {{ template "x.com" }}
+    </a>
   </div>
   <p>Made By Daniel Westbrook</p>
 </footer>
