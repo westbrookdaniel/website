@@ -46,6 +46,8 @@ func handlePost(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	http.Handle("GET /public/", http.FileServer(http.Dir("")))
+
 	http.HandleFunc("GET /", handleIndex)
 
 	http.HandleFunc("GET /blog", handleBlog)

@@ -1,13 +1,16 @@
 {{ define "head" }}
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/public/normalize.css" />
+<link rel="stylesheet" href="/public/fonts.css" />
+<link rel="stylesheet" href="/public/index.css" />
 {{ end }}
 
 {{ define "header" }}
 <header>
   <nav>
-    <a href="/">Home</a>
-    <a href="/blog">Blog</a>
+    <a class="button active" href="/">Home</a>
+    <a class="button" href="/blog">Blog</a>
   </nav>
 </header>
 {{ end }} 
@@ -48,12 +51,14 @@
 {{ end }}
 
 {{ define "posts" }}
-<ul>
+<ul class="posts">
   {{range .}}
-  <li>
+  <li class="post">
     <a href="/blog/{{.Slug}}">{{ .Title }}</a>
-    <p>{{ .Description }}</p>
-    <p>{{ .Date.Format "02 Jan 2006" }}</p>
+    <div>
+      <p>{{ .Description }}</p>
+      <p>{{ .Date.Format "02 Jan 2006" }}</p>
+    </div>
   </li>
   {{end}}
 </ul>
