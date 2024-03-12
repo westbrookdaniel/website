@@ -2,10 +2,10 @@
 title: "Abstractions, the Enemy of Simplicity"
 description: "It's a  double edged sword"
 date: "2024-03-01T00:00:00.000Z"
-snippet: "Over my time developing web apps, I've built a lot of abstractions. Abstractions for S3, abstractions for Tables, abstractions for Forms, etc. As I widen my horisons by exploring new languages (mainly Rust and Go)..."
+snippet: "Over my time developing web apps, I've built a lot of abstractions. Abstractions for S3, abstractions for Tables, abstractions for Forms, etc. As I widen my horizons by exploring new languages (mainly Rust and Go)..."
 ---
 
-Over my time developing web apps, I've built a lot of abstractions. Abstractions for S3, abstractions for tables, abstractions for forms, etc. As I widen my horisons by exploring new languages (mainly [Rust](https://www.rust-lang.org/) and [Go](https://go.dev/)) I've become more familiar with their differing methodologies. The biggest take away I've had is in the React world abstractions are reached for too often, and it's making the ecosystem more complicated than it needs to be.
+Over my time developing web apps, I've built a lot of abstractions. Abstractions for S3, abstractions for tables, abstractions for forms, etc. As I widen my horizons by exploring new languages (mainly [Rust](https://www.rust-lang.org/) and [Go](https://go.dev/)) I've become more familiar with their differing methodologies. The biggest take away I've had is in the React world abstractions are reached for too often, and it's making the ecosystem more complicated than it needs to be.
 
 ## What's too complicated?
 

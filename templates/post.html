@@ -7,9 +7,14 @@
   <body>
     {{ template "header" }}
 
-    <h1>{{ .Title }}</h1>
-    <p>{{ .Date.Format "02 Jan 2006" }}</p>
-    <p>{{ .Description }}</p>
+
+    <div class="hero">
+      <h1 class="mb-8">{{ .Title }}</h1>
+      <div>
+        <p class="m-0">{{ .Description }}</p>
+        <p class="m-0">{{ .Date.Format "02 Jan 2006" }}</p>
+      </div>
+    </div>
 
     {{ .Content }}
 

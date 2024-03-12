@@ -8,9 +8,9 @@
     {{ template "header" }}
 
     <div class="hero">
-      <h1>Daniel Westbrook</h1>
+      <h1 class="mb-8">Daniel Westbrook</h1>
       <div>
-        <p>
+        <p class="m-0">
           Currently developing at
           <a
             href="https://www.glxdigital.com/"
@@ -19,7 +19,7 @@
             >GLX Digital</a
           >
         </p>
-        <p>
+        <p class="m-0">
           You can find my other projects on my
           <a
             href="https://github.com/westbrookdaniel/"
@@ -32,20 +32,16 @@
     </div>
 
     <h2>About Me</h2>
-    <p>
-      Hey there, I'm Daniel Westbrook and I love building awesome web apps
-      with React (and more). I'm always looking for ways to make my code
-      faster, cleaner and more fun to work with. When I take a break from
-      coding, I play sports like hockey and tennis, and unwind with music and
-      video games.
+    <p class="mb-16">
+      Hey there, I'm Daniel Westbrook and I love building awesome web apps. I'm
+      always looking for ways to make my code faster, cleaner and more fun to
+      work with.
     </p>
 
     <div class="written">
       <h2>Some Things I've Written</h2>
       <a href="/blog" class="button active">See All</a>
     </div>
-    {{ template "posts" . }}
-
-    {{ template "footer" }}
+    {{ template "posts" . }} {{ template "footer" }}
   </body>
 </html>

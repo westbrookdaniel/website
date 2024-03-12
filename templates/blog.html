@@ -7,11 +7,12 @@
   <body>
     {{ template "header" }}
 
-    <h1>I Wrote These</h1>
-    <p>Thought you might want to read them</p>
+    <div class="hero">
+      <h1 class="mb-8">I Wrote These</h1>
+      <p>Thought you might want to read them</p>
+    </div>
 
     {{ template "posts" . }}
-
     {{ template "footer" }}
   </body>
 </html>
