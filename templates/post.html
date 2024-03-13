@@ -9,10 +9,9 @@
 
     <div class="hero">
       <h1 class="mb-8">{{ .Post.Title }}</h1>
-      <div>
-        <p class="m-0">{{ .Post.Description }}</p>
-        <p class="m-0">{{ .Post.Date.Format "02 Jan 2006" }}</p>
-      </div>
+      <hr />
+      <p class="m-0">{{ .Post.Description }}</p>
+      <p class="m-0">{{ .Post.Date.Format "02 Jan 2006" }}</p>
     </div>
 
     {{ .Post.Content }}

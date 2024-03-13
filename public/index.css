@@ -51,7 +51,6 @@ h4,
 h5,
 h6 {
   font-family: "Gambarino-Regular", serif;
-  color: rgb(var(--accent));
   line-height: 1.1;
   margin-top: 1em;
   margin-bottom: 1em;
@@ -59,14 +58,15 @@ h6 {
 
 h1 {
   font-size: 4em;
+  color: rgb(var(--accent));
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 h4,
@@ -123,15 +123,21 @@ footer a:hover * {
   color: rgb(var(--accent) / 75%);
 }
 
+hr {
+  border: 1px solid;
+  border-color: rgb(var(--accent) / 20%);
+  margin-bottom: 1.5rem;
+}
+
 .written {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   width: 100%;
   justify-content: space-between;
 }
 
-.written .button {
-  margin-bottom: 2px;
+.written * {
+  margin-bottom: 1rem;
 }
 
 .post * {
@@ -158,10 +164,6 @@ footer {
 
 .m-0 {
   margin: 0;
-}
-
-.mb-4 {
-  margin-bottom: 1rem;
 }
 
 .mb-8 {
