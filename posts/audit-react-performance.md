@@ -1,7 +1,7 @@
 ---
-title: 'Auditing React Performance'
-description: 'How to use the React DevTools Profiler'
-date: '2022-05-20T11:14:14.642Z'
+title: "Auditing React Performance"
+description: "How to use the React DevTools Profiler"
+date: "2022-05-20T11:14:14.642Z"
 snippet: "Finding what's making your react app slow can be hard, but hopefully, I can give provide some tools and places you can look to improve your performance with less hassle. There are three main tools I always use when debugging performance..."
 ---
 
@@ -9,9 +9,9 @@ Finding what's making your react app slow can be hard, but hopefully, I can give
 some tools and places you can look to improve your performance with less hassle. There
 are three main tools I always use when debugging performance:
 
--   React DevTools Profiler
--   Chrome DevTools Performance Panel
--   Lighthouse
+- React DevTools Profiler
+- Chrome DevTools Performance Panel
+- Lighthouse
 
 Each are great at providing solving different problems - this post
 covers how to use the React DevTools Profiler.
@@ -22,7 +22,7 @@ Now you have Chrome DevTools installed let's get stuck into an example from my w
 
 ## Ranked Chart
 
-![Profiler Ranked Chart](/images/blog/audit-react-performance/profiler.png?600x320)
+![Profiler Ranked Chart](/public/images/blog/audit-react-performance/profiler.png)
 
 In the profiler, you can go through each render by using the arrows in the top right
 (where it says 2 / 5). This particular view is called the Ranked chart.
@@ -34,7 +34,7 @@ bloated components since it shows the components that took the longest to render
 
 The other view for a recording I use is the flamegraph:
 
-![Profiler Flamegraph Chart](/images/blog/audit-react-performance/flamechart.png?600x320)
+![Profiler Flamegraph Chart](/public/images/blog/audit-react-performance/flamechart.png)
 
 This shows the components in the order they were nested (for example `ProjectItems`
 contains `Items`). What's useful about this view is it will gray out components that have skipped

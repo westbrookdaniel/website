@@ -30,7 +30,7 @@ I wanted to make more colour schemes avalible whilst still having an automatic c
 My inspiration originally came from the [Rebass website](https://rebassjs.org/) pictured below which
 has a similar colour scheme switcher.
 
-![Rebase Website](/images/blog/website-upgrade/rebassjs.png?600x430)
+![Rebase Website](/public/images/blog/website-upgrade/rebassjs.png)
 
 The styling of my website is done with [TailwindCSS](https://tailwindcss.com/), and since it supports using CSS custom properties, that
 was where I started my implementation.
