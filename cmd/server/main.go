@@ -5,29 +5,57 @@ import (
 	"net/http"
 	"os"
 	"slices"
+	"strings"
 
 	"github.com/westbrookdaniel/website/internal/templates"
 )
 
+type Page struct {
+	Path  string
+	Post  templates.Post   // optional
+	Metas []templates.Meta // optional
+}
+
+func (p Page) IsActive(href string) bool {
+	if href == "/" {
+		return href == p.Path
+	}
+	return strings.HasPrefix(p.Path, href)
+}
+
 func handleIndex(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		templates.Templates.ExecuteTemplate(w, "404.html", nil)
+		err := templates.Templates.ExecuteTemplate(w, "404.html", Page{
+			Path: r.URL.Path,
+		})
+		check(err)
 		return
 	}
 	metas := readMetas()
-	templates.Templates.ExecuteTemplate(w, "index.html", metas[:3])
+	err := templates.Templates.ExecuteTemplate(w, "index.html", Page{
+		Path:  r.URL.Path,
+		Metas: metas[:3],
+	})
+	check(err)
 }
 
 func handleBlog(w http.ResponseWriter, r *http.Request) {
 	metas := readMetas()
-	templates.Templates.ExecuteTemplate(w, "blog.html", metas)
+	err := templates.Templates.ExecuteTemplate(w, "blog.html", Page{
+		Path:  r.URL.Path,
+		Metas: metas,
+	})
+	check(err)
 }
 
 func handlePost(w http.ResponseWriter, r *http.Request) {
 	slug := r.PathValue("slug")
 	html, err := os.ReadFile("build/posts/" + slug + ".html")
 	if err != nil {
-		templates.Templates.ExecuteTemplate(w, "404.html", nil)
+		err = templates.Templates.ExecuteTemplate(w, "404.html", Page{
+			Path: r.URL.Path,
+		})
+		check(err)
 		return
 	}
 
@@ -42,7 +70,11 @@ func handlePost(w http.ResponseWriter, r *http.Request) {
 
 	post := templates.CreatePost(meta, html)
 
-	templates.Templates.ExecuteTemplate(w, "post.html", post)
+	err = templates.Templates.ExecuteTemplate(w, "post.html", Page{
+		Path: r.URL.Path,
+		Post: post,
+	})
+	check(err)
 }
 
 func main() {
@@ -61,20 +93,22 @@ func main() {
 
 func readMetas() []templates.Meta {
 	b, err := os.ReadFile("./build/meta.json")
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 
 	metas := make([]templates.Meta, 0)
 
 	err = json.Unmarshal(b, &metas)
-	if err != nil {
-		panic(err)
-	}
+	check(err)
 
 	slices.SortFunc(metas, func(a templates.Meta, b templates.Meta) int {
 		return b.Date.Compare(a.Date)
 	})
 
 	return metas
+}
+
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
 }

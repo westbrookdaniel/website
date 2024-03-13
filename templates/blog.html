@@ -5,14 +5,14 @@
     <title>Blog - Daniel Westbrook</title>
   </head>
   <body>
-    {{ template "header" }}
+    {{ template "header" . }}
 
     <div class="hero">
       <h1 class="mb-8">I Wrote These</h1>
       <p>Thought you might want to read them</p>
     </div>
 
-    {{ template "posts" . }}
+    {{ template "posts" .Metas }}
     {{ template "footer" }}
   </body>
 </html>

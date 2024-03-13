@@ -9,8 +9,8 @@
 {{ define "header" }}
 <header>
   <nav>
-    <a class="button active" href="/">Home</a>
-    <a class="button" href="/blog">Blog</a>
+    <a class="button{{ if .IsActive "/" }} active{{ end }}" href="/">Home</a>
+    <a class="button{{ if .IsActive "/blog" }} active{{ end }}" href="/blog">Blog</a>
   </nav>
 </header>
 {{ end }} 
@@ -52,14 +52,14 @@
 
 {{ define "posts" }}
 <ul class="posts">
-  {{range .}}
+  {{ range . }}
   <li class="post">
-    <a href="/blog/{{.Slug}}">{{ .Title }}</a>
+    <a href="/blog/{{ .Slug }}">{{ .Title }}</a>
     <div>
       <p>{{ .Description }}</p>
       <p>{{ .Date.Format "02 Jan 2006" }}</p>
     </div>
   </li>
-  {{end}}
+  {{ end }}
 </ul>
 {{ end }}

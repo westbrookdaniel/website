@@ -2,21 +2,20 @@
 <html lang="en">
   <head>
     {{ template "head" }}
-    <title>{{ .Title }} - Daniel Westbrook</title>
+    <title>{{ .Post.Title }} - Daniel Westbrook</title>
   </head>
   <body>
-    {{ template "header" }}
-
+    {{ template "header" . }}
 
     <div class="hero">
-      <h1 class="mb-8">{{ .Title }}</h1>
+      <h1 class="mb-8">{{ .Post.Title }}</h1>
       <div>
-        <p class="m-0">{{ .Description }}</p>
-        <p class="m-0">{{ .Date.Format "02 Jan 2006" }}</p>
+        <p class="m-0">{{ .Post.Description }}</p>
+        <p class="m-0">{{ .Post.Date.Format "02 Jan 2006" }}</p>
       </div>
     </div>
 
-    {{ .Content }}
+    {{ .Post.Content }}
 
     <div style="padding-top: 2rem">
       <a class="button active" href="/blog">All Posts</a>

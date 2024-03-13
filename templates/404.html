@@ -5,11 +5,13 @@
     <title>Not Found - Daniel Westbrook</title>
   </head>
   <body>
-    {{ template "header" }}
+    {{ template "header" . }}
 
-    <h1 class="hero">Not Found</h1>
-    <p>You seem to have stumbled upon a page that doesn't exist.</p>
-    <a href="/">Head Home</a>
+    <div class="hero">
+      <h1 class="mb-8">Not Found</h1>
+      <p class="m-0 mb-4">You seem to have stumbled upon a page that doesn't exist.</p>
+      <a class="m-0 button active" href="/">Head Home</a>
+    </div>
 
     {{ template "footer" }}
   </body>

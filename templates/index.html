@@ -5,7 +5,7 @@
     <title>Daniel Westbrook - Web Developer</title>
   </head>
   <body>
-    {{ template "header" }}
+    {{ template "header" . }}
 
     <div class="hero">
       <h1 class="mb-8">Daniel Westbrook</h1>
@@ -42,6 +42,8 @@
       <h2>Some Things I've Written</h2>
       <a href="/blog" class="button active">See All</a>
     </div>
-    {{ template "posts" . }} {{ template "footer" }}
+    {{ template "posts" .Metas }}
+
+    {{ template "footer" }}
   </body>
 </html>
