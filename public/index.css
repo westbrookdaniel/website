@@ -57,13 +57,38 @@ h6 {
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 2em;
   color: rgb(var(--accent));
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo h1 {
+  margin-top: 0;
+  white-space: pre;
+}
+
+.shape {
+  height: 1.85rem;
+  width: 0.95rem;
+  margin-left: 0.5rem;
+  margin-bottom: 2.2rem;
+  display: block;
+  background-color: rgb(var(--accent));
 }
 
 @media only screen and (min-width: 800px) {
   h1 {
     font-size: 4em;
+  }
+
+  .shape {
+    height: 3.5rem;
+    width: 1.75rem;
+    margin-bottom: 2rem;
   }
 }
 
@@ -186,6 +211,10 @@ footer {
 
 .m-0 {
   margin: 0;
+}
+
+.mt-0 {
+  margin-top: 0;
 }
 
 .mb-8 {

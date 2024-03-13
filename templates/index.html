@@ -2,14 +2,18 @@
 <html lang="en">
   <head>
     {{ template "head" }}
+    <script src="/public/index.js"></script>
     <title>Daniel Westbrook - Web Developer</title>
   </head>
   <body>
     {{ template "header" . }}
 
     <div class="hero">
-      <h1 class="mb-8">Daniel Westbrook</h1>
-      <hr />
+      <div class="logo">
+        <h1 id="logo" class="mb-8">Daniel Westbrook</h1>
+        <span class="shape"></span>
+      </div>
+      <hr class="mt-0" />
       <div>
         <p class="m-0">
           Currently developing at
@@ -43,13 +47,10 @@
     <div class="written">
       <h2>Some Things I've Written</h2>
       <a href="/blog" class="button active icon-button">
-        See All
-        {{ template "right" }}
+        See All {{ template "right" }}
       </a>
     </div>
     <hr />
-    {{ template "posts" .Metas }}
-
-    {{ template "footer" }}
+    {{ template "posts" .Metas }} {{ template "footer" }}
   </body>
 </html>
