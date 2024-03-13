@@ -21,10 +21,13 @@ const values = [
 const complete = values.reduce((txt, [char]) => txt + char, initial);
 const completeTime = values.reduce((n, [, t]) => n + t, 0);
 
-let start, previous;
 let done = false;
 
-window.onload = () => {
+htmx.onLoad(() => {
+  if (window.location.pathname !== "/") return;
+
+  let start, previous;
+
   /** @type {HTMLElement} **/
   const logo = document.getElementById("logo");
   /** @type {HTMLElement} **/
@@ -33,7 +36,11 @@ window.onload = () => {
   if (!logo) throw new Error("#logo not found");
   if (!shape) throw new Error(".shape not found");
 
-  logo.textContent = initial;
+  if (!done) {
+    logo.textContent = initial;
+  } else {
+    logo.textContent = complete;
+  }
 
   /** @type {(elapsed: number) => void} **/
   function type(elapsed) {
@@ -67,8 +74,11 @@ window.onload = () => {
     }
 
     previous = timestamp;
-    requestAnimationFrame(frame);
+
+    if (window.location.pathname === "/") {
+      requestAnimationFrame(frame);
+    }
   }
 
   requestAnimationFrame(frame);
-};
+});
