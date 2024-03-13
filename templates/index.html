@@ -42,7 +42,10 @@
 
     <div class="written">
       <h2>Some Things I've Written</h2>
-      <a href="/blog" class="button active">See All</a>
+      <a href="/blog" class="button active icon-button">
+        See All
+        {{ template "right" }}
+      </a>
     </div>
     <hr />
     {{ template "posts" .Metas }}

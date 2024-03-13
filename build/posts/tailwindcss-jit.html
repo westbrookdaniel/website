@@ -9,35 +9,29 @@ useful.</p>
 <p>Say I'm creating a series of social media icons on my website using SVGs, where I want each icon to be its brand colours.
 There's a couple of ways this could be done normally. <em>(I'll be using React for this example but the same applies to HTML or any other framework)</em></p>
 <p>You could use inline styles:</p>
-<pre><code class="language-jsx">&lt;Twitter style={{ color: &quot;#00acee&quot; }} /&gt;
-</code></pre>
-<p>Or an external stylesheet:</p>
-<pre><code class="language-css">/* styles.css */
-.twitter-color {
-  color: #00acee;
-}
-</code></pre>
-<pre><code class="language-jsx">&lt;Twitter className=&quot;twitter-color&quot; /&gt;
-</code></pre>
-<p>Or you could even add the colour to your Tailwind theme:</p>
-<pre><code class="language-js">// tailwind.config.js
-module.exports = {
-  /* ... */
-  colors: {
-    twitter: &quot;#00acee&quot;,
-  },
-  /* ... */
-};
-</code></pre>
-<pre><code class="language-jsx">&lt;Twitter className=&quot;text-twitter&quot; /&gt;
-</code></pre>
-<p>While these solutions work, they're not ideal. There may be other circumstances in your
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span>&lt;<span style="color:#cba6f7">Twitter</span> <span style="color:#89b4fa">style</span><span style="color:#89dceb;font-weight:bold">=</span>{{ color<span style="color:#89dceb;font-weight:bold">:</span> <span style="color:#a6e3a1">&#34;#00acee&#34;</span> }} /&gt;
+</span></span></code></pre><p>Or an external stylesheet:</p>
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span><span style="color:#6c7086;font-style:italic">/* styles.css */</span>
+</span></span><span style="display:flex;"><span>.<span style="color:#f9e2af">twitter-color</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#cba6f7">color</span>: <span style="color:#fab387">#00acee</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre><pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span>&lt;<span style="color:#cba6f7">Twitter</span> <span style="color:#89b4fa">className</span><span style="color:#89dceb;font-weight:bold">=</span><span style="color:#a6e3a1">&#34;twitter-color&#34;</span> /&gt;
+</span></span></code></pre><p>Or you could even add the colour to your Tailwind theme:</p>
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span><span style="color:#6c7086;font-style:italic">// tailwind.config.js
+</span></span></span><span style="display:flex;"><span><span style="color:#6c7086;font-style:italic"></span>module.exports <span style="color:#89dceb;font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#6c7086;font-style:italic">/* ... */</span>
+</span></span><span style="display:flex;"><span>  colors<span style="color:#89dceb;font-weight:bold">:</span> {
+</span></span><span style="display:flex;"><span>    twitter<span style="color:#89dceb;font-weight:bold">:</span> <span style="color:#a6e3a1">&#34;#00acee&#34;</span>,
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#6c7086;font-style:italic">/* ... */</span>
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre><pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span>&lt;<span style="color:#cba6f7">Twitter</span> <span style="color:#89b4fa">className</span><span style="color:#89dceb;font-weight:bold">=</span><span style="color:#a6e3a1">&#34;text-twitter&#34;</span> /&gt;
+</span></span></code></pre><p>While these solutions work, they're not ideal. There may be other circumstances in your
 code where you might need to position a background image or set the height of navigation, and writing
 a precise pixel value in your usual Tailwind styles would be the easiest way.</p>
 <p>That's where Just-In-Time mode comes in:</p>
-<pre><code class="language-jsx">&lt;Twitter className=&quot;text-[#00acee]&quot; /&gt;
-</code></pre>
-<p>By putting any value in square brackets, the just in time compiler will create a new class on the fly
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span>&lt;<span style="color:#cba6f7">Twitter</span> <span style="color:#89b4fa">className</span><span style="color:#89dceb;font-weight:bold">=</span><span style="color:#a6e3a1">&#34;text-[#00acee]&#34;</span> /&gt;
+</span></span></code></pre><p>By putting any value in square brackets, the just in time compiler will create a new class on the fly
 using this value. To use it you need to be using Tailwind CSS 2.1 or later and then you
 can add <code>mode: 'jit'</code> to your config file, as well as ensuring you have the <code>purge</code> option setup.</p>
 <p>You can read more about this feature in <a href="https://tailwindcss.com/docs/just-in-time-mode#enabling-jit-mode">Tailwind's documentation</a>.</p>

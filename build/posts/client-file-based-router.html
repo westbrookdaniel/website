@@ -1,14 +1,13 @@
 <p>Nextjs and other server-side frameworks have a great feature that makes adding new pages in your web app very continent, referred to as a file-based router. Usually, within a <code>pages</code> folder, you can add React component files and they will automatically be converted into routes in your app, with features like dynamic routes and 404 pages still working based on the name of the file.</p>
-<pre><code class="language-jsx">// pages/about.js
-const About = () =&gt; {
-	return &lt;h1&gt;About Page&lt;/div&gt;
-}
-// pages/index.js
-const Home = () =&gt; {
-	return &lt;h1&gt;Home Page&lt;/div&gt;
-}
-</code></pre>
-<p>In this example, <code>pages/index.js</code> would be rendered for route <code>/</code> and <code>pages/about.js</code> for the route <code>/about</code>.</p>
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span><span style="color:#6c7086;font-style:italic">// pages/about.js
+</span></span></span><span style="display:flex;"><span><span style="color:#6c7086;font-style:italic"></span><span style="color:#cba6f7">const</span> About <span style="color:#89dceb;font-weight:bold">=</span> () =&gt; {
+</span></span><span style="display:flex;"><span>	<span style="color:#cba6f7">return</span> &lt;<span style="color:#cba6f7">h1</span>&gt;About Page&lt;/<span style="color:#cba6f7">div</span>&gt;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#6c7086;font-style:italic">// pages/index.js
+</span></span></span><span style="display:flex;"><span><span style="color:#6c7086;font-style:italic"></span><span style="color:#cba6f7">const</span> Home <span style="color:#89dceb;font-weight:bold">=</span> () =&gt; {
+</span></span><span style="display:flex;"><span>	<span style="color:#cba6f7">return</span> &lt;<span style="color:#cba6f7">h1</span>&gt;Home Page&lt;/<span style="color:#cba6f7">div</span>&gt;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre><p>In this example, <code>pages/index.js</code> would be rendered for route <code>/</code> and <code>pages/about.js</code> for the route <code>/about</code>.</p>
 <h2>Glob Magic</h2>
 <p>What if I told you that you didn't need a server-side application to pull this off thanks to the power of tools like Vite and Webpack. Both of these contain a method of importing all of the files from the directory in the form of <a href="https://vitejs.dev/guide/features.html#glob-import">Vite's glob imports</a> and Webpack Context API (not to be confused with <a href="https://reactjs.org/docs/context.html">React's context API</a>).</p>
 <p>To save you time, I've created an example project that utilities Vite's glob import to have a file-based router that not only provides the complete routing capabilities of <code>react-router-dom</code>, but also provides more benefits.</p>
@@ -21,12 +20,11 @@ const Home = () =&gt; {
 </ul>
 <p>In the past, I've found one of the biggest problems with file-based routers is the difficulty in testing. Many (like Nextjs) don't ignore tests sitting alongside routes which makes it difficult to maintain a consistent place to put test files. By changing the glob to ignore test files I was able to make this minor quality of life improvement.</p>
 <p>Data can be provided back to the router via a <code>RouteData</code> export like this:</p>
-<pre><code class="language-jsx">export const data = {
-  name: &quot;Home&quot;,
-  handlesOwnRouting: true,
-};
-</code></pre>
-<p>Since you can import a list of all routes, this can be useful for providing names to important routes for use in analytic or automatically generated navigation. One other property I have implemented is <code>handlesOwnRouting</code> which allows a component to provide its own routing without being directed to the 404 route.</p>
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span><span style="color:#cba6f7">export</span> <span style="color:#cba6f7">const</span> data <span style="color:#89dceb;font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>  name<span style="color:#89dceb;font-weight:bold">:</span> <span style="color:#a6e3a1">&#34;Home&#34;</span>,
+</span></span><span style="display:flex;"><span>  handlesOwnRouting<span style="color:#89dceb;font-weight:bold">:</span> <span style="color:#fab387">true</span>,
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre><p>Since you can import a list of all routes, this can be useful for providing names to important routes for use in analytic or automatically generated navigation. One other property I have implemented is <code>handlesOwnRouting</code> which allows a component to provide its own routing without being directed to the 404 route.</p>
 <p>As for wrapping every route, it might not initially seem useful since you could just wrap the router itself, but since we're providing a lot of useful information about the route itself it is the perfect place for authentication based route protection to be added.</p>
 <h2>Try it Out</h2>
 <p>Do you like or have you ever used file-based routers? You're welcome to give mine a try by visiting the repository <a href="https://github.com/westbrookdaniel/file-based-router-example">file-based-router-example</a>. If you want to see me convert this into an NPM package or share the Webpack based example you can contact me through Twitter or email.</p>

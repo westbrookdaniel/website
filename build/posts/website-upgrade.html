@@ -23,94 +23,90 @@ has a similar colour scheme switcher.</p>
 was where I started my implementation.</p>
 <p>I used the strategy of creating a ThemeHandler to consume a theme from local storage, and a piece of global state
 provided by <a href="https://github.com/pmndrs/zustand">zustand</a>.</p>
-<pre><code class="language-tsx">export const useTheme = create&lt;ThemeStore&gt;((set, get) =&gt; ({
-  theme:
-    getLocalStorage(&quot;theme&quot;) ||
-    (typeof window !== &quot;undefined&quot;
-      ? window.matchMedia(&quot;(prefers-color-scheme: dark)&quot;).matches
-        ? &quot;dark&quot;
-        : &quot;light&quot;
-      : &quot;light&quot;),
-  updateTheme: (theme) =&gt; {
-    setLocalStorage(&quot;theme&quot;, theme);
-    set({ theme });
-  },
-  rotateTheme: () =&gt;
-    set((s) =&gt; {
-      const keys = Object.keys(themes);
-      const i = keys.indexOf(s.theme);
-      const newTheme = (
-        keys.length - 1 &gt; i ? keys[i + 1] : keys[0]
-      ) as keyof typeof themes;
-      setLocalStorage(&quot;theme&quot;, newTheme);
-      return { theme: newTheme };
-    }),
-}));
-</code></pre>
-<p>Because this is outside of a component and Nextjs code is run on the server, I do need to make sure that
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span><span style="color:#cba6f7">export</span> <span style="color:#cba6f7">const</span> useTheme <span style="color:#89dceb;font-weight:bold">=</span> create&lt;<span style="color:#cba6f7">ThemeStore</span>&gt;((<span style="color:#cba6f7">set</span>, <span style="color:#cba6f7">get</span>) <span style="color:#89dceb;font-weight:bold">=&gt;</span> ({
+</span></span><span style="display:flex;"><span>  theme:
+</span></span><span style="display:flex;"><span>    <span style="color:#f38ba8">getLocalStorage</span>(<span style="color:#a6e3a1">&#34;theme&#34;</span>) <span style="color:#89dceb;font-weight:bold">||</span>
+</span></span><span style="display:flex;"><span>    (<span style="color:#cba6f7">typeof</span> <span style="color:#89dceb">window</span> <span style="color:#89dceb;font-weight:bold">!==</span> <span style="color:#a6e3a1">&#34;undefined&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#89dceb;font-weight:bold">?</span> <span style="color:#89dceb">window</span>.matchMedia(<span style="color:#a6e3a1">&#34;(prefers-color-scheme: dark)&#34;</span>).matches
+</span></span><span style="display:flex;"><span>        <span style="color:#89dceb;font-weight:bold">?</span> <span style="color:#a6e3a1">&#34;dark&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#89dceb;font-weight:bold">:</span> <span style="color:#a6e3a1">&#34;light&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#89dceb;font-weight:bold">:</span> <span style="color:#a6e3a1">&#34;light&#34;</span>),
+</span></span><span style="display:flex;"><span>  updateTheme<span style="color:#89dceb;font-weight:bold">:</span> (theme) <span style="color:#89dceb;font-weight:bold">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    setLocalStorage(<span style="color:#a6e3a1">&#34;theme&#34;</span>, theme);
+</span></span><span style="display:flex;"><span>    <span style="color:#cba6f7">set</span>({ theme });
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  rotateTheme<span style="color:#89dceb;font-weight:bold">:</span> () <span style="color:#89dceb;font-weight:bold">=&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cba6f7">set</span>((s) <span style="color:#89dceb;font-weight:bold">=&gt;</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#cba6f7">const</span> keys <span style="color:#89dceb;font-weight:bold">=</span> <span style="color:#89dceb">Object</span>.keys(themes);
+</span></span><span style="display:flex;"><span>      <span style="color:#cba6f7">const</span> i <span style="color:#89dceb;font-weight:bold">=</span> keys.indexOf(s.theme);
+</span></span><span style="display:flex;"><span>      <span style="color:#cba6f7">const</span> newTheme <span style="color:#89dceb;font-weight:bold">=</span> (
+</span></span><span style="display:flex;"><span>        keys.length <span style="color:#89dceb;font-weight:bold">-</span> <span style="color:#fab387">1</span> <span style="color:#89dceb;font-weight:bold">&gt;</span> i <span style="color:#89dceb;font-weight:bold">?</span> keys[i <span style="color:#89dceb;font-weight:bold">+</span> <span style="color:#fab387">1</span>] <span style="color:#89dceb;font-weight:bold">:</span> keys[<span style="color:#fab387">0</span>]
+</span></span><span style="display:flex;"><span>      ) <span style="color:#cba6f7">as</span> <span style="color:#cba6f7">keyof</span> <span style="color:#cba6f7">typeof</span> themes;
+</span></span><span style="display:flex;"><span>      setLocalStorage(<span style="color:#a6e3a1">&#34;theme&#34;</span>, newTheme);
+</span></span><span style="display:flex;"><span>      <span style="color:#cba6f7">return</span> { theme: <span style="color:#f38ba8">newTheme</span> };
+</span></span><span style="display:flex;"><span>    }),
+</span></span><span style="display:flex;"><span>}));
+</span></span></code></pre><p>Because this is outside of a component and Nextjs code is run on the server, I do need to make sure that
 the window exists before checking if dark mode is active using <code>window.matchMedia('(prefers-color-scheme: dark)').matches</code>. Next, I
 needed to attach some CSS variables to the root of the document for the initial load of the website,
 and a set of themes to consume later.</p>
-<pre><code class="language-css">:root {
-  --brand: #d43c29;
-  --on-brand: #ffffff;
-
-  --accent: #6f5623;
-  --accent-hover: #846929;
-  --accent-focus: #9a7c2e;
-  --on-accent: #ffffff;
-
-  --background: #ffffff;
-  --on-background: #4d5c63;
-  --heading-on-background: #000;
-
-  /* ... */
-}
-</code></pre>
-<pre><code class="language-tsx">export const themes = {
-  light: {
-    brand: &quot;#d43c29&quot;,
-    /* ... */
-  },
-  dark: {
-    brand: &quot;#e36552&quot;,
-    /* ... */
-  },
-};
-</code></pre>
-<p>Now we get to the fun stuff - actually changing the colour scheme. This is done in a <code>useEffect</code> hook
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span>:<span style="color:#89b4fa;font-weight:bold">root</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--brand</span>: <span style="color:#fab387">#d43c29</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--on-brand</span>: <span style="color:#fab387">#ffffff</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--accent</span>: <span style="color:#fab387">#6f5623</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--accent-hover</span>: <span style="color:#fab387">#846929</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--accent-focus</span>: <span style="color:#fab387">#9a7c2e</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--on-accent</span>: <span style="color:#fab387">#ffffff</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--background</span>: <span style="color:#fab387">#ffffff</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--on-background</span>: <span style="color:#fab387">#4d5c63</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#f5e0dc">--heading-on-background</span>: <span style="color:#fab387">#000</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6c7086;font-style:italic">/* ... */</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre><pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span><span style="color:#cba6f7">export</span> <span style="color:#cba6f7">const</span> themes <span style="color:#89dceb;font-weight:bold">=</span> {
+</span></span><span style="display:flex;"><span>  light<span style="color:#89dceb;font-weight:bold">:</span> {
+</span></span><span style="display:flex;"><span>    brand<span style="color:#89dceb;font-weight:bold">:</span> <span style="color:#a6e3a1">&#34;#d43c29&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#6c7086;font-style:italic">/* ... */</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  dark<span style="color:#89dceb;font-weight:bold">:</span> {
+</span></span><span style="display:flex;"><span>    brand<span style="color:#89dceb;font-weight:bold">:</span> <span style="color:#a6e3a1">&#34;#e36552&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#6c7086;font-style:italic">/* ... */</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre><p>Now we get to the fun stuff - actually changing the colour scheme. This is done in a <code>useEffect</code> hook
 so we can only change the theme only when we need to. By attaching an event listener for <code>change</code>
 to <code>window.matchMedia('(prefers-color-scheme: dark)')</code> we can update the theme automatically if the user
 turns on their computers dark mode.</p>
 <p>We can then use our theme object to get the set of colours we need to apply and utilise <code>/*...*/ style.setProperty(`--${key}`, value)</code>
 to update the colour scheme. You can find below some more of the code I used for changing and handling the theme.</p>
-<pre><code class="language-tsx">const theme = useTheme((s) =&gt; s.theme);
-const updateTheme = useTheme((s) =&gt; s.updateTheme);
-
-/* ... */
-
-useEffect(() =&gt; {
-  if (!document.documentElement) return;
-
-  window
-    .matchMedia(&quot;(prefers-color-scheme: dark)&quot;)
-    .addEventListener(&quot;change&quot;, (e) =&gt; {
-      if (e.matches) {
-        updateTheme(&quot;dark&quot;);
-      } else {
-        updateTheme(&quot;light&quot;);
-      }
-    });
-
-  const currentTheme = themes[theme];
-
-  Object.keys(currentTheme).forEach((key) =&gt; {
-    const value = currentTheme[key as keyof typeof currentTheme];
-    document.documentElement.style.setProperty(`--${key}`, value);
-  });
-}, [theme, updateTheme]);
-</code></pre>
-<h2>The Future</h2>
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span><span style="color:#cba6f7">const</span> theme <span style="color:#89dceb;font-weight:bold">=</span> useTheme((s) <span style="color:#89dceb;font-weight:bold">=&gt;</span> s.theme);
+</span></span><span style="display:flex;"><span><span style="color:#cba6f7">const</span> updateTheme <span style="color:#89dceb;font-weight:bold">=</span> useTheme((s) <span style="color:#89dceb;font-weight:bold">=&gt;</span> s.updateTheme);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6c7086;font-style:italic">/* ... */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>useEffect(() <span style="color:#89dceb;font-weight:bold">=&gt;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#cba6f7">if</span> (<span style="color:#89dceb;font-weight:bold">!</span><span style="color:#89dceb">document</span>.documentElement) <span style="color:#cba6f7">return</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#89dceb">window</span>
+</span></span><span style="display:flex;"><span>    .matchMedia(<span style="color:#a6e3a1">&#34;(prefers-color-scheme: dark)&#34;</span>)
+</span></span><span style="display:flex;"><span>    .addEventListener(<span style="color:#a6e3a1">&#34;change&#34;</span>, (e) <span style="color:#89dceb;font-weight:bold">=&gt;</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#cba6f7">if</span> (e.matches) {
+</span></span><span style="display:flex;"><span>        updateTheme(<span style="color:#a6e3a1">&#34;dark&#34;</span>);
+</span></span><span style="display:flex;"><span>      } <span style="color:#cba6f7">else</span> {
+</span></span><span style="display:flex;"><span>        updateTheme(<span style="color:#a6e3a1">&#34;light&#34;</span>);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#cba6f7">const</span> currentTheme <span style="color:#89dceb;font-weight:bold">=</span> themes[theme];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#89dceb">Object</span>.keys(currentTheme).forEach((key) <span style="color:#89dceb;font-weight:bold">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#cba6f7">const</span> value <span style="color:#89dceb;font-weight:bold">=</span> currentTheme[key <span style="color:#cba6f7">as</span> <span style="color:#cba6f7">keyof</span> <span style="color:#cba6f7">typeof</span> currentTheme];
+</span></span><span style="display:flex;"><span>    <span style="color:#89dceb">document</span>.documentElement.style.setProperty(<span style="color:#a6e3a1">`--</span><span style="color:#a6e3a1">${</span>key<span style="color:#a6e3a1">}</span><span style="color:#a6e3a1">`</span>, value);
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>}, [theme, updateTheme]);
+</span></span></code></pre><h2>The Future</h2>
 <p>It was a lot of fun doing this performance refresh. Keep your eye out
 for more themes coming in the future. Some features I may look at adding next
 along these lines are a theme picker for code blocks and more development tooling to

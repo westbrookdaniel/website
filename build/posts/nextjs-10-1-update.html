@@ -10,11 +10,10 @@
 improvements do a great job at improving the development experience of Nextjs.</p>
 <h2>What is <code>next/image</code>?</h2>
 <p>Introduced back in 10.0, <code>next/image</code> is a &quot;drop-in replacement&quot; for the img tag (except width and height are now required).</p>
-<pre><code class="language-jsx">import Image from 'next/image'
-
-&lt;Image src=&quot;/profile-picture.jpg&quot; width=&quot;400&quot; height=&quot;400&quot; alt=&quot;Profile Picture&quot;&gt;
-</code></pre>
-<p>It provides automatic image optimization through resizing, reducing quality, lazy loading, and changing file format. It also can do this based on your device
+<pre style="color:#cdd6f4;background-color:#1e1e2e;"><code><span style="display:flex;"><span><span style="color:#cba6f7">import</span> Image from <span style="color:#a6e3a1">&#39;next/image&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#cba6f7">Image</span> <span style="color:#89b4fa">src</span><span style="color:#89dceb;font-weight:bold">=</span><span style="color:#a6e3a1">&#34;/profile-picture.jpg&#34;</span> <span style="color:#89b4fa">width</span><span style="color:#89dceb;font-weight:bold">=</span><span style="color:#a6e3a1">&#34;400&#34;</span> <span style="color:#89b4fa">height</span><span style="color:#89dceb;font-weight:bold">=</span><span style="color:#a6e3a1">&#34;400&#34;</span> <span style="color:#89b4fa">alt</span><span style="color:#89dceb;font-weight:bold">=</span><span style="color:#a6e3a1">&#34;Profile Picture&#34;</span>&gt;
+</span></span></code></pre><p>It provides automatic image optimization through resizing, reducing quality, lazy loading, and changing file format. It also can do this based on your device
 screen size to serve smaller images for mobile. This is all done automatically with Vercel, or you can provide your own <a href="https://nextjs.org/docs/api-reference/next/image#loader">custom loaders</a>.</p>
 <h2>Now in built in WebAssembly</h2>
 <p>To get <code>next/image</code> working, it used to use a native dependency which leads to a big

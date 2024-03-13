@@ -17,7 +17,10 @@
     {{ .Post.Content }}
 
     <div style="padding-top: 2rem">
-      <a class="button active" href="/blog">All Posts</a>
+      <a class="button active icon-button" href="/blog">
+        {{ template "left" }}
+        All Posts
+      </a>
     </div>
 
     {{ template "footer" }}

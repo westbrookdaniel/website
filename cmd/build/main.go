@@ -13,6 +13,8 @@ import (
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"go.abhg.dev/goldmark/frontmatter"
+
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
 )
 
 func checkFoldersExist() {
@@ -88,6 +90,9 @@ func parsePost(slug string) ([]byte, templates.Meta) {
 		goldmark.WithExtensions(
 			extension.GFM,
 			&frontmatter.Extender{},
+			highlighting.NewHighlighting(
+				highlighting.WithStyle("catppuccin-mocha"),
+			),
 		),
 	)
 
