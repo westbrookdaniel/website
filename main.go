@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -10,6 +11,9 @@ import (
 
 	"github.com/westbrookdaniel/website/templates"
 )
+
+//go:embed build/**/*
+var b embed.FS
 
 type Page struct {
 	Path  string
@@ -51,7 +55,7 @@ func handleBlog(w http.ResponseWriter, r *http.Request) {
 
 func handlePost(w http.ResponseWriter, r *http.Request) {
 	slug := r.PathValue("slug")
-	html, err := os.ReadFile("build/posts/" + slug + ".html")
+	html, err := b.ReadFile("build/posts/" + slug + ".html")
 	if err != nil {
 		err = templates.Templates.ExecuteTemplate(w, "404.html", Page{
 			Path: r.URL.Path,
@@ -101,7 +105,7 @@ func main() {
 }
 
 func readMetas() []templates.Meta {
-	b, err := os.ReadFile("./build/meta.json")
+	b, err := b.ReadFile("build/meta.json")
 	check(err)
 
 	metas := make([]templates.Meta, 0)
