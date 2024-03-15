@@ -12,8 +12,11 @@ import (
 	"github.com/westbrookdaniel/website/templates"
 )
 
-//go:embed build/**/*
-var b embed.FS
+//go:embed build/**/* build/*
+var buildResources embed.FS
+
+//go:embed public/**/* public/*
+var publicResources embed.FS
 
 type Page struct {
 	Path  string
@@ -55,7 +58,7 @@ func handleBlog(w http.ResponseWriter, r *http.Request) {
 
 func handlePost(w http.ResponseWriter, r *http.Request) {
 	slug := r.PathValue("slug")
-	html, err := b.ReadFile("build/posts/" + slug + ".html")
+	html, err := buildResources.ReadFile("build/posts/" + slug + ".html")
 	if err != nil {
 		err = templates.Templates.ExecuteTemplate(w, "404.html", Page{
 			Path: r.URL.Path,
@@ -90,7 +93,7 @@ func main() {
 		addr = ":" + addr
 	}
 
-	http.Handle("GET /public/", http.FileServer(http.Dir("")))
+	http.Handle("GET /public/", http.FileServerFS(publicResources))
 
 	http.HandleFunc("GET /", handleIndex)
 
@@ -105,7 +108,7 @@ func main() {
 }
 
 func readMetas() []templates.Meta {
-	b, err := b.ReadFile("build/meta.json")
+	b, err := buildResources.ReadFile("build/meta.json")
 	check(err)
 
 	metas := make([]templates.Meta, 0)
