@@ -1,6 +1,7 @@
 package templates
 
 import (
+	"embed"
 	"html/template"
 	"time"
 )
@@ -13,11 +14,11 @@ type Front struct {
 }
 
 type Meta struct {
-	Slug        string `json:"slug"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
+	Slug        string    `json:"slug"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
 	Date        time.Time `json:"date"`
-	Snippet     string `json:"snippet"`
+	Snippet     string    `json:"snippet"`
 }
 
 type Post struct {
@@ -29,7 +30,10 @@ type Post struct {
 	Snippet     string
 }
 
-var Templates = template.Must(template.ParseGlob("templates/*.html"))
+//go:embed *.html
+var resources embed.FS
+
+var Templates = template.Must(template.ParseFS(resources, "*.html"))
 
 func CreatePost(meta Meta, content []byte) Post {
 	return Post{

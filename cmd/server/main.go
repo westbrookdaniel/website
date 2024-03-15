@@ -78,6 +78,13 @@ func handlePost(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	addr := os.Getenv("PORT")
+	if addr == "" {
+		addr = "localhost:3000"
+	} else {
+		addr = ":" + addr
+	}
+
 	http.Handle("GET /public/", http.FileServer(http.Dir("")))
 
 	http.HandleFunc("GET /", handleIndex)
@@ -88,7 +95,7 @@ func main() {
 	http.HandleFunc("GET /blog/{slug}", handlePost)
 	http.HandleFunc("GET /blog/{slug}/{$}", handlePost)
 
-	http.ListenAndServe("localhost:3000", nil)
+	http.ListenAndServe(addr, nil)
 }
 
 func readMetas() []templates.Meta {
