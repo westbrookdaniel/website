@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 	"slices"
@@ -95,7 +96,8 @@ func main() {
 	http.HandleFunc("GET /blog/{slug}", handlePost)
 	http.HandleFunc("GET /blog/{slug}/{$}", handlePost)
 
-	http.ListenAndServe(addr, nil)
+	log.Println("listening on", addr)
+	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
 func readMetas() []templates.Meta {
