@@ -8,7 +8,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/westbrookdaniel/website/internal/templates"
+	"github.com/westbrookdaniel/website/templates"
 )
 
 type Page struct {

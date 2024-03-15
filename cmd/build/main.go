@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/westbrookdaniel/website/internal/templates"
+	"github.com/westbrookdaniel/website/templates"
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
