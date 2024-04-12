@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include "head.njk" %}
+    <title>Not Found - Daniel Westbrook</title>
+  </head>
+  <body hx-boost="true">
+    {% include "header.njk" %}
+
+    <div class="hero">
+      <h1 class="mb-8">Not Found</h1>
+      <hr />
+      <p class="m-0 mb-8">
+        You seem to have stumbled upon a page that doesn't exist.
+      </p>
+      <a class="m-0 button active icon-button" href="/">
+        {% include "icons/left.njk" %} Head Home
+      </a>
+    </div>
+
+    {% include "footer.njk" %}
+  </body>
+</html>

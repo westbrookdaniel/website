@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include "head.njk" %}
+    <title>{{ title }} - Daniel Westbrook</title>
+  </head>
+  <body hx-boost="true">
+    {% include "header.njk" %}
+
+    <div class="hero">
+      <h1 class="mb-8">{{ title }}</h1>
+      <hr />
+      <p class="m-0">{{ description }}</p>
+      <p class="m-0">{{ date }}</p>
+    </div>
+
+    {{ content | safe }}
+
+    <div style="padding-top: 2rem">
+      <a class="button active icon-button" href="/blog">
+        {% include "icons/left.njk" %}
+        All Posts
+      </a>
+    </div>
+
+    {% include "footer.njk" %}
+  </body>
+</html>

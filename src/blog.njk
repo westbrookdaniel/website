@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include "head.njk" %}
+    <title>Blog - Daniel Westbrook</title>
+  </head>
+  <body hx-boost="true">
+    {% include "header.njk" %}
+
+    <div class="hero">
+      <h1 class="mb-8">I Wrote These</h1>
+      <hr />
+      <p>Thought you might want to read them</p>
+    </div>
+
+    {% include "posts.njk" %}
+    {% include "footer.njk" %}
+  </body>
+</html>

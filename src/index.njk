@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include "head.njk" %}
+    <title>Daniel Westbrook - Web Developer</title>
+  </head>
+  <body hx-boost="true">
+    {% include "header.njk" %}
+
+    <div class="hero">
+      <div class="logo">
+        <h1 id="logo" class="mb-8">Daniel Westbrook</h1>
+        <span class="shape"></span>
+      </div>
+      <hr class="mt-0" />
+      <div>
+        <p class="m-0">
+          Currently developing at
+          <a
+            href="https://www.glxdigital.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GLX Digital</a
+          >
+        </p>
+        <p class="m-0">
+          You can find my other projects on my
+          <a
+            href="https://github.com/westbrookdaniel/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Github</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <h2>About Me</h2>
+    <hr />
+    <p class="mb-16">
+      Hey there, I'm Daniel Westbrook and I love building awesome web apps. I'm
+      always looking for ways to make my code faster, cleaner and more fun to
+      work with.
+    </p>
+
+    <div class="written">
+      <h2>Some Things I've Written</h2>
+      <a href="/blog" class="button active icon-button">
+        See All {% include "icons/right.njk" %}
+      </a>
+    </div>
+    <hr />
+    {% include "shortPosts.njk" %}
+    {% include "footer.njk" %}
+  </body>
+</html>

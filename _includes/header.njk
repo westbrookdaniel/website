@@ -1,0 +1,6 @@
+<header>
+  <nav>
+    <a class="button{% if page.url === "/" %} active{% endif %}" href="/">Home</a>
+    <a class="button{% if page.url.startsWith("/blog") and page.url !== "/" %} active{% endif %}" href="/blog">Blog</a>
+  </nav>
+</header>

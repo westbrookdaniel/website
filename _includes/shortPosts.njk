@@ -1,0 +1,11 @@
+<ul class="posts">
+  {% for post in collections.post | shortenAndSortByDate %}
+  <li class="post">
+    <a href="/blog/{{ post.page.fileSlug }}">{{ post.data.title }}</a>
+    <div>
+      <p>{{ post.data.description }}</p>
+      <p>{{ post.data.date | format }}</p>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
