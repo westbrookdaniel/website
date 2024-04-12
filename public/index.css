@@ -16,27 +16,32 @@ html {
     Segoe UI Symbol,
     "Noto Color Emoji";
 
-  --bg: 34 58 46;
-  --text: 255 255 255;
-  --accent: 128 194 184;
+  --white: #ffffff;
+  --light-red: #e8bfac;
+  --mid-blue: #88a8a5;
+  --light-blue: #ade9e3;
+  --mid-red: #93786b;
+  --dark-blue: #3b6964;
+  --dark-red: #3e2418;
 
-  background-color: rgb(var(--bg));
+  background-color: var(--dark-red);
+  background-image: url(/public/noise.png);
 }
 
 body {
-  max-width: 70ch;
+  max-width: 85ch;
   padding: 1.75rem 1.25rem;
   margin: 0 auto;
 }
 
 * {
   font-family: "GeneralSans-Regular", sans-serif;
-  color: rgb(var(--text));
+  color: var(--white);
   font-weight: 400;
 }
 
 a {
-  color: rgb(var(--accent));
+  color: var(--mid-blue);
   text-decoration: underline;
 }
 
@@ -58,7 +63,7 @@ h6 {
 
 h1 {
   font-size: 2em;
-  color: rgb(var(--accent));
+  color: var(--light-blue);
 }
 
 .logo {
@@ -77,7 +82,7 @@ h1 {
   margin-left: 0.5rem;
   margin-bottom: 2.2rem;
   display: block;
-  background-color: rgb(var(--accent));
+  background-color: var(--light-blue);
 }
 
 @media only screen and (min-width: 800px) {
@@ -115,11 +120,23 @@ nav {
   gap: 0.3rem;
 }
 
+header {
+  position: relative;
+}
+
+.noise {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  right: 0;
+  top: -60px;
+}
+
 .button {
   display: flex;
   width: max-content;
   font-size: 14px;
-  color: rgb(var(--text));
+  color: var(--white);
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
   text-decoration: none;
@@ -127,15 +144,15 @@ nav {
 }
 
 .button.active {
-  background-color: rgb(var(--text) / 10%);
+  background-color: color-mix(in srgb, var(--white) 10%, transparent);
 }
 
 .button:hover {
-  background-color: rgb(var(--text) / 15%);
+  background-color: color-mix(in srgb, var(--white) 15%, transparent);
 }
 
 .button:focus {
-  background-color: rgb(var(--text) / 25%);
+  background-color: color-mix(in srgb, var(--white) 25%, transparent);
 }
 
 .icon-button {
@@ -158,16 +175,16 @@ footer a {
 }
 
 footer a * {
-  color: rgb(var(--accent));
+  color: var(--light-red);
 }
 
 footer a:hover * {
-  color: rgb(var(--accent) / 75%);
+  color: color-mix(in srgb, var(--light-red) 75%, transparent);
 }
 
 hr {
   border: 1px solid;
-  border-color: rgb(var(--accent) / 20%);
+  border-color: color-mix(in srgb, var(--mid-red) 25%, transparent);
   margin-bottom: 1.5rem;
 }
 
