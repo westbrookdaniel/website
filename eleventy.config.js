@@ -15,8 +15,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
 
   eleventyConfig.addFilter("shortenAndSortByDate", (posts) => {
-    posts = posts.slice(0, 3);
-    return posts.sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+    posts = posts.sort((a, b) => new Date(b.data.date) - new Date(a.data.date));
+    return posts.slice(0, 3);
   });
 
   eleventyConfig.addFilter("sortByDate", (posts) => {
