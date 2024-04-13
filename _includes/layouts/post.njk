@@ -11,7 +11,7 @@
       <h1 class="mb-8">{{ title }}</h1>
       <hr />
       <p class="m-0">{{ description }}</p>
-      <p class="m-0">{{ date }}</p>
+      <p class="m-0">{{ date | format }}</p>
     </div>
 
     {{ content | safe }}
