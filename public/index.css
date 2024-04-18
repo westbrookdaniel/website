@@ -17,14 +17,16 @@ html {
     "Noto Color Emoji";
 
   --white: #ffffff;
-  --light-red: #e8bfac;
-  --mid-blue: #88a8a5;
-  --light-blue: #ade9e3;
-  --mid-red: #93786b;
-  --dark-blue: #3b6964;
-  --dark-red: #3e2418;
 
-  background-color: var(--dark-red);
+  --light-accent: #7fadae;
+
+  --dark-accent-2: #434735;
+  --dark-accent-3: #4b3939;
+
+  --mid-base: #718592;
+  --dark-base: #263137;
+
+  background-color: var(--dark-base);
   background-image: url(/public/noise.png);
 }
 
@@ -41,7 +43,7 @@ body {
 }
 
 a {
-  color: var(--mid-blue);
+  color: var(--light-accent);
   text-decoration: underline;
 }
 
@@ -63,7 +65,6 @@ h6 {
 
 h1 {
   font-size: 2em;
-  color: var(--light-blue);
 }
 
 .logo {
@@ -82,7 +83,7 @@ h1 {
   margin-left: 0.5rem;
   margin-bottom: 2.2rem;
   display: block;
-  background-color: var(--light-blue);
+  background-color: var(--white);
 }
 
 @media only screen and (min-width: 800px) {
@@ -117,6 +118,7 @@ img {
 
 nav {
   display: flex;
+  justify-content: center;
   gap: 0.3rem;
 }
 
@@ -124,12 +126,44 @@ header {
   position: relative;
 }
 
-.noise {
-  width: 80px;
-  height: 80px;
+.noise-1 {
+  z-index: -1;
+  width: 1400px;
+  height: 600px;
   position: absolute;
-  right: 0;
+  right: calc(50% - 700px);
   top: -60px;
+  background: radial-gradient(circle at center, var(--dark-accent-3) 10%,  color-mix(in srgb, var(--dark-base) 0%, transparent), transparent 50%);
+  animation: Move1 10s ease-in-out infinite;
+}
+
+.noise-2 {
+  z-index: -1;
+  width: 1400px;
+  height: 600px;
+  position: absolute;
+  right: calc(50% - 700px);
+  top: -60px;
+  background: radial-gradient(ellipse at top, var(--dark-accent-2) 10%, color-mix(in srgb, var(--dark-accent-2) 0%, transparent), transparent 70%);
+  animation: Move2 10s ease-in-out infinite;
+}
+
+@keyframes Move1 {
+  0% { right: calc(50% - 500px) }
+  20% { right: calc(50% - 600px) }
+  40% { right: calc(50% - 650px) }
+  60% { right: calc(50% - 700px) }
+  80% { right: calc(50% - 560px) }
+  100% { right: calc(50% - 500px) }
+}
+
+@keyframes Move2 {
+  0% { right: calc(50% - 600px) }
+  15% { right: calc(50% - 650px) }
+  30% { right: calc(50% - 700px) }
+  70% { right: calc(50% - 600px) }
+  85% { right: calc(50% - 500px) }
+  100% { right: calc(50% - 600px) }
 }
 
 .button {
@@ -175,16 +209,16 @@ footer a {
 }
 
 footer a * {
-  color: var(--light-red);
+  color: var(--mid-base);
 }
 
 footer a:hover * {
-  color: color-mix(in srgb, var(--light-red) 75%, transparent);
+  color: color-mix(in srgb, var(--mid-base) 75%, transparent);
 }
 
 hr {
   border: 1px solid;
-  border-color: color-mix(in srgb, var(--mid-red) 25%, transparent);
+  border-color: color-mix(in srgb, var(--mid-base) 25%, transparent);
   margin-bottom: 1.5rem;
 }
 
