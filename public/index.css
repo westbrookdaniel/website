@@ -293,7 +293,7 @@ pre code * {
 .noise-1 {
   z-index: -1;
   width: 80vw;
-  height: 400px;
+  height: 600px;
   position: absolute;
   left: calc(50% - 70vw);
   top: -60px;
@@ -303,7 +303,7 @@ pre code * {
 .noise-2 {
   z-index: -1;
   width: 80vw;
-  height: 400px;
+  height: 600px;
   position: absolute;
   left: calc(50% - 60vw);
   top: -60px;
