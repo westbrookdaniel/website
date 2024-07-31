@@ -1,27 +1,15 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    {% include "head.njk" %}
-    <title>Not Found - Daniel Westbrook</title>
-  </head>
-  <body hx-boost="true">
-    <div class="outer">
-    <div class="container">
-      {% include "header.njk" %}
-
-      <div class="hero">
-        <h1 class="mb-8">Not Found</h1>
-        <hr />
-        <p class="m-0 mb-8">
-          You seem to have stumbled upon a page that doesn't exist.
-        </p>
-        <a class="m-0 button active icon-button" href="/" preload="mouseover">
-          {% include "icons/left.njk" %} Head Home
-        </a>
-      </div>
-
-    </div>
-    </div>
-    {% include "footer.njk" %}
-  </body>
-</html>
+---
+layout: layouts/main.njk
+title: Not Found - Daniel Westbrook
+---
+<div class="px-16">
+	<h1 class="min-h-[32px] font-heading text-2xl mb-4">Not Found</h1>
+  <p class="text-neutral-500 text-balance max-w-[60ch]">
+    You seem to have stumbled upon a page that doesn't exist.
+  </p>
+</div>
+<div class="px-16 flex justify-start mt-20 mb-48">
+  <a class="m-0 button active" href="/" preload="mouseover">
+    {% include "icons/left.njk" %} Home
+  </a>
+</div>
