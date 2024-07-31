@@ -16,6 +16,8 @@ htmx.onLoad(() => {
   const h = document.querySelector("h1");
   const c = document.querySelector("#cursor");
 
+  h.innerText = "";
+
   currentTimeout = setTimeout(() => {
     currentInterval = setInterval(() => {
       h.innerText += chars.shift();
