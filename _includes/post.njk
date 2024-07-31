@@ -1,9 +1,9 @@
 <li class="space-y-1">
-  <a class="underline font-medium" href="/blog/{{ post.page.fileSlug }}" preload="mouseover">{{
+  <a class="underline font-medium block truncate" href="/blog/{{ post.page.fileSlug }}" preload="mouseover">{{
     post.data.title
   }}</a>
   <div class="flex w-full justify-between text-neutral-500">
-    <p>{{ post.data.description }}</p>
+    <p class="hidden sm:block">{{ post.data.description }}</>
     <p class="align-right">{{ post.data.date | format }}</p>
   </div>
 </li>
