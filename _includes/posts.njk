@@ -1,4 +1,4 @@
-<ul class="posts">
+<ul class="posts z-10 relative">
   {% for post in collections.post | sortByDate %}
   <li class="post">
     <a href="/blog/{{ post.page.fileSlug }}" preload="mouseover">{{ post.data.title }}</a>

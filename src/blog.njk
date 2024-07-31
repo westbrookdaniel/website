@@ -5,15 +5,22 @@
     <title>Blog - Daniel Westbrook</title>
   </head>
   <body hx-boost="true">
-    {% include "header.njk" %}
+    <div class="outer">
+    <div class="container">
+      {% include "header.njk" %}
 
-    <div class="hero">
-      <h1 class="mb-8">I Wrote These</h1>
-      <hr />
-      <p>Thought you might want to read them</p>
+      <div class="hero">
+        <h1 class="mb-8">My Latest Articles</h1>
+        <hr />
+        <p class="text-balance max-w-[60ch]">Stay up-to-date with my latest findings, and industry news. I don't write about everything, but what I do write about interests me.</p>
+      </div>
+
+
+      <div class="mb-16">
+        {% include "posts.njk" %}
+      </div>
     </div>
-
-    {% include "posts.njk" %}
+    </div>
     {% include "footer.njk" %}
   </body>
 </html>

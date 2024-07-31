@@ -25,7 +25,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("format", (date) => {
     return new Intl.DateTimeFormat("en-au", { dateStyle: "medium" }).format(
-      new Date(date),
+      new Date(date)
     );
   });
 
