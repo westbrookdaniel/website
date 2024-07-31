@@ -17,4 +17,8 @@
   .under {
     @apply underline underline-offset-[12px] decoration-2 decoration-neutral-700;
   }
+
+  .side-p {
+    @apply px-4 sm:px-8 lg:px-16
+  }
 }

@@ -8,17 +8,17 @@
     {% include "header.njk" %}
 
     <main class="pt-24 pb-32 relative max-w-[90ch] mx-auto flex-1 w-full">
-      <div class="px-16 mb-48">
+      <div class="side-p mb-48">
       	<h1 class="min-h-[32px] font-heading text-2xl mb-4">{{ title }}</h1>
         <p class="text-neutral-500 text-balance max-w-[60ch]">{{ description }}</p>
         <p class="text-neutral-500">{{ date | format }}</p>
       </div>
 
-      <div class="px-16 space-y-8 prose prose-neutral prose-invert">
+      <div class="side-p space-y-8 prose prose-neutral prose-invert">
         {{ content | safe }}
       </div>
 
-      <div class="px-16 flex justify-start mt-20">
+      <div class="side-p flex justify-start mt-20">
         <a class="button active" href="/blog">
           {% include "icons/left.njk" %}
           All Posts
