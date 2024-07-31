@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include "head.njk" %}
+    <title>{{ title }}</title>
+  </head>
+  <body hx-boost="true">
+    {% include "header.njk" %}
+
+    <main class="pt-24 pb-32 relative max-w-[90ch] mx-auto flex-1 w-full">
+      {{ content | safe }}
+    </main>
+
+    {% include "footer.njk" %}
+  </body>
+</html>

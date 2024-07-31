@@ -1,26 +1,19 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    {% include "head.njk" %}
-    <title>Blog - Daniel Westbrook</title>
-  </head>
-  <body hx-boost="true">
-    <div class="outer">
-    <div class="container">
-      {% include "header.njk" %}
+---
+layout: layouts/main.njk
+title: Blog - Daniel Westbrook
+---
+<div class="px-16 mb-48">
+	<h1 class="min-h-[32px] font-heading text-2xl mb-4">Latest Articles</h1>
+  <p class="text-neutral-500 text-balance max-w-[60ch]">
+    I don't write about everything, but what I do write about interests me. Not all opinions may be up to date.
+  </p>
+</div>
+<div class="px-16 space-y-8">
+  <h2 class="font-heading text-2xl text-balance">Latest</h2>
 
-      <div class="hero">
-        <h1 class="mb-8">My Latest Articles</h1>
-        <hr />
-        <p class="text-balance max-w-[60ch]">Stay up-to-date with my latest findings, and industry news. I don't write about everything, but what I do write about interests me.</p>
-      </div>
-
-
-      <div class="mb-16">
-        {% include "posts.njk" %}
-      </div>
-    </div>
-    </div>
-    {% include "footer.njk" %}
-  </body>
-</html>
+  <ul class="space-y-4">
+    {% for post in collections.post | sortByDate %}
+      {% include "post.njk" %}
+    {% endfor %}
+  </ul>
+</div>

@@ -1,31 +1,25 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    {% include "head.njk" %}
-    <title>Daniel Westbrook - Web Developer</title>
-  </head>
-  <body hx-boost="true">
-    {% include "header.njk" %}
+---
+layout: layouts/main.njk
+title: Daniel Westbrook - Web Developer
+---
+<div class="px-16 mb-48">
+	<div class="flex gap-[4px]">
+		<h1 class="min-h-[32px] font-heading text-2xl mb-4"></h1>
+		<div id="cursor" class="border-b-2 border-neutral-700 mt-[4px] h-[24px] w-[18px]"></div>
+	</div>
+	<p class="font-heading text-2xl text-balance">is currently developing at GLX Digital with other projects available on GitHub</p>
+</div>
+<div class="px-16 space-y-8">
+  <div class="flex w-full justify-between">
+    <h2 class="font-heading text-2xl text-balance">Latest</h2>
+    <a href="/blog" preload="mouseover" class="button active icon-button">
+      See All {% include "icons/right.njk" %}
+    </a>
+  </div>
 
-		<main class="pt-24 pb-32 relative max-w-[90ch] mx-auto flex-1 w-full">
-			<div class="px-16 mb-48">
-				<div class="flex gap-[4px]">
-					<h1 class="min-h-[32px] font-heading text-2xl mb-4"></h1>
-					<div id="cursor" class="border-b-2 border-neutral-700 mt-[4px] h-[24px] w-[18px]"></div>
-				</div>
-				<p class="font-heading text-2xl text-balance">is currently developing at GLX Digital with other projects available on GitHub</p>
-			</div>
-			<div class="px-16 space-y-8">
-        <div class="flex w-full justify-between">
-				  <h2 class="font-heading text-2xl text-balance">Latest</h2>
-          <a href="/blog" preload="mouseover" class="button active icon-button">
-            See All {% include "icons/right.njk" %}
-          </a>
-        </div>
-        {% include "shortPosts.njk" %}
-			</div>
-		</main>
-
-    {% include "footer.njk" %}
-  </body>
-</html>
+  <ul class="space-y-4">
+    {% for post in collections.post | shortenAndSortByDate %}
+      {% include "post.njk" %}
+    {% endfor %}
+  </ul>
+</div>

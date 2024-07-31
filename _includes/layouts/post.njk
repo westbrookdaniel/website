@@ -5,30 +5,27 @@
     <title>{{ title }} - Daniel Westbrook</title>
   </head>
   <body hx-boost="true">
-    <div class="outer">
-    <div class="container">
-      {% include "header.njk" %}
+    {% include "header.njk" %}
 
-      <div class="hero">
-        <h1 class="mb-8 text-balance">{{ title }}</h1>
-        <hr />
-        <p class="m-0">{{ description }}</p>
-        <p class="m-0">{{ date | format }}</p>
+    <main class="pt-24 pb-32 relative max-w-[90ch] mx-auto flex-1 w-full">
+      <div class="px-16 mb-48">
+      	<h1 class="min-h-[32px] font-heading text-2xl mb-4">{{ title }}</h1>
+        <p class="text-neutral-500 text-balance max-w-[60ch]">{{ description }}</p>
+        <p class="text-neutral-500">{{ date | format }}</p>
       </div>
 
-      <div class="prose prose-invert">
+      <div class="px-16 space-y-8 prose prose-neutral prose-invert">
         {{ content | safe }}
       </div>
 
-      <div class="pt-16 mb-16">
-        <a class="button active icon-button" href="/blog">
+      <div class="px-16 flex justify-start mt-20">
+        <a class="button active" href="/blog">
           {% include "icons/left.njk" %}
           All Posts
         </a>
       </div>
+    </main>
 
-    </div>
-    </div>
     {% include "footer.njk" %}
   </body>
 </html>
