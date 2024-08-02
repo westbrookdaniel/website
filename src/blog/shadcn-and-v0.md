@@ -1,17 +1,17 @@
 ---
-title: "Shadcn UI and v0 are keeping NextJS alive"
-description: "NextJS is still the best app framework"
+title: "NextJS stands on the sholders of Shadcn UI and v0"
+description: "The power of NextJS comes from it's ecosystem"
 date: "2024-04-13T00:00:00.000Z"
 snippet:
 tags: post
 layout: layouts/post.njk
 ---
 
-I don't think it's a controversial take anymore to say NextJS is a bloated framework. As app router
-continues to be notably slower than the pages router, turbopack's takeover slows, and React's vision
-clashes with the popular views of the community on social medias like X. While I've looked for a long
-time for an alternative (Express + HTMX comes close to offering the flexibility and robustness), thanks
-to Vercel's investments in shadcn/ui and v0 have kept NextJS as the clear winner.
+I don't think it's a controversial take anymore to say NextJS is a bloated framework. The app router
+has continued to be notably slower than the pages router due to the pending development of RSC and turbopack's
+rewrite of NextJS's internals takes it time. Whilst various compelling alternatives have sprung up
+(Express + HTMX comes close to offering the flexibility and robustness), thanks
+Vercel's investments in shadcn/ui and v0 have kept NextJS as the strong choice.
 
 ## NextJS is getting bloated
 
@@ -38,14 +38,16 @@ win for developers.
 
 ## The Ideal App Project
 
-Thanks to these 2 projects, I think NextJS is currently the best framework for most app like websites.
+Thanks to these 2 projects, I think NextJS (or any tool that can utilise them well) is currently the best framework for most app like websites.
 It is unmistakable that with a template like the [prisma turborepo starter](https://github.com/vercel/turbo/tree/main/examples/with-prisma)
-you can unthinkable MVP speeds by utilising v0 to build your initial views with shadcn/ui to power it all.
-Also, you can't not mention the ease of use of turborepo which unlike its sister project turbo pack is incredibly well
-looked after and I'd consider compelte for node based projects (I use it myself at my work at [GLX Digital](https://www.glxdigital.com/)).
+you can build an MVP at extreme speeds by utilising v0 to build your initial views with shadcn/ui to power it all.
+Also, it's hard not to point out turborepo, which is a fantastic streamlined monorepo tool, which I
+loved implementing and using at [GLX Digital](https://www.glxdigital.com/)).
 
 Unfortunately over the years of perfecting this stack, Vercel has neglected static sites. I still consider
-[Eleventy](https://www.11ty.dev/) as the best static site generator for it's simplicity and speed, but hopefully
-one day Vercel will consider reinvesting in the concept possibly to compete with projects like [Astro](https://astro.build/).
+[Eleventy](https://www.11ty.dev/) as the best static site generator for it's simplicity and speed, although
+I do have a soft spot for [Astro's](https://astro.build/) excellent implementation of islands.
 
-In the meantime, have fun making use NextJS with shadcn/ui and v0 to build fast!
+It really goes to show that providing a strong ecosystem for your product can
+make a strong impact on the core products perception. Maybe Vercel has been
+taking notes from frameworks like Ruby on Rails.

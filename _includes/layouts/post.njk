@@ -14,8 +14,10 @@
         <p class="text-neutral-500">{{ date | format }}</p>
       </div>
 
-      <div class="side-p space-y-8 prose prose-neutral prose-invert">
-        {{ content | safe }}
+      <div class="side-p space-y-8">
+        <div class="prose prose-neutral prose-invert">
+          {{ content | safe }}
+        </div>
       </div>
 
       <div class="side-p flex justify-start mt-20">
