@@ -1,5 +1,5 @@
 ---
-title: "NextJS stands on the sholders of Shadcn UI and v0"
+title: "Using NextJS with Shadcn UI and v0"
 description: "The power of NextJS comes from it's ecosystem"
 date: "2024-04-13T00:00:00.000Z"
 snippet:
@@ -7,21 +7,26 @@ tags: post
 layout: layouts/post.njk
 ---
 
-I don't think it's a controversial take anymore to say NextJS is a bloated framework. The app router
-has continued to be notably slower than the pages router due to the pending development of RSC and turbopack's
-rewrite of NextJS's internals takes it time. Whilst various compelling alternatives have sprung up
-(Express + HTMX comes close to offering the flexibility and robustness), thanks
-Vercel's investments in shadcn/ui and v0 have kept NextJS as the strong choice.
+It may no longer be considered controversial to view NextJS as a bloated
+framework. The app router has often been observed as notably slower than
+the pages router, in part due to ongoing development of React Server
+Components (RSC) and the extensive rewrite of NextJS’s internals by
+Turbopack. While various alternatives have emerged to offer similar
+flexibility and robustness—such as Express combined with HTMX—NextJS
+remains a popular choice, largely due to Vercel's investments in
+shadcn/ui and v0.
 
-## NextJS is getting bloated
+## NextJS
 
-It wasn't very long ago where NextJS had a simple architecture, or at least a simple one to grasp.
-As Vercel took on the vision of React in its holistic adoption of RSC it paid for being the early
-adopter by losing its simplicity, succumbing to having to have its own set of documentation
-and dealing with the controversial adoption of canary React.
-
-While they have mostly recovered from this adoption, the slow speeds of RSC and complex mental model
-have left big scars on the perception of the framework, leaving room for competitors like HTMX.
+Not long ago, NextJS was praised for its relatively simple architecture,
+or at least one that was straightforward to understand. However, Vercel’s
+decision to embrace React’s vision of holistic RSC adoption brought
+complexity at the cost of early adoption, requiring dedicated documentation
+and necessitating adjustments to manage the controversial canary React
+implementation. Though much of the initial difficulty has been addressed,
+the persistent slow performance of RSC and the increasingly complex
+mental model have impacted the framework’s perception, leaving room
+for alternatives like HTMX to gain ground.
 
 ## shadcn/ui and v0
 
