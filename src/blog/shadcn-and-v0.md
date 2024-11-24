@@ -2,7 +2,7 @@
 title: "Using NextJS with Shadcn UI and v0"
 description: "The power of NextJS comes from it's ecosystem"
 date: "2024-04-13T00:00:00.000Z"
-snippet:
+snippet: "It may no longer be considered controversial to view NextJS as a bloated framework. The app router has often been observed as notably slower than the pages router, in part due to ongoing development of React Server Components (RSC) and the extensive rewrite of NextJS’s internals."
 tags: post
 layout: layouts/post.njk
 ---
