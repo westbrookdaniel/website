@@ -26,6 +26,14 @@
     @apply px-4 sm:px-8 lg:px-16;
   }
 
+  .pill {
+    @apply px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex flex-col gap-1 transition-colors justify-start;
+  }
+
+  .pill code {
+    @apply text-sm text-zinc-500;
+  }
+
   button:not(:disabled),
   [role="button"]:not(:disabled) {
     cursor: pointer;
