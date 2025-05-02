@@ -1,24 +1,43 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-/* @layer base { */
-/*   html { */
-/*     @apply bg-neutral-900 text-neutral-200; */
-/*   } */
+@theme {
+  --font-heading: "Bianzhidai-Pearl", sans-serif;
+  --font-body: "GeneralSans-Variable", sans-serif;
+}
 
-/*   .button.active { */
-/*     @apply bg-neutral-800; */
-/*   } */
-/*   .button { */
-/*     @apply flex items-center gap-2 px-3 py-[0.5] rounded-md text-sm leading-[2.2]; */
-/*   } */
+@layer base {
+  html {
+    @apply bg-zinc-900 text-zinc-200;
+  }
 
-/*   .under { */
-/*     @apply underline underline-offset-[12px] decoration-2 decoration-neutral-700; */
-/*   } */
+  .button.active {
+    @apply bg-zinc-800 hover:bg-zinc-700 transition-colors duration-100;
+  }
+  .button {
+    @apply flex items-center gap-2 px-3 py-[0.5] rounded-lg text-sm leading-[2.2];
+  }
 
-/*   .side-p { */
-/*     @apply px-4 sm:px-8 lg:px-16 */
-/*   } */
-/* } */
+  .under {
+    @apply underline underline-offset-[12px] decoration-2 decoration-zinc-700;
+  }
+
+  .side-p {
+    @apply px-4 sm:px-8 lg:px-16;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* change cursor text highlihgt to light gray */
+  ::selection {
+    @apply bg-zinc-700 text-zinc-200;
+  }
+
+  :not(pre) > code[class*="language-"],
+  pre[class*="language-"] {
+    @apply bg-zinc-800/35!;
+  }
+}

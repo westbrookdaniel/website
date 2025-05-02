@@ -34,7 +34,7 @@ Svelte is a prime example of a compiled language for web application development
 Svelte takes your components and transforms them into highly optimized JavaScript code. Svelte is able minimize runtime overhead
 and generate efficient code that's ready to run in the browser.
 
-Compile-time transformations are a cornerstone of Svelte's efficiency. They enable Svelte to optimize
+Compile-time transformations are a cornerzinc of Svelte's efficiency. They enable Svelte to optimize
 your code during compilation rather than at runtime, as well as add reactivity, scoped styles and many other features.
 This approach results in faster load times and better performance, two essential goals for modern web framework or app.
 

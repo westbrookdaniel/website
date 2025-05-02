@@ -1,8 +1,9 @@
 {
   "name": "website",
+  "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "build": "eleventy --input=src && npx tailwindcss -i ./tailwind.css -o ./_site/public/index.css ",
+    "build": "eleventy --input=src && npx @tailwindcss/cli -i ./tailwind.css -o ./_site/public/index.css ",
     "dev": "concurrently \"eleventy --input=src --serve --quiet\" \"npx tailwindcss -i ./tailwind.css -o ./_site/public/index.css --watch\"",
     "lint": "prettier . --write"
   },
@@ -12,6 +13,7 @@
     "prism-themes": "^1.9.0"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.5",
     "@tailwindcss/typography": "^0.5.16",
     "concurrently": "^9.1.2",
     "prettier": "^3.5.3",

@@ -1,7 +1,7 @@
-const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
-const { EleventyHtmlBasePlugin } = require("@11ty/eleventy");
+import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import { EleventyHtmlBasePlugin } from "@11ty/eleventy";
 
-module.exports = function (eleventyConfig) {
+export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     "./public/": "/public/",
     "./node_modules/prism-themes/themes/prism-gruvbox-dark.css":
@@ -25,7 +25,7 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addFilter("format", (date) => {
     return new Intl.DateTimeFormat("en-au", { dateStyle: "medium" }).format(
-      new Date(date)
+      new Date(date),
     );
   });
 
@@ -40,4 +40,4 @@ module.exports = function (eleventyConfig) {
       output: "_site",
     },
   };
-};
+}

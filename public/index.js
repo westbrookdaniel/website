@@ -1,9 +1,11 @@
 let currentTimeout;
-let currentInterval;
+
+const charTypeSpeeds = [
+  200, 100, 150, 90, 80, 75, 160, 180, 170, 110, 80, 75, 70, 70, 70,
+];
 
 htmx.onLoad(() => {
   if (window.location.pathname !== "/") return;
-  if (currentInterval) clearInterval(currentInterval);
   if (currentTimeout) clearTimeout(currentTimeout);
 
   let s = "";
@@ -19,12 +21,17 @@ htmx.onLoad(() => {
   h.innerText = "";
 
   currentTimeout = setTimeout(() => {
-    currentInterval = setInterval(() => {
-      h.innerText += chars.shift();
-      if (chars.length == 0) {
-        clearInterval(currentInterval);
-        setInterval(() => (c.hidden = !c.hidden), 700);
-      }
-    }, 80);
+    function type() {
+      const charIndex = h.innerText.length % charTypeSpeeds.length;
+      setTimeout(() => {
+        h.innerText += chars.shift();
+        if (chars.length == 0) {
+          setInterval(() => (c.hidden = !c.hidden), 700);
+        } else {
+          type();
+        }
+      }, charTypeSpeeds[charIndex]);
+    }
+    currentTimeout = type();
   }, 400);
 });
