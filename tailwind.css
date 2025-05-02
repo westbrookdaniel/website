@@ -30,6 +30,10 @@
     @apply px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex flex-col gap-1 transition-colors justify-start;
   }
 
+  .pill.disabled {
+    @apply opacity-50 hover:bg-zinc-800 cursor-not-allowed;
+  }
+
   .pill code {
     @apply text-sm text-zinc-500;
   }
