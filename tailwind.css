@@ -2,23 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    @apply bg-neutral-900 text-neutral-200;
-  }
+/* @layer base { */
+/*   html { */
+/*     @apply bg-neutral-900 text-neutral-200; */
+/*   } */
 
-  .button.active {
-    @apply bg-neutral-800;
-  }
-  .button {
-    @apply flex items-center gap-2 px-3 py-[0.5] rounded-md text-sm leading-[2.2];
-  }
+/*   .button.active { */
+/*     @apply bg-neutral-800; */
+/*   } */
+/*   .button { */
+/*     @apply flex items-center gap-2 px-3 py-[0.5] rounded-md text-sm leading-[2.2]; */
+/*   } */
 
-  .under {
-    @apply underline underline-offset-[12px] decoration-2 decoration-neutral-700;
-  }
+/*   .under { */
+/*     @apply underline underline-offset-[12px] decoration-2 decoration-neutral-700; */
+/*   } */
 
-  .side-p {
-    @apply px-4 sm:px-8 lg:px-16
-  }
-}
+/*   .side-p { */
+/*     @apply px-4 sm:px-8 lg:px-16 */
+/*   } */
+/* } */
