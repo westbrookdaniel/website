@@ -34,8 +34,24 @@
     @apply opacity-50 hover:bg-zinc-800 cursor-not-allowed;
   }
 
+  .pill.extra {
+    @apply grid grid-cols-2 bg-orange-500/5 hover:bg-orange-500/10;
+  }
+
+  .pill.extra p {
+    @apply col-span-2;
+  }
+
+  .pill.extra span {
+    @apply text-sm text-right text-orange-500/50
+  }
+
   .pill code {
     @apply text-sm text-zinc-500;
+  }
+
+  .pill.extra code {
+    @apply text-orange-500/50;
   }
 
   button:not(:disabled),
