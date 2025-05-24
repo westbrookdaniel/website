@@ -43,7 +43,19 @@
   }
 
   .pill.extra span {
-    @apply text-sm text-right text-orange-500/50
+    @apply text-sm text-right text-orange-500/50;
+  }
+
+  .pill.new {
+    @apply relative;
+  }
+
+  .pill.new:hover span {
+    @apply bg-zinc-800/90 text-zinc-100/70;
+  }
+
+  .pill.new span {
+    @apply absolute rounded-lg top-2 right-2 block px-2 py-1 justify-self-end w-[min-content] text-sm text-right bg-zinc-900/70 text-zinc-100/50 transition-colors;
   }
 
   .pill code {
