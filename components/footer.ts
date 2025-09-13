@@ -38,7 +38,7 @@ export function Footer() {
           ${XIcon()}
         </a>
       </div>
-      <p class="text-zinc-500 text-sm">v2025.6.2</p>
+      <p class="text-zinc-500 text-sm">v2025.9.13</p>
     </div>
   </footer>`;
 }
