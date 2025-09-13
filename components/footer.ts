@@ -1,8 +1,15 @@
-<footer class="pb-6 sm:pb-8 lg:pb-16 pt-16 relative max-w-[90ch] mx-auto w-full">
+import { html } from "../lib/html";
+import { EmailIcon } from "./icons/email";
+import { LinkedinIcon } from "./icons/linkedin";
+import { GithubIcon } from "./icons/github";
+import { XIcon } from "./icons/x.com";
+
+export function Footer() {
+  return html`<footer class="pb-6 sm:pb-8 lg:pb-16 pt-16 relative max-w-[90ch] mx-auto w-full">
 	<div class="side-p w-full flex justify-between items-end">
     <div class="flex gap-3">
       <a href="mailto:westy12dan@gmail.com" aria-label="Email">
-        {% include "icons/email.njk" %}
+        ${EmailIcon()}
       </a>
       <a
         href="https://www.linkedin.com/in/daniel-westbrook-692227196/"
@@ -10,7 +17,7 @@
         rel="noopener noreferrer"
         aria-label="LinkedIn"
       >
-        {% include "icons/linkedin.njk" %}
+        ${LinkedinIcon()}
       </a>
       <a
         href="https://github.com/westbrookdaniel/"
@@ -18,7 +25,7 @@
         rel="noopener noreferrer"
         aria-label="Github"
       >
-        {% include "icons/github.njk" %}
+        ${GithubIcon()}
       </a>
       <a
         href="https://x.com/DanielW29381255"
@@ -26,9 +33,10 @@
         rel="noopener noreferrer"
         aria-label="x.com"
       >
-        {% include "icons/x.com.njk" %}
+        ${XIcon()}
       </a>
     </div>
     <p class="text-zinc-500 text-sm">v2025.6.2</p>
   </div>
-</footer>
+</footer>`;
+}

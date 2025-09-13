@@ -98,9 +98,10 @@ export default function Page(posts: PostData[]) {
               new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
           )
           .slice(0, 3)
-          .map((post) => Post(post))}
+          .map((post) => Post(post))
+          .join("")}
       </ul>
     </div>`;
 
-  return Layout(meta, content);
+  return Layout(meta, content, "/");
 }

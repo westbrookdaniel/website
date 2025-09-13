@@ -6,7 +6,10 @@ export type PostData = {
     title: string;
     description: string;
     date: string;
+    snippet?: string;
+    tags?: string;
   };
+  content: string;
 };
 
 export type Meta = {

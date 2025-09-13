@@ -1,4 +1,7 @@
-<meta charset="UTF-8" />
+import { html } from "../lib/html";
+
+export function Head() {
+  return html`<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="/public/fonts.css" />
 <link rel="stylesheet" href="/public/index.css" />
@@ -19,4 +22,5 @@
   console.log(
     "Source code available at https://github.com/westbrookdaniel/westbrook-daniel-website"
   );
-</script>
+</script>`;
+}
