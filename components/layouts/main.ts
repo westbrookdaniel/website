@@ -4,7 +4,7 @@ import { Head } from "../head";
 import { Header } from "../header";
 import { Footer } from "../footer";
 
-export function Layout(meta: Meta, content: string, currentPath: string = '') {
+export function Layout(meta: Meta, content: string, currentPath: string = "") {
   return html`<!doctype html>
     <html lang="en">
       <head>

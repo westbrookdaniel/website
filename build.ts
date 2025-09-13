@@ -147,7 +147,7 @@ async function build() {
   console.log("Copying public assets...");
   const publicFiles = glob.sync("public/**/*", { nodir: true });
   for (const file of publicFiles) {
-    const destPath = file.replace("public/", "_site/");
+    const destPath = file.replace("public/", "_site/public/");
     const destDir = dirname(destPath);
     if (!existsSync(destDir)) {
       mkdirSync(destDir, { recursive: true });
@@ -159,4 +159,3 @@ async function build() {
 }
 
 build();
-
