@@ -4,7 +4,7 @@ import { Head } from "../head";
 import { Header } from "../header";
 import { Footer } from "../footer";
 import { LeftIcon } from "../icons/left";
-import { formatDate, readingTime } from "../../lib/date";
+import { formatDate, readingTime } from "../../lib/time";
 
 export function PostLayout(meta: Meta, content: string, postData: any) {
   return html`<!doctype html>

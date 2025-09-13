@@ -76,8 +76,8 @@
     @apply bg-zinc-700 text-zinc-200;
   }
 
-  :not(pre) > code[class*="language-"],
-  pre[class*="language-"] {
+  :not(pre) > code[class*="shiki"],
+  pre[class*="shiki"] {
     @apply bg-zinc-800/35!;
   }
 }
