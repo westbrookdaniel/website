@@ -13,9 +13,7 @@ function parseFrontmatter(content: string) {
   const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
   const match = content.match(frontmatterRegex);
 
-  if (!match) {
-    throw new Error("No frontmatter found");
-  }
+  if (!match) throw new Error("No frontmatter found");
 
   const frontmatterText = match[1];
   const markdownContent = match[2];

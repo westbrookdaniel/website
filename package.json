@@ -3,8 +3,8 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "build": "bun run build.ts && npx @tailwindcss/cli -i ./tailwind.css -o ./_site/public/index.css",
-    "dev": "concurrently \"bunx serve _site\" \"bun run --watch build.ts\" \"npx tailwindcss -i ./tailwind.css -o ./_site/public/index.css --watch\"",
+    "build": "bun run build.ts && bunx @tailwindcss/cli -i ./tailwind.css -o ./_site/public/index.css",
+    "dev": "concurrently \"bunx serve _site\" \"bun run --watch build.ts\" \"bunx tailwindcss -i ./tailwind.css -o ./_site/public/index.css --watch\"",
     "lint": "prettier . --write"
   },
   "dependencies": {

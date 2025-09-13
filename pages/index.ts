@@ -2,7 +2,7 @@ import { RightIcon } from "../components/icons/right";
 import { Layout } from "../components/layouts/main";
 import { Post } from "../components/post";
 import { html } from "../lib/html";
-import { Meta, PostData } from "../lib/types";
+import type { Meta, PostData } from "../lib/types";
 
 const meta: Meta = {
   title: "Daniel Westbrook - Web Developer",

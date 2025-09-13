@@ -31,7 +31,7 @@ export function PostLayout(meta: Meta, content: string, postData: any) {
           </div>
 
           <div class="side-p space-y-8">
-            <div class="prose prose-zinc prose-invert">${content}</div>
+            <div class="prose prose-zinc prose-invert max-w-[80ch]">${content}</div>
           </div>
 
           <div class="side-p flex justify-start mt-20">
