@@ -24,8 +24,8 @@ export default function Page(posts: PostData[]) {
         <a
           class="hover:underline decoration-zinc-700"
           target="_blank"
-          href="https://www.glxdigital.com/"
-          >GLX Digital</a
+          href="https://www.coreplan.io/"
+          >CorePlan</a
         >
         with other projects available on
         <a
