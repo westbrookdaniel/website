@@ -3,7 +3,8 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "build": "bun run build/index.ts"
+    "build": "bun run build/index.ts",
+    "dev": "bun run build/dev.ts"
   },
   "private": true,
   "peerDependencies": {
