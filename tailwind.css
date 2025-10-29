@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-heading: "Bianzhidai-Pearl", sans-serif;
+  --font-heading: "Clash Grotesk", sans-serif;
   --font-body: "GeneralSans-Variable", sans-serif;
 }
 
@@ -12,10 +12,10 @@
   }
 
   .button.active {
-    @apply bg-zinc-800 hover:bg-zinc-700 transition-colors duration-100;
+    @apply bg-zinc-800 duration-100;
   }
   .button {
-    @apply flex items-center gap-2 px-3 py-[0.5] rounded-lg text-sm leading-[2.2];
+    @apply hover:bg-zinc-800 flex items-center gap-2 px-3 py-[0.5] rounded-lg text-sm leading-[2.2] active:translate-y-px active:scale-[.99];
   }
 
   .under {
@@ -27,15 +27,11 @@
   }
 
   .pill {
-    @apply px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex flex-col gap-1 transition-colors justify-start;
-  }
-
-  .pill.disabled {
-    @apply opacity-50 hover:bg-zinc-800 cursor-not-allowed;
+    @apply px-4 py-2 bg-zinc-800 rounded-lg flex flex-col gap-1 justify-start;
   }
 
   .pill.extra {
-    @apply grid grid-cols-2 bg-orange-500/5 hover:bg-orange-500/10;
+    @apply grid grid-cols-2 bg-orange-500/5;
   }
 
   .pill.extra p {
@@ -50,12 +46,8 @@
     @apply relative;
   }
 
-  .pill.new:hover span {
-    @apply bg-zinc-800/90 text-zinc-100/70;
-  }
-
   .pill.new span {
-    @apply absolute rounded-lg top-2 right-2 block px-2 py-1 justify-self-end w-[min-content] text-sm text-right bg-zinc-900/70 text-zinc-100/50 transition-colors;
+    @apply absolute rounded-lg top-2 right-2 block px-2 py-1 justify-self-end w-[min-content] text-sm text-right bg-zinc-900/70 text-zinc-100/50;
   }
 
   .pill code {

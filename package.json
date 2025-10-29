@@ -15,11 +15,12 @@
     "@tailwindcss/cli": "^4.1.13",
     "@tailwindcss/typography": "^0.5.16",
     "@types/bun": "^1.2.21",
+    "@types/mustache": "^4.2.6",
+    "htmx.org": "^2.0.8",
     "marked": "^16.2.1",
     "marked-shiki": "^1.2.1",
     "mustache": "^4.2.0",
     "shiki": "^3.12.2",
-    "tailwindcss": "^4.1.13",
-    "@types/mustache": "^4.2.6"
+    "tailwindcss": "^4.1.13"
   }
 }

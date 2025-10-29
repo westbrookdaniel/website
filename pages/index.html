@@ -1,17 +1,26 @@
 <div class="side-p mb-48">
   <div class="flex gap-[4px]">
-    <h1 class="min-h-[32px] text-orange-400/90 font-heading text-2xl mb-4"></h1>
-    <div id="cursor" class="border-b-2 border-orange-400/90 mt-[4px] h-[24px] w-[18px]"></div>
+    <h1 class="min-h-[42px] font-heading text-4xl mb-4" aria-label="Daniel Westbrook"></h1>
   </div>
-  <p class="font-heading text-2xl text-balance">
-    is currently developing at
-    <a class="hover:underline decoration-zinc-700" target="_blank" href="https://www.coreplan.io/"
-      >CorePlan</a
-    >
-    with other projects available on
-    <a class="hover:underline decoration-zinc-700" target="_blank" href="https://github.com/westbrookdaniel/"
-      >GitHub</a
-    >
+  <p class="font-heading text-4xl text-balance min-h-[42px]">
+    <span id="is" aria-label="is currently developing at"></span>
+    <a
+      id="place"
+      class="hover:underline decoration-zinc-700"
+      target="_blank"
+      href="https://www.coreplan.io/"
+      aria-label="CorePlan"
+    ></a>
+  </p>
+  <p class="font-heading text-4xl text-balance min-h-[42px]">
+    <span id="with" aria-label=" with other projects available on "></span>
+    <a
+      id="source"
+      class="hover:underline decoration-zinc-700"
+      target="_blank"
+      href="https://github.com/westbrookdaniel/"
+      aria-label="GitHub"
+    ></a>
   </p>
 </div>
 
@@ -45,7 +54,7 @@
 
 <div class="side-p space-y-8">
   <div class="flex w-full justify-between">
-    <h2 class="font-heading text-2xl text-balance">Latest</h2>
+    <h2 class="font-heading text-4xl text-balance">Latest</h2>
     <a href="/blog" preload="mouseover" class="button active icon-button">
       See All {{> components/icons/right }}
     </a>
