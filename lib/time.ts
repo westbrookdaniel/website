@@ -1,7 +1,5 @@
 export function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en-au", { dateStyle: "medium" }).format(
-    new Date(date),
-  );
+  return new Intl.DateTimeFormat("en-au", { dateStyle: "medium" }).format(new Date(date));
 }
 
 export function readingTime(content: string) {

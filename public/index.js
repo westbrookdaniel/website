@@ -1,8 +1,6 @@
 let currentTimeout;
 
-const charTypeSpeeds = [
-  200, 100, 150, 90, 80, 75, 160, 180, 170, 110, 80, 75, 70, 70, 70,
-];
+const charTypeSpeeds = [200, 100, 150, 90, 80, 75, 160, 180, 170, 110, 80, 75, 70, 70, 70];
 
 htmx.onLoad(() => {
   if (window.location.pathname !== "/") return;

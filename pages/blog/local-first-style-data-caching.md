@@ -116,10 +116,7 @@ export const createHooks = (queryKey: string) => {
         const previousData = queryClient.getQueryData([queryKey]);
 
         const optimisticItem = { id: randomUUID(), ...newItem };
-        queryClient.setQueryData([queryKey], (old: any[]) => [
-          ...(old || []),
-          optimisticItem,
-        ]);
+        queryClient.setQueryData([queryKey], (old: any[]) => [...(old || []), optimisticItem]);
 
         return { previousData, optimisticItem };
       },
@@ -156,9 +153,7 @@ export const createHooks = (queryKey: string) => {
         const previousData = queryClient.getQueryData([queryKey]);
 
         queryClient.setQueryData([queryKey], (old: any[]) =>
-          (old || []).map((item) =>
-            item.id === id ? { ...item, ...updates } : item,
-          ),
+          (old || []).map((item) => (item.id === id ? { ...item, ...updates } : item)),
         );
 
         queryClient.setQueryData([queryKey, id], (old: any) => ({
@@ -199,9 +194,7 @@ export const createHooks = (queryKey: string) => {
         await queryClient.cancelQueries({ queryKey: [queryKey] });
         const previousData = queryClient.getQueryData([queryKey]);
 
-        queryClient.setQueryData([queryKey], (old: any[]) =>
-          (old || []).filter((item) => item.id !== id),
-        );
+        queryClient.setQueryData([queryKey], (old: any[]) => (old || []).filter((item) => item.id !== id));
 
         queryClient.removeQueries({ queryKey: [queryKey, id] });
 

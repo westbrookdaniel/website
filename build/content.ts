@@ -117,11 +117,7 @@ export async function loadPosts(): Promise<RenderablePost[]> {
     if (result.status === "fulfilled") {
       posts.push(result.value);
     } else {
-      errors.push(
-        result.reason instanceof Error
-          ? result.reason.message
-          : String(result.reason),
-      );
+      errors.push(result.reason instanceof Error ? result.reason.message : String(result.reason));
     }
   }
 
@@ -132,7 +128,5 @@ export async function loadPosts(): Promise<RenderablePost[]> {
     );
   }
 
-  return posts.sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-  );
+  return posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 }

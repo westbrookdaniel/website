@@ -1,9 +1,4 @@
-import {
-  buildTailwind,
-  copyPublicAssets,
-  resetOutputDir,
-  writeOutputFile,
-} from "./assets";
+import { buildTailwind, copyPublicAssets, resetOutputDir, writeOutputFile } from "./assets";
 import { TemplateRenderer, createRenderer, loadPosts } from "./content";
 import type { RenderablePost } from "../lib/types";
 
@@ -27,9 +22,7 @@ export async function buildSite() {
       runTask("Load posts", loadPosts),
     ]);
 
-    await runTask("Render static pages", () =>
-      renderStaticPages(renderer, posts),
-    );
+    await runTask("Render static pages", () => renderStaticPages(renderer, posts));
     await runTask("Render blog posts", () => renderBlogPosts(renderer, posts));
 
     logger.complete(performance.now() - buildStart);
@@ -39,10 +32,7 @@ export async function buildSite() {
   }
 }
 
-function renderStaticPages(
-  renderer: TemplateRenderer,
-  posts: RenderablePost[],
-) {
+function renderStaticPages(renderer: TemplateRenderer, posts: RenderablePost[]) {
   const latestPosts = posts.slice(0, 3);
 
   const indexContent = renderer.render("pages/index.html", { latestPosts });
@@ -70,10 +60,7 @@ function renderStaticPages(
   writeOutputFile("404.html", notFoundHtml);
 }
 
-async function renderBlogPosts(
-  renderer: TemplateRenderer,
-  posts: RenderablePost[],
-) {
+async function renderBlogPosts(renderer: TemplateRenderer, posts: RenderablePost[]) {
   await Promise.all(
     posts.map(async (post) => {
       const postHtml = renderer.render("components/layouts/post.html", {
@@ -86,10 +73,7 @@ async function renderBlogPosts(
   );
 }
 
-function renderWithLayout(
-  renderer: TemplateRenderer,
-  data: Record<string, unknown>,
-) {
+function renderWithLayout(renderer: TemplateRenderer, data: Record<string, unknown>) {
   return renderer.render("components/layouts/main.html", data);
 }
 
@@ -121,17 +105,11 @@ function createLogger() {
       return performance.now();
     },
     succeed(label: string, startedAt: number) {
-      console.log(
-        `${colors.dim}${label} (${formatDuration(
-          performance.now() - startedAt,
-        )})${colors.reset}`,
-      );
+      console.log(`${colors.dim}${label} (${formatDuration(performance.now() - startedAt)})${colors.reset}`);
     },
     fail(label: string, startedAt: number, error: unknown) {
       console.error(
-        `${colors.red}${label} (${formatDuration(
-          performance.now() - startedAt,
-        )})${colors.reset}`,
+        `${colors.red}${label} (${formatDuration(performance.now() - startedAt)})${colors.reset}`,
       );
       printErrorDetails(error);
     },
@@ -139,11 +117,7 @@ function createLogger() {
       console.log(`\nBuild finished in ${formatDuration(duration)}`);
     },
     failed(duration: number, error: unknown) {
-      console.error(
-        `\n${colors.red}Build failed after ${formatDuration(
-          duration,
-        )}${colors.reset}`,
-      );
+      console.error(`\n${colors.red}Build failed after ${formatDuration(duration)}${colors.reset}`);
       printErrorDetails(error);
     },
   };

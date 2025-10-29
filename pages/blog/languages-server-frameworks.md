@@ -71,11 +71,7 @@ const parseBody = (req) =>
 // Serve static files
 const serveStatic = async (req, res) => {
   try {
-    const filePath = path.join(
-      __dirname,
-      "static",
-      req.url.replace("/static/", ""),
-    );
+    const filePath = path.join(__dirname, "static", req.url.replace("/static/", ""));
     const fileContent = await fs.readFile(filePath);
     res.writeHead(200);
     res.end(fileContent);

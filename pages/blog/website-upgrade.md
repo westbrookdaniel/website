@@ -57,9 +57,7 @@ export const useTheme = create<ThemeStore>((set, get) => ({
     set((s) => {
       const keys = Object.keys(themes);
       const i = keys.indexOf(s.theme);
-      const newTheme = (
-        keys.length - 1 > i ? keys[i + 1] : keys[0]
-      ) as keyof typeof themes;
+      const newTheme = (keys.length - 1 > i ? keys[i + 1] : keys[0]) as keyof typeof themes;
       setLocalStorage("theme", newTheme);
       return { theme: newTheme };
     }),
@@ -119,15 +117,13 @@ const updateTheme = useTheme((s) => s.updateTheme);
 useEffect(() => {
   if (!document.documentElement) return;
 
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (e) => {
-      if (e.matches) {
-        updateTheme("dark");
-      } else {
-        updateTheme("light");
-      }
-    });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    if (e.matches) {
+      updateTheme("dark");
+    } else {
+      updateTheme("light");
+    }
+  });
 
   const currentTheme = themes[theme];
 

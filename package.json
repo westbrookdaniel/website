@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "bun run build/index.ts",
-    "dev": "bun run build/dev.ts"
+    "dev": "bun run build/dev.ts",
+    "format": "prettier --write ."
   },
   "private": true,
   "peerDependencies": {

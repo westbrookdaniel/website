@@ -9,13 +9,9 @@
 
     <main class="pt-24 pb-32 relative max-w-[90ch] mx-auto flex-1 w-full">
       <div class="side-p mb-48">
-        <h1 class="min-h-[32px] font-heading text-balance text-2xl mb-4">
-          {{post.data.title}}
-        </h1>
+        <h1 class="min-h-[32px] font-heading text-balance text-2xl mb-4">{{post.data.title}}</h1>
         {{#post.data.description}}
-        <p class="text-zinc-500 text-balance max-w-[60ch] mb-1">
-          {{post.data.description}}
-        </p>
+        <p class="text-zinc-500 text-balance max-w-[60ch] mb-1">{{post.data.description}}</p>
         {{/post.data.description}}
         <div class="flex gap-4">
           <p class="text-zinc-500">{{post.formattedDate}}</p>
@@ -24,15 +20,11 @@
       </div>
 
       <div class="side-p space-y-8">
-        <div class="prose prose-zinc prose-invert max-w-[80ch]">
-          {{{content}}}
-        </div>
+        <div class="prose prose-zinc prose-invert max-w-[80ch]">{{{content}}}</div>
       </div>
 
       <div class="side-p flex justify-start mt-20">
-        <a class="button active" href="/blog">
-          {{> components/icons/left }} All Posts
-        </a>
+        <a class="button active" href="/blog"> {{> components/icons/left }} All Posts </a>
       </div>
     </main>
 

@@ -22,9 +22,7 @@ async function main() {
 
   const handler = debounce(async (_, filename) => {
     if (!filename) return;
-    console.log(
-      `${colors.purple}[dev] Detected change in ${filename}${colors.reset}`,
-    );
+    console.log(`${colors.purple}[dev] Detected change in ${filename}${colors.reset}`);
     await buildSite();
   }, 100);
 
@@ -70,9 +68,7 @@ function startStaticServer() {
     },
   });
 
-  console.log(
-    `${colors.purple}[dev] Listening at http://localhost:${port}${colors.reset}`,
-  );
+  console.log(`${colors.purple}[dev] Listening at http://localhost:${port}${colors.reset}`);
   return server;
 }
 

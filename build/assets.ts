@@ -29,26 +29,10 @@ export async function buildTailwind() {
   mkdirSync(TEMP_DIR, { recursive: true });
   mkdirSync(BUN_CACHE_DIR, { recursive: true });
 
-  const tailwindExecutable = join(
-    process.cwd(),
-    "node_modules/.bin/tailwindcss",
-  );
+  const tailwindExecutable = join(process.cwd(), "node_modules/.bin/tailwindcss");
   const cmd = existsSync(tailwindExecutable)
-    ? [
-        tailwindExecutable,
-        "-i",
-        "./tailwind.css",
-        "-o",
-        "./_site/public/index.css",
-      ]
-    : [
-        "bunx",
-        "@tailwindcss/cli",
-        "-i",
-        "./tailwind.css",
-        "-o",
-        "./_site/public/index.css",
-      ];
+    ? [tailwindExecutable, "-i", "./tailwind.css", "-o", "./_site/public/index.css"]
+    : ["bunx", "@tailwindcss/cli", "-i", "./tailwind.css", "-o", "./_site/public/index.css"];
 
   const tailwind = Bun.spawn({
     cmd,
