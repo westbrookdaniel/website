@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {{> components/head }}
+    <title>{{meta.title}}</title>
+  </head>
+  <body hx-boost="true">
+    {{> components/header }}
+    <main class="pt-24 pb-32 relative max-w-[90ch] mx-auto flex-1 w-full">
+      {{{content}}}
+    </main>
+    {{> components/footer }}
+  </body>
+</html>

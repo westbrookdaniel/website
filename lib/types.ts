@@ -15,3 +15,9 @@ export type PostData = {
 export type Meta = {
   title: string;
 };
+
+export type RenderablePost = PostData & {
+  formattedDate: string;
+  readingTime: string;
+  html: string;
+};

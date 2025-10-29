@@ -3,27 +3,21 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "build": "bun run build.ts && bunx @tailwindcss/cli -i ./tailwind.css -o ./_site/public/index.css",
-    "dev": "concurrently \"bunx serve _site\" \"bun run --watch build.ts\" \"bunx tailwindcss -i ./tailwind.css -o ./_site/public/index.css --watch\"",
-    "lint": "prettier . --write"
-  },
-  "dependencies": {
-    "@11ty/eleventy": "^3.1.2",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
-    "chokidar": "^4.0.3",
-    "marked": "^16.2.1",
-    "marked-shiki": "^1.2.1",
-    "prism-themes": "^1.9.0",
-    "shiki": "^3.12.2",
-    "@tailwindcss/cli": "^4.1.13",
-    "@tailwindcss/typography": "^0.5.16",
-    "concurrently": "^9.2.1",
-    "prettier": "^3.6.2",
-    "tailwindcss": "^4.1.13",
-    "@types/bun": "^1.2.21"
+    "build": "bun run build/index.ts"
   },
   "private": true,
   "peerDependencies": {
     "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/bun": "^1.2.21",
+    "marked": "^16.2.1",
+    "marked-shiki": "^1.2.1",
+    "mustache": "^4.2.0",
+    "shiki": "^3.12.2",
+    "tailwindcss": "^4.1.13",
+    "@types/mustache": "^4.2.6"
   }
 }

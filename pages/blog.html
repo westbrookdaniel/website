@@ -1,0 +1,16 @@
+<div class="side-p mb-48">
+  <h1 class="min-h-[32px] font-heading text-2xl mb-4">My Posts</h1>
+  <p class="text-zinc-500 text-balance max-w-[60ch]">
+    I don't write about everything, but what I do write about interests me. Not
+    all of these opinions are up to date.
+  </p>
+</div>
+<div class="side-p space-y-8">
+  <h2 class="font-heading text-2xl text-balance">Latest</h2>
+
+  <ul>
+    {{#posts}}
+    {{> components/post }}
+    {{/posts}}
+  </ul>
+</div>
