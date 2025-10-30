@@ -8,14 +8,14 @@
     {{> components/header }}
 
     <main class="pt-24 pb-32 relative max-w-[90ch] mx-auto flex-1 w-full">
-      <div class="side-p mb-48">
-        <h1 class="min-h-[32px] font-heading text-balance text-4xl mb-4">{{post.data.title}}</h1>
+      <div class="side-p mb-24">
+        <h1 class="min-h-[42px] font-heading text-balance text-3xl mb-4">{{post.data.title}}</h1>
         {{#post.data.description}}
-        <p class="text-zinc-500 text-balance max-w-[60ch] mb-1">{{post.data.description}}</p>
+        <p class="text-stone-500 text-balance max-w-[60ch] mb-1">{{post.data.description}}</p>
         {{/post.data.description}}
         <div class="flex gap-4">
-          <p class="text-zinc-500">{{post.formattedDate}}</p>
-          <p class="text-zinc-500">{{post.readingTime}}</p>
+          <p class="text-stone-500">{{post.formattedDate}}</p>
+          <p class="text-stone-500">{{post.readingTime}}</p>
         </div>
       </div>
 

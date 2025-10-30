@@ -41,14 +41,14 @@ htmx.onLoad(async () => {
   const source = document.querySelector("#source");
 
   typeElement(h1);
-  (async () => {
+  setTimeout(async () => {
     await typeElement(is);
-    await typeElement(place);
-  })();
-  (async () => {
-    await typeElement(wit);
-    await typeElement(source);
-  })();
+    setTimeout(async () => {
+      typeElement(place);
+      await typeElement(wit);
+      typeElement(source);
+    }, 500);
+  });
 });
 
 /** @type {WeakMap<HTMLElement, NodeJS.Timeout>} */
@@ -66,11 +66,12 @@ async function typeElement(el) {
     const next = setTimeout(() => {
       function type() {
         const charIndex = el.innerText.length % charTypeSpeeds.length;
+
         return setTimeout(() => {
           el.innerText += chars.shift();
           if (chars.length === 0) resolve();
           else type();
-        }, charTypeSpeeds[charIndex]);
+        }, charTypeSpeeds[charIndex] / 1.5);
       }
       timeouts.set(el, type());
     }, 200);
