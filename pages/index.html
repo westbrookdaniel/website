@@ -1,35 +1,31 @@
 <div class="side-p mb-16">
-  <h1 class="min-h-[42px] font-heading text-4xl mb-5" aria-label="Daniel Westbrook"></h1>
-  <p class="stretch font-heading text-2xl text-balance min-h-[42px] mb-12">
-    <span id="is" aria-label="is currently developing at"></span>
-    <a
-      id="place"
-      class="hover:underline decoration-stone-700"
-      target="_blank"
-      href="https://www.coreplan.io/"
-      aria-label="CorePlan"
-    ></a>
+  <h1 class="font-heading">Daniel Westbrook</h1>
+  <p class="font-heading text-balance">
+    <span>is currently developing at</span>
+    <a class="hover:underline" target="_blank" href="https://www.coreplan.io/"> CorePlan </a>
   </p>
-  <p class="stretch font-heading text-2xl text-balance min-h-[42px]">
-    <span id="with" aria-label=" with other projects available on "></span>
-    <a
-      id="source"
-      class="hover:underline decoration-stone-700"
-      target="_blank"
-      href="https://github.com/westbrookdaniel/"
-      aria-label="GitHub"
-    ></a>
+  <p class="font-heading text-balance">
+    <span>with other projects available on</span>
+    <a class="hover:underline" target="_blank" href="https://github.com/westbrookdaniel/">GitHub</a>
   </p>
 </div>
 
 <div class="side-p space-y-8">
-  <div class="flex w-full justify-end items-center">
-    <a href="/blog" preload="mouseover" class="button active icon-button">
-      See All {{> components/icons/right }}
-    </a>
-  </div>
-
   <ul>
     {{#latestPosts}} {{> components/post }} {{/latestPosts}}
   </ul>
+
+  <div class="flex w-full justify-between items-center">
+    <a
+      href="https://github.com/westbrookdaniel?tab=repositories"
+      preload="mouseover"
+      class="button active icon-button"
+    >
+      Repositories  {{> components/icons/external }}
+    </a>
+
+    <a href="/blog" preload="mouseover" class="button active icon-button">
+      See All Posts {{> components/icons/right }}
+    </a>
+  </div>
 </div>

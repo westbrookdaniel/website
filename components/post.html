@@ -1,13 +1,13 @@
 <a
   href="/blog/{{page.fileSlug}}"
   preload="mouseover"
-  class="block space-y-1 hover:bg-stone-800 rounded-lg px-3 py-2 -mx-3"
+  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
 >
-  <p class="underline font-medium block">{{data.title}}</p>
-  <div class="flex w-full justify-between text-stone-500">
-    {{#data.description}}
-    <p class="hidden sm:block">{{data.description}}</p>
-    {{/data.description}}
-    <p class="align-right">{{formattedDate}}</p>
+  <div class="flex justify-between gap-4">
+    <div class="flex gap-4 text-sm">
+      <p class="text-neutral-500">{{readingTime}}</p>
+      <p>{{data.description}}</p>
+    </div>
+    <p class="text-neutral-500">{{formattedDate}}</p>
   </div>
 </a>

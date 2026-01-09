@@ -4,9 +4,9 @@
     {{> components/head }}
     <title>{{meta.title}}</title>
   </head>
-  <body hx-boost="true">
+  <body hx-boost="true" class="flex flex-col min-h-screen">
     {{> components/header }}
-    <main class="pt-16 pb-24 relative max-w-[90ch] mx-auto flex-1 w-full">{{{content}}}</main>
+    <main class="pt-16 pb-24 relative max-w-[80ch] mx-auto flex-1 w-full">{{{content}}}</main>
     {{> components/footer }}
   </body>
 </html>
