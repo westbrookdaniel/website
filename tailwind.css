@@ -4,6 +4,8 @@
 @theme {
   --font-heading: "Sentient", sans-serif;
   --font-body: "General Sans", sans-serif;
+  --font-heading: "Departure Mono", sans-serif;
+  --font-body: "GeneralSans-Variable", sans-serif;
 }
 
 @layer base {
