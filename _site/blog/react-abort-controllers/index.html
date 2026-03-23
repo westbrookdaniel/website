@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=sentient@1&f[]=general-sans@1&display=block"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/public/fonts.css" />
+    <link rel="stylesheet" href="/public/index.css" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22256%22 height=%22256%22 viewBox=%220 0 100 100%22><rect x=%2225%22 y=%2280%22 width=%2255%22 height=%224%22 rx=%220%22 fill=%22rgb(163, 163, 163)%22></rect></svg>"
+    />
+    <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "88fe2b0df8a24b2ead6c574a2fa9c091"}'
+    ></script>
+    <script src="/public/index.js" type="module"></script>
+    <script>
+      console.log("Hello! Checkout https://github.com/westbrookdaniel/website");
+    </script>
+    <title>Using AbortControllers to Cancel Fetch in React - Daniel Westbrook</title>
+  </head>
+  <body hx-boost="true">
+    <header class="pt-6 sm:pt-8 lg:pt-16 pb-16 relative max-w-[80ch] mx-auto w-full">
+      <div class="side-p flex w-full">
+        <nav class="flex gap-2 flex-1">
+          <a class="button" href="/" preload="mouseover">Home</a>
+          <a class="button active" href="/blog" preload="mouseover">Blog</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="pt-24 pb-32 relative max-w-[80ch] mx-auto flex-1 w-full">
+      <div class="side-p mb-24">
+        <h1 class="font-heading text-balance mb-2">Using AbortControllers to Cancel Fetch in React</h1>
+        <p class="text-neutral-500 text-balance text-sm max-w-[60ch] mb-1">How to use the web api to cancel fetch easily</p>
+        <div class="flex gap-4 text-sm">
+          <p class="text-neutral-500">12 Apr 2021</p>
+          <p class="text-neutral-500">3 min read</p>
+        </div>
+      </div>
+
+      <div class="side-p space-y-8">
+        <div class="prose prose-neutral prose-invert max-w-[80ch]"><p>In React we can use fetch in a <code>useEffect</code> hook to make a request when the page loads. So why is the code below problematic?</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#FE8019">const</span><span style="color:#FABD2F"> Example</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FABD2F">  useEffect</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FABD2F">    fetch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">"</span><span style="color:#B8BB26">https://jsonplaceholder.typicode.com/posts/1</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">)</span></span>
+<span class="line"><span style="color:#A89984">      .</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">res</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> res</span><span style="color:#A89984">.</span><span style="color:#FABD2F">json</span><span style="color:#EBDBB2">())</span></span>
+<span class="line"><span style="color:#A89984">      .</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">json</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#FABD2F"> setMessage</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">json</span><span style="color:#A89984">.</span><span style="color:#83A598">title</span><span style="color:#EBDBB2">))</span></span>
+<span class="line"><span style="color:#A89984">      .</span><span style="color:#FABD2F">catch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">error</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> console</span><span style="color:#A89984">.</span><span style="color:#FABD2F">error</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">error</span><span style="color:#A89984">.</span><span style="color:#83A598">message</span><span style="color:#EBDBB2">))</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  },</span><span style="color:#EBDBB2"> [])</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#FB4934">  return</span><span style="color:#83A598"> &#x3C;</span><span style="color:#8EC07C">div</span><span style="color:#83A598">></span><span style="color:#A89984">{</span><span style="color:#83A598">message</span><span style="color:#A89984">}</span><span style="color:#83A598">&#x3C;/</span><span style="color:#8EC07C">div</span><span style="color:#83A598">></span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">};</span></span></code></pre>
+<p>If we unmount the component while this fetch is in process we will get the following error.</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#EBDBB2">Warning: Can't perform a React state update on an unmounted component.</span></span>
+<span class="line"><span style="color:#EBDBB2">This is a no-op, but it indicates a memory leak in your application.</span></span>
+<span class="line"><span style="color:#EBDBB2">To fix, cancel all subscriptions and asynchronous tasks in the componentWillUnmount</span></span>
+<span class="line"><span style="color:#EBDBB2">method.</span></span></code></pre>
+<p>What does this mean? <code>update on an unmounted component</code> summarizes it well. We are trying to change
+the state of a component that no longer exists, because it was removed. This can lead to our app
+breaking in weird ways, as well as wasting resources on unnecessary actions.
+So let&#39;s fix it by canceling the fetch.</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#FABD2F">useEffect</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#83A598"> controller</span><span style="color:#8EC07C"> =</span><span style="color:#FE8019"> new</span><span style="color:#FABD2F"> AbortController</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">  fetch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">"</span><span style="color:#B8BB26">https://jsonplaceholder.typicode.com/posts/1</span><span style="color:#A89984">"</span><span style="color:#A89984">,</span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#EBDBB2">    signal</span><span style="color:#A89984">:</span><span style="color:#83A598"> controller</span><span style="color:#A89984">.</span><span style="color:#83A598">signal</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">  }</span><span style="color:#EBDBB2">)</span></span>
+<span class="line"><span style="color:#A89984">    .</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">res</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> res</span><span style="color:#A89984">.</span><span style="color:#FABD2F">json</span><span style="color:#EBDBB2">())</span></span>
+<span class="line"><span style="color:#A89984">    .</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">json</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#FABD2F"> setMessage</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">json</span><span style="color:#A89984">.</span><span style="color:#83A598">title</span><span style="color:#EBDBB2">))</span></span>
+<span class="line"><span style="color:#A89984">    .</span><span style="color:#FABD2F">catch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">error</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> console</span><span style="color:#A89984">.</span><span style="color:#FABD2F">error</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">error</span><span style="color:#A89984">.</span><span style="color:#83A598">message</span><span style="color:#EBDBB2">))</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">  return</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> controller</span><span style="color:#A89984">.</span><span style="color:#FABD2F">abort</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">},</span><span style="color:#EBDBB2"> [])</span><span style="color:#A89984">;</span></span></code></pre>
+<p>Here we use the web api <code>AbortController</code> as the signal for fetch. By returning a function from <code>useEffect</code> we
+can trigger the abort controller on dismount (see the React <a href="https://reactjs.org/docs/hooks-effect.html#example-using-hooks-1">docs</a>).
+The <code>AbortSignal</code> (<code>controller.signal</code>) is then passed into the fetch as an argument and voilà!</p>
+<p>Although, there is a problem with this solution. When the component is unmounted while a fetch call is in progress, this
+message is logged to the console:</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#EBDBB2">The user aborted a request.</span></span></code></pre>
+<p>This happens because aborting the fetch doesn&#39;t magically delete the promise, so it fails with an
+<code>AbortError</code> which is getting logged in <code>catch</code>.</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#FABD2F">useEffect</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#83A598"> controller</span><span style="color:#8EC07C"> =</span><span style="color:#FE8019"> new</span><span style="color:#FABD2F"> AbortController</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">  fetch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">"</span><span style="color:#B8BB26">https://jsonplaceholder.typicode.com/posts/1</span><span style="color:#A89984">"</span><span style="color:#A89984">,</span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#EBDBB2">    signal</span><span style="color:#A89984">:</span><span style="color:#83A598"> controller</span><span style="color:#A89984">.</span><span style="color:#83A598">signal</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">  }</span><span style="color:#EBDBB2">)</span></span>
+<span class="line"><span style="color:#A89984">    .</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">res</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> res</span><span style="color:#A89984">.</span><span style="color:#FABD2F">json</span><span style="color:#EBDBB2">())</span></span>
+<span class="line"><span style="color:#A89984">    .</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">json</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#FABD2F"> setMessage</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">json</span><span style="color:#A89984">.</span><span style="color:#83A598">title</span><span style="color:#EBDBB2">))</span></span>
+<span class="line"><span style="color:#A89984">    .</span><span style="color:#FABD2F">catch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">error</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FB4934">      if</span><span style="color:#EBDBB2"> (</span><span style="color:#83A598">error</span><span style="color:#A89984">.</span><span style="color:#83A598">name</span><span style="color:#8EC07C"> !==</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">AbortError</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">) </span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#83A598">        console</span><span style="color:#A89984">.</span><span style="color:#FABD2F">error</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">error</span><span style="color:#A89984">.</span><span style="color:#83A598">message</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      }</span></span>
+<span class="line"><span style="color:#A89984">    }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">  return</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> controller</span><span style="color:#A89984">.</span><span style="color:#FABD2F">abort</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">},</span><span style="color:#EBDBB2"> [])</span><span style="color:#A89984">;</span></span></code></pre>
+<p>By ignoring the error if it has the name <code>AbortError</code>, we&#39;ve solved the problem! You can read
+more about <code>AbortController</code> on <a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController">MDN</a>.
+You can also see its browser support on <a href="https://caniuse.com/abortcontroller">caniuse</a>.</p>
+<p>Jumping back to the code, this request this still doesn&#39;t expose a loading state or indicate to the ui if it has failed.
+If you don&#39;t want to deal with all of this, you&#39;re probably better off just using
+<a href="https://react-query.tanstack.com/"><code>react-query</code></a> instead (which also does it in a lot less code).</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#FE8019">const</span><span style="color:#A89984"> {</span><span style="color:#83A598"> data</span><span style="color:#A89984">,</span><span style="color:#83A598"> isLoading</span><span style="color:#928374;font-style:italic"> /* etc... */</span><span style="color:#A89984"> }</span><span style="color:#8EC07C"> =</span><span style="color:#FABD2F"> useQuery</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">"</span><span style="color:#B8BB26">title</span><span style="color:#A89984">"</span><span style="color:#A89984">,</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span></span>
+<span class="line"><span style="color:#FABD2F">  fetch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">"</span><span style="color:#B8BB26">https://jsonplaceholder.typicode.com/posts/1</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">)</span></span>
+<span class="line"><span style="color:#A89984">    .</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">res</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> res</span><span style="color:#A89984">.</span><span style="color:#FABD2F">json</span><span style="color:#EBDBB2">())</span></span>
+<span class="line"><span style="color:#A89984">    .</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">res</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> res</span><span style="color:#A89984">.</span><span style="color:#83A598">title</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span></code></pre>
+<p>How much easier is that! You can find an example of all of these methods implemented on
+<a href="https://codesandbox.io/s/mutable-pine-psldb?file=/src/Comp.js">CodeSandbox</a>.</p>
+</div>
+      </div>
+
+      <div class="side-p flex justify-start mt-20">
+        <a class="button active" href="/blog"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                                 <path
+                                                   fill-rule="evenodd"
+                                                   d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z"
+                                                   clip-rule="evenodd"
+                                                 />
+                                               </svg>
+ Back To Posts </a>
+      </div>
+    </main>
+
+    <footer class="pb-6 sm:pb-8 lg:pb-16 pt-16 relative max-w-[80ch] mx-auto w-full">
+      <div class="side-p w-full flex justify-between items-end">
+        <div class="flex gap-3">
+          <a href="mailto:westy12dan@gmail.com" aria-label="Email"> <svg
+                                                                      width="24px"
+                                                                      height="24px"
+                                                                      viewBox="0 0 24 24"
+                                                                      stroke-width="1.5"
+                                                                      fill="none"
+                                                                      xmlns="http://www.w3.org/2000/svg"
+                                                                      color="currentColor"
+                                                                    >
+                                                                      <!-- Thanks to https://iconoir.com/ -->
+                                                                      <path
+                                                                        d="M17.5 19.1245C15.9791 20.3003 14.0712 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 17.5 15 17.5 15 14C15 12 15 8 15 8"
+                                                                        stroke="currentColor"
+                                                                        stroke-width="1.5"
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                      ></path>
+                                                                      <path
+                                                                        d="M15 12V10.5C15 9.11929 13.6569 8 12 8C10.3431 8 9 9.11929 9 10.5V12"
+                                                                        stroke="currentColor"
+                                                                        stroke-width="1.5"
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                      ></path>
+                                                                      <path
+                                                                        d="M15 12V13.5C15 14.8807 13.6569 16 12 16C10.3431 16 9 14.8807 9 13.5V12"
+                                                                        stroke="currentColor"
+                                                                        stroke-width="1.5"
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                      ></path>
+                                                                    </svg>
+ </a>
+          <a
+            href="https://www.linkedin.com/in/daniel-westbrook-692227196/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+          >
+            <svg
+              width="24px"
+              height="24px"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              color="currentColor"
+            >
+              <!-- Thanks to https://iconoir.com/ -->
+              <path
+                d="M21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8Z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M7 17V13.5V10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M11 17V13.75M11 10V13.75M11 13.75C11 10 17 10 17 13.75V17"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M7 7.01L7.01 6.99889"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href="https://github.com/westbrookdaniel/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Github"
+          >
+            <svg
+              width="24px"
+              height="24px"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              color="currentColor"
+            >
+              <!-- Thanks to https://iconoir.com/ -->
+              <path
+                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M14.3333 19V17.137C14.3583 16.8275 14.3154 16.5163 14.2073 16.2242C14.0993 15.9321 13.9286 15.6657 13.7067 15.4428C15.8 15.2156 18 14.4431 18 10.8989C17.9998 9.99256 17.6418 9.12101 17 8.46461C17.3039 7.67171 17.2824 6.79528 16.94 6.01739C16.94 6.01739 16.1533 5.7902 14.3333 6.97811C12.8053 6.57488 11.1947 6.57488 9.66666 6.97811C7.84666 5.7902 7.05999 6.01739 7.05999 6.01739C6.71757 6.79528 6.69609 7.67171 6.99999 8.46461C6.35341 9.12588 5.99501 10.0053 5.99999 10.9183C5.99999 14.4366 8.19999 15.2091 10.2933 15.4622C10.074 15.6829 9.90483 15.9461 9.79686 16.2347C9.68889 16.5232 9.64453 16.8306 9.66666 17.137V19"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M9.66667 17.7018C7.66667 18.3335 6 17.7018 5 15.7544"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </a>
+        </div>
+        <button id="lucky" class="text-neutral-500 hover:underline text-sm">I'm feeling lucky</button>
+      </div>
+    </footer>
+  </body>
+</html>

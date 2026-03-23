@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=sentient@1&f[]=general-sans@1&display=block"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/public/fonts.css" />
+    <link rel="stylesheet" href="/public/index.css" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22256%22 height=%22256%22 viewBox=%220 0 100 100%22><rect x=%2225%22 y=%2280%22 width=%2255%22 height=%224%22 rx=%220%22 fill=%22rgb(163, 163, 163)%22></rect></svg>"
+    />
+    <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "88fe2b0df8a24b2ead6c574a2fa9c091"}'
+    ></script>
+    <script src="/public/index.js" type="module"></script>
+    <script>
+      console.log("Hello! Checkout https://github.com/westbrookdaniel/website");
+    </script>
+    <title>Local First Style Data Caching - Daniel Westbrook</title>
+  </head>
+  <body hx-boost="true">
+    <header class="pt-6 sm:pt-8 lg:pt-16 pb-16 relative max-w-[80ch] mx-auto w-full">
+      <div class="side-p flex w-full">
+        <nav class="flex gap-2 flex-1">
+          <a class="button" href="/" preload="mouseover">Home</a>
+          <a class="button active" href="/blog" preload="mouseover">Blog</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="pt-24 pb-32 relative max-w-[80ch] mx-auto flex-1 w-full">
+      <div class="side-p mb-24">
+        <h1 class="font-heading text-balance mb-2">Local First Style Data Caching</h1>
+        <p class="text-neutral-500 text-balance text-sm max-w-[60ch] mb-1">Architectural tricks to make your app feel faster</p>
+        <div class="flex gap-4 text-sm">
+          <p class="text-neutral-500">31 May 2025</p>
+          <p class="text-neutral-500">6 min read</p>
+        </div>
+      </div>
+
+      <div class="side-p space-y-8">
+        <div class="prose prose-neutral prose-invert max-w-[80ch]"><p>In the current web landscape, local first apps are often revered
+as being some of the best web products to use. Some examples that come to mind
+are Linear, Figma, Notion, Obsidian, etc. All of these feel fast and snappy
+and instantly respond to your interactions.</p>
+<p>However, the promise of instant feedback isn&#39;t unique to local first apps.
+We can achieve this feel using good old optimistic updates, but these
+aren&#39;t the prettiest to implement. Here&#39;s an example of implementing
+optimistic updates with <a href="https://tanstack.com/query/latest">TanStack Query</a>.</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#FE8019">const</span><span style="color:#FABD2F"> useOptimisticTodo</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#83A598"> queryClient</span><span style="color:#8EC07C"> =</span><span style="color:#FABD2F"> useQueryClient</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#A89984"> {</span><span style="color:#83A598"> data</span><span style="color:#A89984">:</span><span style="color:#83A598"> todos</span><span style="color:#A89984"> }</span><span style="color:#8EC07C"> =</span><span style="color:#FABD2F"> useQuery</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#EBDBB2">    queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#A89984">"</span><span style="color:#B8BB26">todos</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">    queryFn</span><span style="color:#A89984">:</span><span style="color:#83A598"> fetchTodos</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">  }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#83A598"> addTodoMutation</span><span style="color:#8EC07C"> =</span><span style="color:#FABD2F"> useMutation</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#FABD2F">    mutationFn</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">newTodo</span><span style="color:#8EC07C">:</span><span style="color:#A89984"> {</span><span style="color:#83A598"> text</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> string </span><span style="color:#A89984">})</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> api</span><span style="color:#A89984">.</span><span style="color:#FABD2F">post</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">"</span><span style="color:#B8BB26">/todos</span><span style="color:#A89984">"</span><span style="color:#A89984">,</span><span style="color:#83A598"> newTodo</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">    onMutate</span><span style="color:#A89984">:</span><span style="color:#FE8019"> async</span><span style="color:#A89984"> (</span><span style="color:#83A598">newTodo</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#928374;font-style:italic">      // Cancel outgoing refetches</span></span>
+<span class="line"><span style="color:#FB4934">      await</span><span style="color:#83A598"> queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">cancelQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#A89984">"</span><span style="color:#B8BB26">todos</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#928374;font-style:italic">      // Snapshot previous value</span></span>
+<span class="line"><span style="color:#FE8019">      const</span><span style="color:#83A598"> previousTodos</span><span style="color:#8EC07C"> =</span><span style="color:#83A598"> queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">getQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#A89984">"</span><span style="color:#B8BB26">todos</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">])</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#928374;font-style:italic">      // Optimistically update cache</span></span>
+<span class="line"><span style="color:#83A598">      queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#A89984">"</span><span style="color:#B8BB26">todos</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#A89984"> (</span><span style="color:#83A598">old</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> Todo[]</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#EBDBB2"> [</span></span>
+<span class="line"><span style="color:#8EC07C">        ...</span><span style="color:#83A598">old</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">        {</span><span style="color:#EBDBB2"> id</span><span style="color:#A89984">:</span><span style="color:#FABD2F"> randomUUID</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">,</span><span style="color:#EBDBB2"> text</span><span style="color:#A89984">:</span><span style="color:#83A598"> newTodo</span><span style="color:#A89984">.</span><span style="color:#83A598">text</span><span style="color:#A89984">,</span><span style="color:#EBDBB2"> completed</span><span style="color:#A89984">:</span><span style="color:#D3869B"> false</span><span style="color:#A89984"> },</span></span>
+<span class="line"><span style="color:#EBDBB2">      ])</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">      return</span><span style="color:#A89984"> {</span><span style="color:#83A598"> previousTodos</span><span style="color:#A89984"> };</span></span>
+<span class="line"><span style="color:#A89984">    },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">    onError</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">err</span><span style="color:#A89984">,</span><span style="color:#83A598"> newTodo</span><span style="color:#A89984">,</span><span style="color:#83A598"> context</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#928374;font-style:italic">      // Rollback on error</span></span>
+<span class="line"><span style="color:#83A598">      queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#A89984">"</span><span style="color:#B8BB26">todos</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#83A598"> context</span><span style="color:#A89984">?.</span><span style="color:#83A598">previousTodos</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">    },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">    onSettled</span><span style="color:#A89984">:</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#928374;font-style:italic">      // Refetch to ensure server state</span></span>
+<span class="line"><span style="color:#83A598">      queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">invalidateQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#A89984">"</span><span style="color:#B8BB26">todos</span><span style="color:#A89984">"</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">    },</span></span>
+<span class="line"><span style="color:#A89984">  }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">  return</span><span style="color:#A89984"> {</span><span style="color:#83A598"> todos</span><span style="color:#A89984">,</span><span style="color:#EBDBB2"> addTodo</span><span style="color:#A89984">:</span><span style="color:#83A598"> addTodoMutation</span><span style="color:#A89984">.</span><span style="color:#83A598">mutate</span><span style="color:#A89984"> };</span></span>
+<span class="line"><span style="color:#A89984">};</span></span></code></pre>
+<p>Whilst I love TanStack Query and this may not be the cleanest way to implement
+optimistic updates, it&#39;s still quite unwieldy and does not scale well as your
+backend or other parts of your apps change.</p>
+<p>This example represents a paradigm we could easily abstract, &quot;add&quot;.
+We can take our understanding of what add means and implement it Optimistically as
+a guarantee. This requires our backend to also agree to this contract, that add
+must always only ever add this singular item into this list, but let&#39;s explore
+this more before we get into the relationship with the backend.</p>
+<p>Lets mock out what an optimistic CRUD caching layer would look like.
+The caching layer will usually be heavily coupled to your fetching solution, so
+here we will couple it with TanStack Query</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#FE8019">const</span><span style="color:#83A598"> API_BASE_URL</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">http://localhost:3000/api</span><span style="color:#A89984">"</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">const</span><span style="color:#FABD2F"> queryFn</span><span style="color:#8EC07C"> =</span><span style="color:#FE8019"> async</span><span style="color:#A89984"> (</span><span style="color:#83A598">url</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> string</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#83A598"> response</span><span style="color:#8EC07C"> =</span><span style="color:#FB4934"> await</span><span style="color:#FABD2F"> fetch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">`${</span><span style="color:#83A598">API_BASE_URL</span><span style="color:#A89984">}${</span><span style="color:#83A598">url</span><span style="color:#A89984">}`</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#FB4934">  if</span><span style="color:#EBDBB2"> (</span><span style="color:#FB4934">!</span><span style="color:#83A598">response</span><span style="color:#A89984">.</span><span style="color:#83A598">ok</span><span style="color:#EBDBB2">) </span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#FB4934">    throw</span><span style="color:#FE8019"> new</span><span style="color:#FABD2F"> Error</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">`</span><span style="color:#B8BB26">HTTP error! status: </span><span style="color:#A89984">${</span><span style="color:#83A598">response</span><span style="color:#A89984">.</span><span style="color:#83A598">status</span><span style="color:#A89984">}`</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  }</span></span>
+<span class="line"><span style="color:#FB4934">  return</span><span style="color:#83A598"> response</span><span style="color:#A89984">.</span><span style="color:#FABD2F">json</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">export</span><span style="color:#FE8019"> const</span><span style="color:#FABD2F"> createHooks</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> (</span><span style="color:#83A598">queryKey</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> string</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#FABD2F"> useAll</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FB4934">    return</span><span style="color:#FABD2F"> useQuery</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#EBDBB2">      queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#FABD2F">      queryFn</span><span style="color:#A89984">:</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#FABD2F"> queryFn</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">    }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#FABD2F"> useOne</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> (</span><span style="color:#83A598">id</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> string</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FB4934">    return</span><span style="color:#FABD2F"> useQuery</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#EBDBB2">      queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#A89984">,</span><span style="color:#83A598"> id</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#FABD2F">      queryFn</span><span style="color:#A89984">:</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#FABD2F"> queryFn</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">`${</span><span style="color:#83A598">queryKey</span><span style="color:#A89984">}</span><span style="color:#B8BB26">/</span><span style="color:#A89984">${</span><span style="color:#83A598">id</span><span style="color:#A89984">}`</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">    }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#FABD2F"> useAdd</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">    const</span><span style="color:#83A598"> queryClient</span><span style="color:#8EC07C"> =</span><span style="color:#FABD2F"> useQueryClient</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">    return</span><span style="color:#FABD2F"> useMutation</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#FABD2F">      mutationFn</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">newItem</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> any</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span></span>
+<span class="line"><span style="color:#FABD2F">        fetch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">`${</span><span style="color:#83A598">API_BASE_URL</span><span style="color:#A89984">}${</span><span style="color:#83A598">queryKey</span><span style="color:#A89984">}`</span><span style="color:#A89984">,</span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#EBDBB2">          method</span><span style="color:#A89984">:</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">POST</span><span style="color:#A89984">"</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">          headers</span><span style="color:#A89984">:</span><span style="color:#A89984"> {</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">Content-Type</span><span style="color:#A89984">"</span><span style="color:#A89984">:</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">application/json</span><span style="color:#A89984">"</span><span style="color:#A89984"> },</span></span>
+<span class="line"><span style="color:#EBDBB2">          body</span><span style="color:#A89984">:</span><span style="color:#83A598"> JSON</span><span style="color:#A89984">.</span><span style="color:#FABD2F">stringify</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">newItem</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">        }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">.</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">res</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> res</span><span style="color:#A89984">.</span><span style="color:#FABD2F">json</span><span style="color:#EBDBB2">())</span><span style="color:#A89984">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onMutate</span><span style="color:#A89984">:</span><span style="color:#FE8019"> async</span><span style="color:#A89984"> (</span><span style="color:#83A598">newItem</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FB4934">        await</span><span style="color:#83A598"> queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">cancelQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#FE8019">        const</span><span style="color:#83A598"> previousData</span><span style="color:#8EC07C"> =</span><span style="color:#83A598"> queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">getQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">])</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">        const</span><span style="color:#83A598"> optimisticItem</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> {</span><span style="color:#EBDBB2"> id</span><span style="color:#A89984">:</span><span style="color:#FABD2F"> randomUUID</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">,</span><span style="color:#8EC07C"> ...</span><span style="color:#83A598">newItem</span><span style="color:#A89984"> };</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#A89984"> (</span><span style="color:#83A598">old</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> any[]</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#EBDBB2"> [</span><span style="color:#8EC07C">...</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">old</span><span style="color:#FB4934"> ||</span><span style="color:#EBDBB2"> [])</span><span style="color:#A89984">,</span><span style="color:#83A598"> optimisticItem</span><span style="color:#EBDBB2">])</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">        return</span><span style="color:#A89984"> {</span><span style="color:#83A598"> previousData</span><span style="color:#A89984">,</span><span style="color:#83A598"> optimisticItem</span><span style="color:#A89984"> };</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onSuccess</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">data</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#A89984"> (</span><span style="color:#83A598">old</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> any[]</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span></span>
+<span class="line"><span style="color:#EBDBB2">          (</span><span style="color:#83A598">old</span><span style="color:#FB4934"> ||</span><span style="color:#EBDBB2"> [])</span><span style="color:#A89984">.</span><span style="color:#FABD2F">map</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">item</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#EBDBB2"> (</span><span style="color:#83A598">item</span><span style="color:#A89984">.</span><span style="color:#83A598">id</span><span style="color:#8EC07C"> ===</span><span style="color:#83A598"> data</span><span style="color:#A89984">.</span><span style="color:#83A598">id</span><span style="color:#8EC07C"> ?</span><span style="color:#83A598"> data</span><span style="color:#8EC07C"> :</span><span style="color:#83A598"> item</span><span style="color:#EBDBB2">))</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">        )</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onError</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">err</span><span style="color:#A89984">,</span><span style="color:#83A598"> newItem</span><span style="color:#A89984">,</span><span style="color:#83A598"> context</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#83A598"> context</span><span style="color:#A89984">?.</span><span style="color:#83A598">previousData</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onSettled</span><span style="color:#A89984">:</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">invalidateQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"><span style="color:#A89984">    }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#FABD2F"> useUpdate</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">    const</span><span style="color:#83A598"> queryClient</span><span style="color:#8EC07C"> =</span><span style="color:#FABD2F"> useQueryClient</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">    return</span><span style="color:#FABD2F"> useMutation</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#FABD2F">      mutationFn</span><span style="color:#A89984">:</span><span style="color:#A89984"> ({</span><span style="color:#83A598"> id</span><span style="color:#A89984">,</span><span style="color:#8EC07C"> ...</span><span style="color:#83A598">updates</span><span style="color:#A89984"> }</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> any</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span></span>
+<span class="line"><span style="color:#FABD2F">        fetch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">`${</span><span style="color:#83A598">API_BASE_URL</span><span style="color:#A89984">}${</span><span style="color:#83A598">queryKey</span><span style="color:#A89984">}</span><span style="color:#B8BB26">/</span><span style="color:#A89984">${</span><span style="color:#83A598">id</span><span style="color:#A89984">}`</span><span style="color:#A89984">,</span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#EBDBB2">          method</span><span style="color:#A89984">:</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">PUT</span><span style="color:#A89984">"</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">          headers</span><span style="color:#A89984">:</span><span style="color:#A89984"> {</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">Content-Type</span><span style="color:#A89984">"</span><span style="color:#A89984">:</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">application/json</span><span style="color:#A89984">"</span><span style="color:#A89984"> },</span></span>
+<span class="line"><span style="color:#EBDBB2">          body</span><span style="color:#A89984">:</span><span style="color:#83A598"> JSON</span><span style="color:#A89984">.</span><span style="color:#FABD2F">stringify</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">updates</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">        }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">.</span><span style="color:#FABD2F">then</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">res</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> res</span><span style="color:#A89984">.</span><span style="color:#FABD2F">json</span><span style="color:#EBDBB2">())</span><span style="color:#A89984">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onMutate</span><span style="color:#A89984">:</span><span style="color:#FE8019"> async</span><span style="color:#A89984"> ({</span><span style="color:#83A598"> id</span><span style="color:#A89984">,</span><span style="color:#8EC07C"> ...</span><span style="color:#83A598">updates</span><span style="color:#A89984"> })</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FB4934">        await</span><span style="color:#83A598"> queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">cancelQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#FE8019">        const</span><span style="color:#83A598"> previousData</span><span style="color:#8EC07C"> =</span><span style="color:#83A598"> queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">getQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">])</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#A89984"> (</span><span style="color:#83A598">old</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> any[]</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span></span>
+<span class="line"><span style="color:#EBDBB2">          (</span><span style="color:#83A598">old</span><span style="color:#FB4934"> ||</span><span style="color:#EBDBB2"> [])</span><span style="color:#A89984">.</span><span style="color:#FABD2F">map</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">item</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#EBDBB2"> (</span><span style="color:#83A598">item</span><span style="color:#A89984">.</span><span style="color:#83A598">id</span><span style="color:#8EC07C"> ===</span><span style="color:#83A598"> id</span><span style="color:#8EC07C"> ?</span><span style="color:#A89984"> {</span><span style="color:#8EC07C"> ...</span><span style="color:#83A598">item</span><span style="color:#A89984">,</span><span style="color:#8EC07C"> ...</span><span style="color:#83A598">updates</span><span style="color:#A89984"> }</span><span style="color:#8EC07C"> :</span><span style="color:#83A598"> item</span><span style="color:#EBDBB2">))</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">        )</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#A89984">,</span><span style="color:#83A598"> id</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#A89984"> (</span><span style="color:#83A598">old</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> any</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#EBDBB2"> (</span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#8EC07C">          ...</span><span style="color:#83A598">old</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#8EC07C">          ...</span><span style="color:#83A598">updates</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">        }</span><span style="color:#EBDBB2">))</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">        return</span><span style="color:#A89984"> {</span><span style="color:#83A598"> previousData</span><span style="color:#A89984"> };</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onSuccess</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">data</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#A89984"> (</span><span style="color:#83A598">old</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> any[]</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span></span>
+<span class="line"><span style="color:#EBDBB2">          (</span><span style="color:#83A598">old</span><span style="color:#FB4934"> ||</span><span style="color:#EBDBB2"> [])</span><span style="color:#A89984">.</span><span style="color:#FABD2F">map</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">item</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#EBDBB2"> (</span><span style="color:#83A598">item</span><span style="color:#A89984">.</span><span style="color:#83A598">id</span><span style="color:#8EC07C"> ===</span><span style="color:#83A598"> data</span><span style="color:#A89984">.</span><span style="color:#83A598">id</span><span style="color:#8EC07C"> ?</span><span style="color:#83A598"> data</span><span style="color:#8EC07C"> :</span><span style="color:#83A598"> item</span><span style="color:#EBDBB2">))</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">        )</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#A89984">,</span><span style="color:#83A598"> data</span><span style="color:#A89984">.</span><span style="color:#83A598">id</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#83A598"> data</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onError</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">err</span><span style="color:#A89984">,</span><span style="color:#83A598"> variables</span><span style="color:#A89984">,</span><span style="color:#83A598"> context</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#83A598"> context</span><span style="color:#A89984">?.</span><span style="color:#83A598">previousData</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onSettled</span><span style="color:#A89984">:</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">invalidateQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"><span style="color:#A89984">    }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#FABD2F"> useRemove</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">    const</span><span style="color:#83A598"> queryClient</span><span style="color:#8EC07C"> =</span><span style="color:#FABD2F"> useQueryClient</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">    return</span><span style="color:#FABD2F"> useMutation</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span></span>
+<span class="line"><span style="color:#FABD2F">      mutationFn</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">id</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> string</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span></span>
+<span class="line"><span style="color:#FABD2F">        fetch</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">`${</span><span style="color:#83A598">API_BASE_URL</span><span style="color:#A89984">}${</span><span style="color:#83A598">queryKey</span><span style="color:#A89984">}</span><span style="color:#B8BB26">/</span><span style="color:#A89984">${</span><span style="color:#83A598">id</span><span style="color:#A89984">}`</span><span style="color:#A89984">,</span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#EBDBB2">          method</span><span style="color:#A89984">:</span><span style="color:#A89984"> "</span><span style="color:#B8BB26">DELETE</span><span style="color:#A89984">"</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">        }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onMutate</span><span style="color:#A89984">:</span><span style="color:#FE8019"> async</span><span style="color:#A89984"> (</span><span style="color:#83A598">id</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FB4934">        await</span><span style="color:#83A598"> queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">cancelQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#FE8019">        const</span><span style="color:#83A598"> previousData</span><span style="color:#8EC07C"> =</span><span style="color:#83A598"> queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">getQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">])</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#A89984"> (</span><span style="color:#83A598">old</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> any[]</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#EBDBB2"> (</span><span style="color:#83A598">old</span><span style="color:#FB4934"> ||</span><span style="color:#EBDBB2"> [])</span><span style="color:#A89984">.</span><span style="color:#FABD2F">filter</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">(</span><span style="color:#83A598">item</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#83A598"> item</span><span style="color:#A89984">.</span><span style="color:#83A598">id</span><span style="color:#8EC07C"> !==</span><span style="color:#83A598"> id</span><span style="color:#EBDBB2">))</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">removeQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#A89984">,</span><span style="color:#83A598"> id</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">        return</span><span style="color:#A89984"> {</span><span style="color:#83A598"> previousData</span><span style="color:#A89984"> };</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onError</span><span style="color:#A89984">:</span><span style="color:#A89984"> (</span><span style="color:#83A598">err</span><span style="color:#A89984">,</span><span style="color:#83A598"> id</span><span style="color:#A89984">,</span><span style="color:#83A598"> context</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">setQueryData</span><span style="color:#EBDBB2">([</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">]</span><span style="color:#A89984">,</span><span style="color:#83A598"> context</span><span style="color:#A89984">?.</span><span style="color:#83A598">previousData</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FABD2F">      onSettled</span><span style="color:#A89984">:</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">        queryClient</span><span style="color:#A89984">.</span><span style="color:#FABD2F">invalidateQueries</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> queryKey</span><span style="color:#A89984">:</span><span style="color:#EBDBB2"> [</span><span style="color:#83A598">queryKey</span><span style="color:#EBDBB2">] </span><span style="color:#A89984">}</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">      },</span></span>
+<span class="line"><span style="color:#A89984">    }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">  return</span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">    useAll</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#83A598">    useOne</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#83A598">    useAdd</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#83A598">    useUpdate</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#83A598">    useRemove</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"><span style="color:#A89984">};</span></span></code></pre>
+<p>And a simple example of how that could be used. In a real world app this would
+have better error handling and stale states for mutations and queries.</p>
+<pre class="shiki gruvbox-dark-medium" style="background-color:#282828;color:#ebdbb2" tabindex="0"><code><span class="line"><span style="color:#FE8019">const</span><span style="color:#83A598"> hooks</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#EBDBB2">  todos</span><span style="color:#A89984">:</span><span style="color:#FABD2F"> createHooks</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">'</span><span style="color:#B8BB26">/todos</span><span style="color:#A89984">'</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">  users</span><span style="color:#A89984">:</span><span style="color:#FABD2F"> createHooks</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">'</span><span style="color:#B8BB26">/users</span><span style="color:#A89984">'</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#EBDBB2">  posts</span><span style="color:#A89984">:</span><span style="color:#FABD2F"> createHooks</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">'</span><span style="color:#B8BB26">/posts</span><span style="color:#A89984">'</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">,</span></span>
+<span class="line"><span style="color:#A89984">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">const</span><span style="color:#FABD2F"> TodoComponent</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#A89984"> {</span><span style="color:#83A598"> data</span><span style="color:#A89984">:</span><span style="color:#83A598"> todos</span><span style="color:#A89984">,</span><span style="color:#83A598"> isLoading</span><span style="color:#A89984">,</span><span style="color:#83A598"> error</span><span style="color:#A89984"> }</span><span style="color:#8EC07C"> =</span><span style="color:#83A598"> hooks</span><span style="color:#A89984">.</span><span style="color:#83A598">todos</span><span style="color:#A89984">.</span><span style="color:#FABD2F">useAll</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#83A598"> addTodo</span><span style="color:#8EC07C"> =</span><span style="color:#83A598"> hooks</span><span style="color:#A89984">.</span><span style="color:#83A598">todos</span><span style="color:#A89984">.</span><span style="color:#FABD2F">useAdd</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#83A598"> updateTodo</span><span style="color:#8EC07C"> =</span><span style="color:#83A598"> hooks</span><span style="color:#A89984">.</span><span style="color:#83A598">todos</span><span style="color:#A89984">.</span><span style="color:#FABD2F">useUpdate</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#83A598"> removeTodo</span><span style="color:#8EC07C"> =</span><span style="color:#83A598"> hooks</span><span style="color:#A89984">.</span><span style="color:#83A598">todos</span><span style="color:#A89984">.</span><span style="color:#FABD2F">useRemove</span><span style="color:#EBDBB2">()</span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#FABD2F"> handleAddTodo</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> ()</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">    addTodo</span><span style="color:#A89984">.</span><span style="color:#FABD2F">mutate</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#EBDBB2"> text</span><span style="color:#A89984">:</span><span style="color:#A89984"> '</span><span style="color:#B8BB26">New todo</span><span style="color:#A89984">'</span><span style="color:#A89984">,</span><span style="color:#EBDBB2"> completed</span><span style="color:#A89984">:</span><span style="color:#D3869B"> false</span><span style="color:#A89984"> }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#FABD2F"> handleUpdateTodo</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> (</span><span style="color:#83A598">id</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> string</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">    updateTodo</span><span style="color:#A89984">.</span><span style="color:#FABD2F">mutate</span><span style="color:#EBDBB2">(</span><span style="color:#A89984">{</span><span style="color:#83A598"> id</span><span style="color:#A89984">,</span><span style="color:#EBDBB2"> completed</span><span style="color:#A89984">:</span><span style="color:#D3869B"> true</span><span style="color:#A89984"> }</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FE8019">  const</span><span style="color:#FABD2F"> handleRemoveTodo</span><span style="color:#8EC07C"> =</span><span style="color:#A89984"> (</span><span style="color:#83A598">id</span><span style="color:#8EC07C">:</span><span style="color:#FABD2F"> string</span><span style="color:#A89984">)</span><span style="color:#FE8019"> =></span><span style="color:#A89984"> {</span></span>
+<span class="line"><span style="color:#83A598">    removeTodo</span><span style="color:#A89984">.</span><span style="color:#FABD2F">mutate</span><span style="color:#EBDBB2">(</span><span style="color:#83A598">id</span><span style="color:#EBDBB2">)</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">  };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">  if</span><span style="color:#EBDBB2"> (</span><span style="color:#83A598">error</span><span style="color:#EBDBB2">) </span><span style="color:#FB4934">return</span><span style="color:#EBDBB2"> &#x3C;</span><span style="color:#FABD2F">div</span><span style="color:#EBDBB2">></span><span style="color:#83A598">Error</span><span style="color:#EBDBB2">: </span><span style="color:#A89984">{</span><span style="color:#EBDBB2">error.</span><span style="color:#83A598">message</span><span style="color:#A89984">}</span><span style="color:#8EC07C">&#x3C;/</span><span style="color:#83A598">div</span><span style="color:#8EC07C">></span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">  if</span><span style="color:#EBDBB2"> (</span><span style="color:#83A598">isLoading</span><span style="color:#EBDBB2">) </span><span style="color:#FB4934">return</span><span style="color:#EBDBB2"> &#x3C;</span><span style="color:#FABD2F">div</span><span style="color:#EBDBB2">></span><span style="color:#83A598">Loading</span><span style="color:#8EC07C">...&#x3C;/</span><span style="color:#83A598">div</span><span style="color:#8EC07C">></span><span style="color:#A89984">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB4934">  return</span><span style="color:#EBDBB2"> (</span></span>
+<span class="line"><span style="color:#EBDBB2">    &#x3C;</span><span style="color:#FABD2F">div</span><span style="color:#EBDBB2">></span></span>
+<span class="line"><span style="color:#8EC07C">      &#x3C;</span><span style="color:#83A598">button</span><span style="color:#83A598"> onClick</span><span style="color:#8EC07C">=</span><span style="color:#A89984">{</span><span style="color:#83A598">handleAddTodo</span><span style="color:#A89984">}</span><span style="color:#8EC07C">></span><span style="color:#83A598">Add</span><span style="color:#83A598"> Todo</span><span style="color:#8EC07C">&#x3C;/</span><span style="color:#83A598">button</span><span style="color:#8EC07C">></span></span>
+<span class="line"><span style="color:#A89984">      {</span><span style="color:#83A598">todos</span><span style="color:#EBDBB2">?.</span><span style="color:#83A598">map</span><span style="color:#EBDBB2">((</span><span style="color:#83A598">todo</span><span style="color:#A89984">:</span><span style="color:#83A598"> any</span><span style="color:#EBDBB2">) </span><span style="color:#8EC07C">=></span><span style="color:#EBDBB2"> (</span></span>
+<span class="line"><span style="color:#8EC07C">        &#x3C;</span><span style="color:#83A598">div</span><span style="color:#83A598"> key</span><span style="color:#8EC07C">=</span><span style="color:#A89984">{</span><span style="color:#EBDBB2">todo.</span><span style="color:#83A598">id</span><span style="color:#A89984">}</span><span style="color:#8EC07C">></span></span>
+<span class="line"><span style="color:#EBDBB2">          &#x3C;</span><span style="color:#FABD2F">span</span><span style="color:#EBDBB2">></span><span style="color:#A89984">{</span><span style="color:#EBDBB2">todo.</span><span style="color:#83A598">text</span><span style="color:#A89984">}</span><span style="color:#8EC07C">&#x3C;/</span><span style="color:#83A598">span</span><span style="color:#8EC07C">></span></span>
+<span class="line"><span style="color:#8EC07C">          &#x3C;</span><span style="color:#83A598">button</span><span style="color:#83A598"> onClick</span><span style="color:#8EC07C">=</span><span style="color:#A89984">{</span><span style="color:#EBDBB2">() => </span><span style="color:#FABD2F">handleUpdateTodo</span><span style="color:#A89984">(</span><span style="color:#EBDBB2">todo.id</span><span style="color:#A89984">)}</span><span style="color:#8EC07C">></span><span style="color:#83A598">Complete</span><span style="color:#8EC07C">&#x3C;/</span><span style="color:#83A598">button</span><span style="color:#8EC07C">></span></span>
+<span class="line"><span style="color:#8EC07C">          &#x3C;</span><span style="color:#83A598">button</span><span style="color:#83A598"> onClick</span><span style="color:#8EC07C">=</span><span style="color:#A89984">{</span><span style="color:#EBDBB2">() => </span><span style="color:#FABD2F">handleRemoveTodo</span><span style="color:#A89984">(</span><span style="color:#EBDBB2">todo.id</span><span style="color:#A89984">)}</span><span style="color:#8EC07C">></span><span style="color:#83A598">Delete</span><span style="color:#8EC07C">&#x3C;/</span><span style="color:#83A598">button</span><span style="color:#8EC07C">></span></span>
+<span class="line"><span style="color:#8EC07C">        &#x3C;/</span><span style="color:#83A598">div</span><span style="color:#8EC07C">></span></span>
+<span class="line"><span style="color:#EBDBB2">      ))</span><span style="color:#A89984">}</span></span>
+<span class="line"><span style="color:#8EC07C">    &#x3C;/</span><span style="color:#83A598">div</span><span style="color:#8EC07C">></span></span>
+<span class="line"><span style="color:#EBDBB2">  )</span><span style="color:#A89984">;</span></span>
+<span class="line"><span style="color:#A89984">};</span></span></code></pre>
+<p>You might be thinking, isn&#39;t this exactly the same as the first example? And you&#39;re right.
+Except for one key difference. This usage didn&#39;t require extra code to duplicate this
+caching logic for todos, users and posts! Not only do we help to limit the possible bug surface,
+it also made it easier to adjust the way we expect our server to be structured easier.
+If the server becomes <a href="https://graphql.org/">GraphQL</a> or <a href="https://trpc.io/">tRPC</a> it would be easy
+enough to swap out the implementation of <code>createHooks</code> and the codebase would generally keep working.</p>
+<p>It can be quite lucrative for maintainability of large codebases, as well as assisting in the speed of
+development, to encode as many of your architectural conventions into code as possible. That&#39;s the
+power of abstraction - when done right, it lets us create reusable patterns that scale across our entire application.</p>
+<p>When we reflect back on how local first apps work, any of the apps I listed at the start all
+have abstracted data fetching patterns, like <a href="https://www.youtube.com/watch?v=Wo2m3jaJixU">Linear&#39;s sync engine</a>.
+Whilst many new apps are rushing to adopt local first as a way to get some of the benefits of these apps
+I think we should be looking closer to home at our existing data models, and considering how to better abstract and
+optimize the data fetching patterns we already have.</p>
+<p>The key insight here isn&#39;t necessarily that we need to adopt fully local-first architectures,
+but rather that we can achieve many of the same user experience benefits by thoughtfully abstracting.
+The real power comes from consistency.</p>
+</div>
+      </div>
+
+      <div class="side-p flex justify-start mt-20">
+        <a class="button active" href="/blog"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                                 <path
+                                                   fill-rule="evenodd"
+                                                   d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z"
+                                                   clip-rule="evenodd"
+                                                 />
+                                               </svg>
+ Back To Posts </a>
+      </div>
+    </main>
+
+    <footer class="pb-6 sm:pb-8 lg:pb-16 pt-16 relative max-w-[80ch] mx-auto w-full">
+      <div class="side-p w-full flex justify-between items-end">
+        <div class="flex gap-3">
+          <a href="mailto:westy12dan@gmail.com" aria-label="Email"> <svg
+                                                                      width="24px"
+                                                                      height="24px"
+                                                                      viewBox="0 0 24 24"
+                                                                      stroke-width="1.5"
+                                                                      fill="none"
+                                                                      xmlns="http://www.w3.org/2000/svg"
+                                                                      color="currentColor"
+                                                                    >
+                                                                      <!-- Thanks to https://iconoir.com/ -->
+                                                                      <path
+                                                                        d="M17.5 19.1245C15.9791 20.3003 14.0712 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 17.5 15 17.5 15 14C15 12 15 8 15 8"
+                                                                        stroke="currentColor"
+                                                                        stroke-width="1.5"
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                      ></path>
+                                                                      <path
+                                                                        d="M15 12V10.5C15 9.11929 13.6569 8 12 8C10.3431 8 9 9.11929 9 10.5V12"
+                                                                        stroke="currentColor"
+                                                                        stroke-width="1.5"
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                      ></path>
+                                                                      <path
+                                                                        d="M15 12V13.5C15 14.8807 13.6569 16 12 16C10.3431 16 9 14.8807 9 13.5V12"
+                                                                        stroke="currentColor"
+                                                                        stroke-width="1.5"
+                                                                        stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                      ></path>
+                                                                    </svg>
+ </a>
+          <a
+            href="https://www.linkedin.com/in/daniel-westbrook-692227196/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+          >
+            <svg
+              width="24px"
+              height="24px"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              color="currentColor"
+            >
+              <!-- Thanks to https://iconoir.com/ -->
+              <path
+                d="M21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8Z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M7 17V13.5V10"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M11 17V13.75M11 10V13.75M11 13.75C11 10 17 10 17 13.75V17"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M7 7.01L7.01 6.99889"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href="https://github.com/westbrookdaniel/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Github"
+          >
+            <svg
+              width="24px"
+              height="24px"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              color="currentColor"
+            >
+              <!-- Thanks to https://iconoir.com/ -->
+              <path
+                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M14.3333 19V17.137C14.3583 16.8275 14.3154 16.5163 14.2073 16.2242C14.0993 15.9321 13.9286 15.6657 13.7067 15.4428C15.8 15.2156 18 14.4431 18 10.8989C17.9998 9.99256 17.6418 9.12101 17 8.46461C17.3039 7.67171 17.2824 6.79528 16.94 6.01739C16.94 6.01739 16.1533 5.7902 14.3333 6.97811C12.8053 6.57488 11.1947 6.57488 9.66666 6.97811C7.84666 5.7902 7.05999 6.01739 7.05999 6.01739C6.71757 6.79528 6.69609 7.67171 6.99999 8.46461C6.35341 9.12588 5.99501 10.0053 5.99999 10.9183C5.99999 14.4366 8.19999 15.2091 10.2933 15.4622C10.074 15.6829 9.90483 15.9461 9.79686 16.2347C9.68889 16.5232 9.64453 16.8306 9.66666 17.137V19"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+              <path
+                d="M9.66667 17.7018C7.66667 18.3335 6 17.7018 5 15.7544"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+          </a>
+        </div>
+        <button id="lucky" class="text-neutral-500 hover:underline text-sm">I'm feeling lucky</button>
+      </div>
+    </footer>
+  </body>
+</html>
