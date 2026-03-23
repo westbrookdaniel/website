@@ -43,13 +43,23 @@ export async function buildTailwind() {
       TEMP: join(process.cwd(), TEMP_DIR),
       BUN_INSTALL_CACHE_DIR: join(process.cwd(), BUN_CACHE_DIR),
     },
-    stderr: "ignore",
-    stdout: "ignore",
+    stderr: "pipe",
+    stdout: "pipe",
   });
 
   const exitCode = await tailwind.exited;
   if (exitCode !== 0) {
-    throw new Error(`Tailwind build failed (exit code ${exitCode})`);
+    const [stdout, stderr] = await Promise.all([
+      new Response(tailwind.stdout).text(),
+      new Response(tailwind.stderr).text(),
+    ]);
+
+    const output = [stdout.trim(), stderr.trim()].filter(Boolean).join("\n");
+    throw new Error(
+      output
+        ? `Tailwind build failed (exit code ${exitCode})\n${output}`
+        : `Tailwind build failed (exit code ${exitCode})`,
+    );
   }
 }
 
