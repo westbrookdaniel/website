@@ -25,102 +25,51 @@
     <script>
       console.log("Hello! Checkout https://github.com/westbrookdaniel/website");
     </script>
-    <title>Daniel Westbrook - Web Developer</title>
+    <title>Closing the Loop - Daniel Westbrook</title>
   </head>
-  <body hx-boost="true" class="flex flex-col min-h-screen">
+  <body hx-boost="true">
     <header class="pt-6 sm:pt-8 lg:pt-16 pb-16 relative max-w-[80ch] mx-auto w-full">
       <div class="side-p flex w-full">
         <nav class="flex gap-2 flex-1">
-          <a class="button active" href="/" preload="mouseover">Home</a>
-          <a class="button" href="/blog" preload="mouseover">Blog</a>
+          <a class="button" href="/" preload="mouseover">Home</a>
+          <a class="button active" href="/blog" preload="mouseover">Blog</a>
         </nav>
       </div>
     </header>
-    <main class="pt-16 pb-24 relative max-w-[80ch] mx-auto flex-1 w-full"><div class="side-p mb-16">
-  <h1 class="font-heading">Daniel Westbrook</h1>
-  <p class="font-heading text-balance">
-    <span>is currently developing at</span>
-    <a class="hover:underline" target="_blank" href="https://www.coreplan.io/"> CorePlan </a>
-  </p>
-  <p class="font-heading text-balance">
-    <span>with other projects available on</span>
-    <a class="hover:underline" target="_blank" href="https://github.com/westbrookdaniel/">GitHub</a>
-  </p>
+
+    <main class="pt-24 pb-32 relative max-w-[80ch] mx-auto flex-1 w-full">
+      <div class="side-p mb-24">
+        <h1 class="font-heading text-balance mb-2">Closing the Loop</h1>
+        <p class="text-neutral-500 text-balance text-sm max-w-[60ch] mb-1">AI coding gets useful when it can move from intent to verified change</p>
+        <div class="flex gap-4 text-sm">
+          <p class="text-neutral-500">10 May 2026</p>
+          <p class="text-neutral-500">2 min read</p>
+        </div>
+      </div>
+
+      <div class="side-p space-y-8">
+        <div class="prose prose-neutral prose-invert max-w-[80ch]"><p>I&#39;ve been moving more agentic work from just writing code toward closing the loop.</p>
+<p>The useful loop is not to write some code, or even to write all the code. If that was the case, a software engineer&#39;s job would already be gone. Agents need to move toward understanding the task, changing the system, running it, verifying it, surfacing the risk, and leaving the codebase better than it started.</p>
+<p>Most AI coding tools are still strongest at generating code, explaining files, refactoring functions sometimes, and scaffolding tests. That&#39;s useful, but it still leaves the engineer holding the bag. True confidence and verification that allows agents to ship unsupervised is now the missing link.</p>
+<p>The shape of the codebase is starting to matter more. Simple stacks are easier for agents to operate without intervention. Complex codebases are not impossible to use with agents, but every extra service, partial migration, conflicting approach, build step, and hidden dependency increases the amount of context needed to safely make a change. The cost has always been there, but now we pay it on every agent run instead of every hire.</p>
+<p>Can’t make cloud agents work with your stack? Maybe the local setup is unclear or too complex. Maybe tests are missing. Maybe the browser QA path is not documented. That should be taken as feedback on your system and addressed or documented.</p>
+<p>If agents can close more of the implementation loop, we can spend more energy on the work around it. What problems are we patching around? What security assumption only holds because humans are careful? What product flows are too hard to test?</p>
+<p>Closing the loop is not just about making agents better. It is about making the whole system easier to understand, verify, and safely change.</p>
 </div>
+      </div>
 
-<div class="side-p space-y-8">
-  <ul>
-<a
-  href="/blog/closing-the-loop"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Closing the Loop</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">10 May 2026</p>
-  </div>
-</a>
-<a
-  href="/blog/does-the-rule-of-least-power-hold-up"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Does the Rule of Least Power Hold Up?</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">19 Mar 2026</p>
-  </div>
-</a>
-<a
-  href="/blog/build-more-yourself"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Build more yourself</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">13 Sep 2025</p>
-  </div>
-</a>
-  </ul>
+      <div class="side-p flex justify-start mt-20">
+        <a class="button active" href="/blog"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                                 <path
+                                                   fill-rule="evenodd"
+                                                   d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z"
+                                                   clip-rule="evenodd"
+                                                 />
+                                               </svg>
+ Back To Posts </a>
+      </div>
+    </main>
 
-  <div class="flex w-full justify-between items-center">
-    <a
-      href="https://github.com/westbrookdaniel?tab=repositories"
-      preload="mouseover"
-      class="button active icon-button"
-    >
-      Repositories  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                      <path
-                        d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.22-5.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L6.22 8.72Z"
-                      />
-                      <path
-                        d="M3.5 6.75c0-.69.56-1.25 1.25-1.25H7A.75.75 0 0 0 7 4H4.75A2.75 2.75 0 0 0 2 6.75v4.5A2.75 2.75 0 0 0 4.75 14h4.5A2.75 2.75 0 0 0 12 11.25V9a.75.75 0 0 0-1.5 0v2.25c0 .69-.56 1.25-1.25 1.25h-4.5c-.69 0-1.25-.56-1.25-1.25v-4.5Z"
-                      />
-                    </svg>
-
-    </a>
-
-    <a href="/blog" preload="mouseover" class="button active icon-button">
-      See All Posts <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                      <path
-                        fill-rule="evenodd"
-                        d="M2 8a.75.75 0 0 1 .75-.75h8.69L8.22 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06-1.06l3.22-3.22H2.75A.75.75 0 0 1 2 8Z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-
-    </a>
-  </div>
-</div>
-</main>
     <footer class="pb-6 sm:pb-8 lg:pb-16 pt-16 relative max-w-[80ch] mx-auto w-full">
       <div class="side-p w-full flex justify-between items-end">
         <div class="flex gap-3">
