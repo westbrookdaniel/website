@@ -40,7 +40,7 @@
     <main class="pt-24 pb-32 relative max-w-[80ch] mx-auto flex-1 w-full">
       <div class="side-p mb-24">
         <h1 class="font-heading text-balance mb-2">We Need an Align Mode</h1>
-        <p class="text-neutral-500 text-balance text-sm max-w-[60ch] mb-1">Before agents plan the work, they need to understand the vision</p>
+        <p class="text-neutral-500 text-balance text-sm max-w-[60ch] mb-1">Some thoughts on understanding each other before we start building</p>
         <div class="flex gap-4 text-sm">
           <p class="text-neutral-500">13 July 2026</p>
           <p class="text-neutral-500">4 min read</p>
@@ -48,44 +48,27 @@
       </div>
 
       <div class="side-p space-y-8">
-        <div class="prose prose-neutral prose-invert max-w-[80ch]"><p>Most AI planning modes are good at turning a request into a list of tasks. They are much worse at confirming that the agent and the person asking share the same vision.</p>
-<p>A plan might say:</p>
-<ul>
-<li>Update the layout</li>
-<li>Add the new endpoint</li>
-<li>Handle loading and error states</li>
-<li>Add tests</li>
-</ul>
-<p>That can be a perfectly sensible plan while still describing the wrong thing. The hierarchy might be wrong. The endpoint might encode the wrong workflow. The tests might prove behaviour nobody wanted.</p>
-<p>A task list is not a shared understanding.</p>
-<p>Before plan mode, we need an align mode.</p>
-<h2>Functional Is a Low Bar</h2>
-<p>AI makes it cheap to produce something polished and functional. That polish can create false confidence. Typed code, passing tests, and a clean interface make an implementation look resolved even when it has misunderstood the product.</p>
-<p>Verification helps, but it only scales so far. If an agent produces five times as much code, deeply reviewing five times as much code is not an efficient answer. Existing checks are narrow too. They can tell us the application builds or that a known scenario passes. They cannot tell us whether the result matches the vision we had in our head.</p>
-<p>The higher-leverage move happens before implementation: improve alignment so the first handoff is closer to right.</p>
-<h2>Align Before You Plan</h2>
-<p>Align mode would not rush from a vague request to a confident checklist. It would keep asking questions wherever it finds a glaring assumption.</p>
-<p>It would ask what &quot;simple&quot; means here. It would compare two possible interpretations instead of silently choosing one. It would turn fuzzy requirements into concrete examples and awkward edge cases. When necessary, it would inspect the existing system and build a shared model of its users, states, constraints, and conventions.</p>
-<p>This does not need to become a giant specification or an approval gate for every small decision. The goal is not to eliminate every implementation detail the agent might decide for itself. The goal is to stop treating important product assumptions as implementation details.</p>
-<p>Plan mode answers: <strong>How will I build this?</strong></p>
-<p>Align mode answers first: <strong>Do we mean the same thing?</strong></p>
-<p>Only then should the agent turn that understanding into an implementation plan.</p>
-<h2>This Could Just Be a Skill</h2>
-<p>None of this necessarily requires a new model or a complicated product feature. The models are already capable of asking useful questions, exploring a codebase, finding contradictions, and explaining a system back to us. They usually just need to be pushed in that direction.</p>
-<p>Align mode could be a default built-in skill, activated and adjusted by a small contract in <code>AGENTS.md</code>:</p>
-<ul>
-<li>Do not silently resolve important ambiguity</li>
-<li>Ask questions until the intended experience is clear</li>
-<li>Use concrete examples to confirm fuzzy requirements</li>
-<li>Inspect the existing system before proposing how it should change</li>
-<li>Plan only after alignment</li>
-</ul>
-<p>The important part is making this the default behaviour, not another prompt the user has to remember. Agents are strongly encouraged to start building. They need equal pressure to understand first.</p>
-<h2>From Handoff to Ownership</h2>
-<p>The usual agent workflow resembles handing a ticket to a contractor. The agent fills in the gaps, returns something that functions, and leaves the user to discover where its interpretation diverged from the intended result.</p>
-<p>Better alignment changes what the agent owns. Once it has actively clarified the vision, it is no longer responsible only for completing the listed tasks. It is responsible for the thing it built matching that vision.</p>
-<p>That distinction applies everywhere. A polished UI can have the wrong hierarchy. A technically correct feature can misunderstand the workflow. A small request can become an unnecessary new abstraction. A long revision loop can reveal assumptions that should have been questions.</p>
-<p>The next improvement in coding agents is not simply more autonomy, verification, or raw intelligence. It may just be a better default workflow: align first, plan second, then build something that matches the vision instead of something that merely functions.</p>
+        <div class="prose prose-neutral prose-invert max-w-[80ch]"><p>I&#39;ve spent a lot of time thinking about how agents can better verify their own work. If an agent can run the tests, open the browser, inspect the result, and fix what it finds, it can close more of the loop without handing everything back to me.</p>
+<p>I still believe that. Lately, though, I have started to wonder whether verification is already too late.</p>
+<p>The uncomfortable failures are rarely broken builds anymore. They are polished implementations of the wrong idea. The code is typed, the tests pass, and the interface works, but something about the result does not match what I imagined. Sometimes the hierarchy is wrong. Sometimes a workflow has been interpreted too literally. Sometimes a small request has quietly become a new abstraction.</p>
+<p>It functions, which makes the misunderstanding harder to see.</p>
+<h2>The Limit of Verification</h2>
+<p>My first instinct was to ask for more evidence. More tests, screenshots, browser checks, logs, and measurements. These all help, but they can only prove the things we know to check.</p>
+<p>There is also an uncomfortable scaling problem. Agents make producing code cheaper, but they do not make deeply reviewing code equally cheap. If generation keeps accelerating, asking the human to verify everything in greater detail eventually gives the advantage back.</p>
+<p>More importantly, no test can recover a vision that was never shared. A test can prove that a button opens a panel. It cannot prove that a panel was the right interaction in the first place.</p>
+<p>I began thinking this was a verification problem. I now think much of it is an alignment problem.</p>
+<h2>Before the Plan</h2>
+<p>Plan modes are useful because they make an agent pause before changing things. But most plans describe how an interpretation will be implemented. They do not spend much time testing the interpretation itself.</p>
+<p>A neat sequence of tasks feels reassuring. It can still be a precise route to the wrong destination.</p>
+<p>What I want before that is something closer to an <strong>Align Mode</strong>. Not a giant specification, and not an attempt to remove every small decision from the agent. Just a conversation that keeps going while there are glaring assumptions hiding inside the request.</p>
+<p>It might ask what I mean by &quot;simple.&quot; It might show me two interpretations that sound similar but produce very different products. It might use a concrete example because examples reveal disagreement faster than another paragraph of requirements. It might inspect the existing system so that we are talking about the same users, states, and constraints.</p>
+<p>The output is not really a plan. It is the feeling that we mean the same thing.</p>
+<h2>Ownership Starts With Understanding</h2>
+<p>There is a subtle difference between asking an agent to complete a task and asking it to take ownership of the result. A task can be completed when the code works. Ownership means caring whether the thing built matches the vision that motivated it.</p>
+<p>That seems difficult to ask of an agent if it was never encouraged to understand the vision. We hand it a few sentences, let it silently fill the gaps, and then act surprised when its perfectly reasonable assumptions are not ours.</p>
+<p>The interesting part is that I don&#39;t think this requires a dramatically smarter model. Today&#39;s models can already ask good questions, explore a codebase, compare interpretations, and explain a system back to us. When pushed in that direction, they are often quite good at it.</p>
+<p>Align Mode might be nothing more than a default skill and a small adjustment in <code>AGENTS.md</code>. The important shift is giving the model permission to stay with the problem for longer, rather than rewarding it for reaching implementation as quickly as possible.</p>
+<p>We&#39;ve spent years making agents more capable of acting without us. Perhaps the next step is teaching them when not to start.</p>
 </div>
       </div>
 
