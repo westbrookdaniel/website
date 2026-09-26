@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#f3f2ee" />
+    <meta name="theme-color" content="#102820" />
     <title>Cards — Playground</title>
     <style>
       :root { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; color: #1b1b1a; background: #f3f2ee; --surface: #f3f2ee; --ink: #1b1b1a; --muted: #696964; --line: #c6c6bf; --felt: #e6e7df; --paper: #fffefa; --red: #9e3630; --card-shadow: 0 2px 5px #16161521; color-scheme: light; }
@@ -114,6 +114,70 @@
       }
       @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; } }
       .reduced *, .reduced *::before, .reduced *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
+      /* The table fills the viewport; the controls stay within thumb reach. */
+      :root { --surface: #eeeae0; --ink: #253a31; --muted: #5f6c62; --line: #b9c3b7; --felt: #d9dfd3; --paper: #fffdf8; --accent: #7a6842; }
+      :root[data-theme="dark"] { --surface: #102820; --ink: #f6f2e7; --muted: #b1c4b5; --line: #4d6c59; --felt: #194435; --paper: #fffdf7; --accent: #d8bf81; }
+      .shell { width: min(100%, 1240px); height: 100dvh; min-height: 480px; display: flex; flex-direction: column; padding: max(12px, env(safe-area-inset-top)) 12px max(10px, env(safe-area-inset-bottom)); }
+      main { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      #home-screen, #game-screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .game-list { flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 11px; padding: 0 0 8px; overflow: auto; }
+      .game-option { position: relative; min-height: 140px; overflow: hidden; padding: clamp(16px, 4.5vw, 26px); border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(145deg, #ffffff0e, transparent 65%), var(--felt); box-shadow: inset 0 1px #ffffff24, 0 8px 20px #06170e16; align-content: space-between; }
+      .game-option::before { content: ""; position: absolute; right: 13%; top: 36%; width: 84px; aspect-ratio: .72; border: 1px solid var(--accent); border-radius: 9px; opacity: .16; transform: rotate(-11deg); pointer-events: none; }
+      .game-option::after { content: "♠"; position: absolute; right: 21%; top: 31%; width: 84px; aspect-ratio: .72; display: grid; place-items: center; border: 1px solid currentColor; border-radius: 9px; color: var(--accent); opacity: .26; font: 42px Georgia, serif; transform: rotate(13deg); pointer-events: none; }
+      .game-option:nth-child(2)::after { content: "♣"; transform: rotate(-10deg); }
+      .game-option:nth-child(3)::after { content: "♦"; transform: rotate(8deg); }
+      .game-option h2 { margin: 0 0 6px; font: 600 clamp(25px, 7vw, 36px)/1.05 Georgia, serif; letter-spacing: -.045em; }
+      .game-option p { max-width: 31ch; font-size: 11px; line-height: 1.35; }
+      .difficulty { color: var(--accent); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+      .option-actions { margin-top: 4px; }
+      .option-actions button { min-height: 40px; border: 1px solid var(--accent); border-radius: 999px; padding: 0 17px; background: var(--accent); color: #102820; font-weight: 800; }
+      .option-actions button[data-resume] { border-color: var(--line); color: var(--ink); background: transparent; }
+      .game-head { flex-shrink: 0; padding: 5px 4px 12px; min-height: 56px; }
+      .game-head h1 { margin: 0; font: 600 clamp(20px, 5vw, 28px)/1 Georgia, serif; letter-spacing: -.04em; text-transform: none; }
+      .game-head p { margin: 5px 0 0; font-size: 10px; }
+      .text-button { min-height: 42px; padding: 0 13px; border: 1px solid var(--line); border-radius: 999px; font-size: 11px; text-decoration: none; }
+      .toolbar { order: 2; position: relative; z-index: 5; flex-shrink: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 8px 0 0; background: var(--surface); }
+      .toolbar button { min-height: 58px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; border: 0; border-radius: 12px; background: transparent; color: var(--ink); font-size: 10px; }
+      .toolbar button:active:not(:disabled) { background: var(--felt); transform: scale(.96); }
+      .toolbar .icon { font-size: 22px; line-height: 1; color: var(--accent); }
+      .board { order: 1; flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--line); border-radius: 18px; padding: clamp(12px, 3vw, 26px); background: radial-gradient(ellipse at 50% -20%, #ffffff15, transparent 65%), var(--felt); box-shadow: inset 0 1px #ffffff28, 0 8px 24px #00130d24; }
+      .top-piles, .columns { width: 100%; max-width: 870px; margin-left: auto; margin-right: auto; gap: 4px; }
+      .columns { margin-top: 23px; }
+      .pile, .stock, .place, .card { border-radius: 7px; }
+      .stock, .place { border-color: var(--line); color: var(--muted); }
+      .stock.down, .card.down { border-color: #e0dacf; }
+      .card.down:disabled { opacity: 1; }
+      .card { border-color: #e4ded2; background: linear-gradient(150deg, #fffefa, #f9f6ee); box-shadow: 0 2px 4px #00160e38, 0 6px 12px #00160e14; }
+      .rank { font-family: Georgia, serif; }
+      .pip { font-family: Georgia, serif; }
+      .card.selected { outline: 3px solid var(--accent); box-shadow: 0 9px 14px #00160e60; }
+      .card.target, .place.target { outline-color: var(--accent); }
+      .back-mark { border-color: #9b8b6b; color: #8e7751; background: repeating-linear-gradient(45deg, #e6ddc8 0 2px, #f8f3e9 2px 5px); }
+      :root[data-back="dots"] .back-mark { background: radial-gradient(#a5987d 1px, #f8f3e9 1.5px); background-size: 6px 6px; }
+      .pyramid-grid { padding-top: 4px; }
+      .pyramid-stock { border-color: var(--line); }
+      .status { flex-shrink: 0; min-height: 25px; padding: 7px 3px 0; font-size: 11px; }
+      dialog { border: 1px solid var(--line); border-radius: 20px; padding: 27px; box-shadow: 0 24px 70px #0008; }
+      dialog h2 { font-family: Georgia, serif; letter-spacing: -.045em; }
+      .dialog-actions button { border-radius: 999px; }
+      .dialog-actions .primary { background: var(--accent); border-color: var(--accent); color: #102820; }
+      @media (max-height: 620px) and (max-width: 699px) {
+        .game-option { min-height: 130px; }
+        .toolbar button { min-height: 49px; }
+        .toolbar .icon { font-size: 18px; }
+      }
+      @media (min-width: 700px) {
+        .shell { padding: 22px 28px; }
+        .game-list { grid-template-columns: repeat(3, 1fr); grid-template-rows: minmax(260px, 410px); align-content: center; gap: 16px; }
+        .game-option { min-height: 0; }
+        .game-option::before, .game-option::after { width: 100px; top: 36%; }
+        .game-option::after { font-size: 48px; }
+        .game-head { padding-bottom: 16px; }
+        .toolbar { max-width: 560px; align-self: center; width: 100%; }
+        .board { padding: 26px; }
+        .top-piles, .columns { gap: 9px; }
+        .columns { margin-top: 30px; }
+      }
     </style>
   </head>
   <body>
@@ -129,7 +193,7 @@
         </section>
         <section id="game-screen" aria-labelledby="game-title">
           <div class="game-head"><div><h1 id="game-title">Solitaire</h1><p id="move-count">0 moves</p></div><button class="text-button" id="all-games">All games</button></div>
-          <nav class="toolbar" aria-label="Game controls"><button id="new-deal">New deal</button><button id="undo">Undo</button><button id="hint">Hint</button><button id="rules">Rules</button><button id="settings">Settings</button></nav>
+          <nav class="toolbar" aria-label="Game controls"><button id="new-deal" aria-label="New deal"><span class="icon" aria-hidden="true">↻</span>Deal</button><button id="undo"><span class="icon" aria-hidden="true">↶</span>Undo</button><button id="hint"><span class="icon" aria-hidden="true">✦</span>Hint</button><button id="rules"><span class="icon" aria-hidden="true">?</span>Rules</button><button id="settings"><span class="icon" aria-hidden="true">⚙</span>Settings</button></nav>
           <div id="board" class="board" aria-label="Card table"></div>
         </section>
       </main>

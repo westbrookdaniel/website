@@ -207,7 +207,7 @@ function init() {
   const toast = document.querySelector("#toast");
   const dialog = document.querySelector("#dialog");
   const dialogContent = document.querySelector("#dialog-content");
-  const defaults = { theme: "light", back: "lines", reducedMotion: false, drawCount: 1, pyramidRedeals: 0 };
+  const defaults = { theme: "dark", back: "lines", reducedMotion: false, drawCount: 1, pyramidRedeals: 0 };
   let prefs = read(`${STORAGE}-prefs`) ?? defaults;
   prefs = { ...defaults, ...prefs };
   let state = null;
@@ -410,7 +410,7 @@ function init() {
   }
   function settings() {
     showDialog(`<p class="overline">Make it yours</p><h2>Settings</h2><div class="settings-list">
-      <label>Table surface<select id="theme"><option value="light">Paper</option><option value="dark">Ink</option></select></label>
+      <label>Table surface<select id="theme"><option value="light">Linen</option><option value="dark">Evergreen</option></select></label>
       <label>Card back<select id="back"><option value="lines">Fine lines</option><option value="dots">Dots</option></select></label>
       <label>Reduced motion<input id="reduced" type="checkbox" /></label>
       <label>Klondike draw<select id="draw-count"><option value="1">Draw one</option><option value="3">Draw three</option></select></label>
