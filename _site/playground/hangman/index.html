@@ -88,7 +88,7 @@
           <div class="eyebrow"><span id="hint"></span></div>
           <div class="word" id="word" aria-label="Word to guess"></div>
           <p class="message" id="message" role="status" aria-live="polite"></p>
-          <div class="keyboard" id="keyboard" aria-label="Letter keyboard"></div>
+          <div class="keyboard" id="keyboard" role="group" aria-label="Letter keyboard"></div>
           <div class="bottom">
             <button class="new-game" id="new-game" type="button">New word ↗</button>
           </div>
@@ -116,12 +116,25 @@
       const messageEl = document.querySelector("#message");
       const gameEl = document.querySelector(".game");
       const newGameEl = document.querySelector("#new-game");
+      const keyButtons = new Map();
       const parts = [...document.querySelectorAll(".part")];
       let answer = "";
       let lastAnswer = "";
       let guessed = new Set();
       let mistakes = 0;
       let finished = false;
+
+      for (const letter of alphabet) {
+        const key = document.createElement("button");
+        key.type = "button";
+        key.className = "key";
+        key.textContent = letter;
+        key.dataset.letter = letter;
+        key.setAttribute("aria-label", `Guess ${letter}`);
+        key.addEventListener("click", () => guess(letter));
+        keyboardEl.append(key);
+        keyButtons.set(letter, key);
+      }
 
       function startGame() {
         const choices = entries.filter(([word]) => word !== lastAnswer);
@@ -165,23 +178,22 @@
           slot.setAttribute("aria-label", show ? letter : "blank");
           return slot;
         }));
-        keyboardEl.replaceChildren(...[...alphabet].map((letter) => {
-          const key = document.createElement("button");
-          key.type = "button";
+        const activeKey = document.activeElement?.dataset?.letter;
+        for (const [letter, key] of keyButtons) {
           key.className = `key${guessed.has(letter) ? answer.includes(letter) ? " correct" : " wrong" : ""}`;
-          key.textContent = letter;
-          key.setAttribute("aria-label", `Guess ${letter}`);
           key.disabled = finished || guessed.has(letter);
-          key.addEventListener("click", () => guess(letter));
-          return key;
-        }));
+        }
+        if (activeKey && !finished && keyButtons.get(activeKey).disabled) {
+          const remaining = [...keyButtons.values()].filter((key) => !key.disabled);
+          const nextKey = remaining.find((key) => key.dataset.letter > activeKey) ?? remaining[0];
+          nextKey?.focus();
+        }
       }
 
       document.querySelector("#new-game").addEventListener("click", startGame);
       document.addEventListener("keydown", (event) => {
         if (event.altKey || event.ctrlKey || event.metaKey) return;
-        if (event.key === "Enter" && finished) startGame();
-        else if (/^[a-z]$/i.test(event.key)) guess(event.key.toUpperCase());
+        if (/^[a-z]$/i.test(event.key)) guess(event.key.toUpperCase());
       });
       startGame();
     </script>

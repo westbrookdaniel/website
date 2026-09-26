@@ -231,6 +231,9 @@ function init() {
   function card(id, ref, options = {}) {
     const button = document.createElement("button");
     button.type = "button";
+    button.dataset.zone = ref.zone;
+    button.dataset.index = String(ref.index ?? "");
+    button.dataset.start = String(ref.start ?? "");
     button.className = `card ${options.faceDown ? "down" : color(id) ? "red" : "black"}${options.active ? " selected" : ""}${options.target ? " target" : ""}`;
     button.innerHTML = options.faceDown ? '<span class="back-mark" aria-hidden="true">✳</span>' : `<span class="rank">${RANKS[rank(id)]}<small>${SUITS[suit(id)]}</small></span><span class="pip" aria-hidden="true">${SUITS[suit(id)]}</span>`;
     button.setAttribute("aria-label", `${options.faceDown ? "Face-down card" : `${RANKS[rank(id)]} of ${["spades", "hearts", "diamonds", "clubs"][suit(id)]}`}${options.target ? ", legal destination" : ""}`);
@@ -241,20 +244,31 @@ function init() {
   function place(zone, index, title) {
     const button = document.createElement("button");
     button.type = "button";
+    button.dataset.zone = zone;
+    button.dataset.index = String(index ?? "");
     button.className = `place${selected && canMove(state, selected, { zone, index }) ? " target" : ""}`;
     button.textContent = title;
-    button.setAttribute("aria-label", `${title}${index != null ? ` ${index + 1}` : ""}`);
+    const accessibleName = zone === "foundation" ? `${["Spades", "Hearts", "Diamonds", "Clubs"][index]} foundation` : zone === "cell" ? `Free cell ${index + 1}` : zone === "tableau" ? `Empty column ${index + 1}` : title;
+    button.setAttribute("aria-label", accessibleName);
     button.addEventListener("click", () => tap({ zone, index }));
     return button;
+  }
+  function marker(title) {
+    const element = document.createElement("div");
+    element.className = "place";
+    element.textContent = title;
+    element.setAttribute("role", "img");
+    element.setAttribute("aria-label", `Empty ${title.toLowerCase()} pile`);
+    return element;
   }
   function same(a, b) { return a && b && a.zone === b.zone && a.index === b.index && a.start === b.start; }
   function highlight(ref) { return selected && canMove(state, selected, ref); }
   function tap(ref) {
     if (state.outcome !== "playing") return;
-    if (selected && same(selected, ref)) { selected = null; renderBoard(); return; }
+    if (selected && same(selected, ref)) { selected = null; renderBoard(ref); return; }
     if (selected && canMove(state, selected, ref)) { commit({ type: "move", from: selected, to: ref }); return; }
     if (state.mode === "pyramid" && sourceCards(state, ref).length === 1 && canMove(state, ref, null)) { commit({ type: "move", from: ref, to: null }); return; }
-    if (sourceCards(state, ref).length) { selected = ref; note(""); renderBoard(); }
+    if (sourceCards(state, ref).length) { selected = ref; note(""); renderBoard(ref); }
     else note("That move isn't available. Choose a face-up card or open space.");
   }
   function commit(action) {
@@ -263,7 +277,7 @@ function init() {
     state = next;
     selected = null;
     save();
-    renderBoard();
+    renderBoard(action.type === "draw" ? { zone: "waste" } : action.to ?? { zone: "stock" });
     if (state.outcome === "won") win();
     else if (state.outcome === "stuck") note("No legal moves remain. Undo or start a new deal.");
     else note("");
@@ -273,7 +287,7 @@ function init() {
     dialogContent.querySelector("#again").onclick = () => { closeDialog(); start(state.mode, true); };
     dialogContent.querySelector("#back-home").onclick = () => { closeDialog(); home(); };
   }
-  function renderBoard() {
+  function renderBoard(focusRef) {
     if (!state) return;
     board.replaceChildren();
     document.querySelector("#game-title").textContent = { klondike: "Solitaire", freecell: "FreeCell", pyramid: "Pyramid" }[state.mode];
@@ -283,6 +297,11 @@ function init() {
     board.className = `board ${state.mode}`;
     if (state.mode === "pyramid") renderPyramid();
     else renderColumns();
+    if (focusRef) {
+      const matches = [...board.querySelectorAll("button[data-zone]")].filter((button) => button.dataset.zone === focusRef.zone && button.dataset.index === String(focusRef.index ?? ""));
+      const target = focusRef.start == null ? matches.at(-1) : matches.find((button) => button.dataset.start === String(focusRef.start));
+      target?.focus({ preventScroll: true });
+    }
     if (state.outcome === "won") note("All clear. Beautifully played.");
     if (state.outcome === "stuck") note("No legal moves remain. Undo or start a new deal.");
   }
@@ -290,12 +309,14 @@ function init() {
     const top = document.createElement("div"); top.className = "top-piles";
     if (state.mode === "klondike") {
       const stock = document.createElement("button"); stock.type = "button"; stock.className = `stock ${state.stock.length ? "down" : ""}`;
+      stock.dataset.zone = "stock";
+      stock.dataset.index = "";
       stock.innerHTML = state.stock.length ? '<span class="back-mark" aria-hidden="true">✳</span>' : "↺";
       stock.setAttribute("aria-label", state.stock.length ? `Draw ${state.drawCount} from stock, ${state.stock.length} left` : "Recycle waste");
       stock.disabled = !canDraw(state); stock.onclick = () => commit({ type: "draw" }); top.append(stock);
       const waste = document.createElement("div"); waste.className = "pile";
       if (state.waste.length) waste.append(card(state.waste.at(-1), { zone: "waste" }, { active: same(selected, { zone: "waste" }) }));
-      else waste.append(place("waste", null, "WASTE")); top.append(waste);
+      else waste.append(marker("WASTE")); top.append(waste);
     } else {
       for (let i = 0; i < 4; i++) {
         const cell = document.createElement("div"); cell.className = "pile";
@@ -346,12 +367,14 @@ function init() {
     } board.append(pyramid);
     const stockRow = document.createElement("div"); stockRow.className = "pyramid-stock";
     const stock = document.createElement("button"); stock.type = "button"; stock.className = `stock ${state.stock.length ? "down" : ""}`;
+    stock.dataset.zone = "stock";
+    stock.dataset.index = "";
     stock.innerHTML = state.stock.length ? '<span class="back-mark" aria-hidden="true">✳</span>' : "↺";
     stock.setAttribute("aria-label", state.stock.length ? `Draw from stock, ${state.stock.length} left` : "Recycle waste");
     stock.disabled = !canDraw(state); stock.onclick = () => commit({ type: "draw" }); stockRow.append(stock);
     const waste = document.createElement("div"); waste.className = "pile";
     const ref = { zone: "waste" };
-    waste.append(state.waste.length ? card(state.waste.at(-1), ref, { active: same(selected, ref), target: highlight(ref) }) : place("waste", null, "WASTE"));
+    waste.append(state.waste.length ? card(state.waste.at(-1), ref, { active: same(selected, ref), target: highlight(ref) }) : marker("WASTE"));
     stockRow.append(waste);
     const remaining = state.pyramid.filter((item) => !item.removed).length;
     const caption = document.createElement("p"); caption.textContent = `${remaining} cards to clear · ${state.maxRedeals - state.redeals} redeals left`;
@@ -373,6 +396,13 @@ function init() {
     selected = null; root.dataset.screen = "game"; save(); renderBoard();
     note("");
     if (!read(`${STORAGE}-taught-${mode}`)) tutorial(mode);
+  }
+  function requestNewGame(mode) {
+    const saved = state?.mode === mode ? state : read(`${STORAGE}-${mode}`);
+    if (!saved || saved.outcome !== "playing" || saved.moves === 0) { start(mode, true); return; }
+    showDialog(`<p class="overline">Start fresh</p><h2>New deal?</h2><p>Your current ${mode === "klondike" ? "Solitaire" : mode === "freecell" ? "FreeCell" : "Pyramid"} game will be replaced.</p><div class="dialog-actions"><button id="confirm-new" class="primary">Deal new game</button><button id="cancel-new">Keep playing</button></div>`);
+    dialogContent.querySelector("#confirm-new").onclick = () => { closeDialog(); start(mode, true); };
+    dialogContent.querySelector("#cancel-new").onclick = closeDialog;
   }
   function tutorial(mode) {
     tutorialMode = mode; tutorialStep = 0; practiceSelected = false;
@@ -424,12 +454,9 @@ function init() {
     };
   }
   function confirmNewDeal() {
-    if (state.moves === 0 || state.outcome !== "playing") { start(state.mode, true); return; }
-    showDialog(`<p class="overline">Start fresh</p><h2>New deal?</h2><p>Your current ${state.mode} game will be replaced.</p><div class="dialog-actions"><button id="confirm-new" class="primary">Deal new game</button><button id="cancel-new">Keep playing</button></div>`);
-    dialogContent.querySelector("#confirm-new").onclick = () => { const mode = state.mode; closeDialog(); start(mode, true); };
-    dialogContent.querySelector("#cancel-new").onclick = closeDialog;
+    requestNewGame(state.mode);
   }
-  document.querySelectorAll("[data-new]").forEach((button) => button.addEventListener("click", () => start(button.dataset.new, true)));
+  document.querySelectorAll("[data-new]").forEach((button) => button.addEventListener("click", () => requestNewGame(button.dataset.new)));
   document.querySelectorAll("[data-resume]").forEach((button) => button.addEventListener("click", () => start(button.dataset.resume)));
   document.querySelector("#all-games").onclick = home;
   document.querySelector("#new-deal").onclick = confirmNewDeal;
