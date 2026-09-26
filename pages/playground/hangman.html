@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f4f0" />
+    <title>Hangman — Playground</title>
+    <style>
+      :root { color-scheme: light; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 280px; background: #f5f4f0; color: #171717; }
+      button, a { -webkit-tap-highlight-color: transparent; }
+      button { font: inherit; }
+      button:focus-visible, a:focus-visible { outline: 2px solid #171717; outline-offset: 3px; }
+      .shell { max-width: 1030px; margin: auto; padding: 0 18px 28px; }
+      .game { margin-top: 18px; }
+      .game { background: #fff; border: 1px solid #171717; box-shadow: 5px 5px 0 #171717; }
+      .drawing { min-height: 200px; position: relative; display: grid; place-items: center; border-bottom: 1px solid #171717; padding: 16px; }
+      .mistakes { position: absolute; top: 17px; right: 17px; font-size: 10px; letter-spacing: .08em; }
+      svg { width: 190px; max-width: 75%; height: 166px; overflow: visible; }
+      svg path, svg circle { fill: none; stroke: #171717; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+      svg .part { opacity: 0; transition: opacity .18s ease; }
+      svg .part.visible { opacity: 1; }
+      .controls { padding: 18px; }
+      .eyebrow { display: flex; justify-content: flex-end; gap: 8px; color: #666; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+      .word { display: flex; justify-content: center; gap: 4px; margin: 14px 0 12px; min-height: 43px; }
+      .slot { width: min(10vw, 42px); height: 43px; display: grid; place-items: center; border-bottom: 2px solid #171717; font-size: clamp(20px, 7vw, 29px); font-weight: 800; line-height: 1; }
+      .slot.revealed { border-color: #888; }
+      .message { min-height: 34px; margin: 0; color: #454545; font-size: 12px; line-height: 1.4; text-align: center; }
+      .message strong { color: #171717; }
+      .keyboard { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin-top: 10px; }
+      .key { height: 42px; border: 1px solid #171717; background: #fff; color: #171717; font-size: 14px; font-weight: 700; transition: background .12s, color .12s, transform .12s; }
+      .key:not(:disabled):hover { background: #e8e8e6; transform: translateY(-2px); }
+      .key:disabled { cursor: default; }
+      .key.correct { background: #171717; color: #fff; }
+      .key.wrong { border-color: #bdbdbd; color: #a0a0a0; background: #f6f6f6; }
+      .bottom { display: flex; align-items: center; justify-content: flex-end; gap: 12px; border-top: 1px solid #171717; margin-top: 15px; padding-top: 13px; }
+      .new-game { min-height: 40px; flex-shrink: 0; padding: 0 15px; border: 1px solid #171717; background: #171717; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+      .new-game:hover { background: #fff; color: #171717; }
+      @media (min-width: 720px) {
+        .shell { padding: 0 36px 40px; }
+        .game { margin-top: 30px; }
+        .game { display: grid; grid-template-columns: 1fr 1fr; min-height: 470px; }
+        .drawing { border-bottom: 0; border-right: 1px solid #171717; }
+        svg { width: 310px; height: 290px; }
+        .controls { padding: 28px; display: flex; flex-direction: column; justify-content: center; }
+        .word { margin: 35px 0 30px; }
+        .keyboard { gap: 7px; }
+        .key { height: 48px; }
+        .bottom { margin-top: 27px; }
+      }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0s !important; } }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <main class="game" aria-label="Hangman">
+        <div class="drawing" aria-label="Hangman drawing">
+          <span class="mistakes" id="mistakes">0 / 6 WRONG</span>
+          <svg viewBox="0 0 240 220" role="img" aria-label="Gallows with six drawable body parts">
+            <path d="M37 204H192M76 204V17H155V40" />
+            <circle class="part" data-step="1" cx="155" cy="60" r="20" />
+            <path class="part" data-step="2" d="M155 80V137" />
+            <path class="part" data-step="3" d="M155 95L124 119" />
+            <path class="part" data-step="4" d="M155 95L186 119" />
+            <path class="part" data-step="5" d="M155 137L129 175" />
+            <path class="part" data-step="6" d="M155 137L181 175" />
+          </svg>
+        </div>
+
+        <div class="controls">
+          <div class="eyebrow"><span id="hint"></span></div>
+          <div class="word" id="word" aria-label="Word to guess"></div>
+          <p class="message" id="message" role="status" aria-live="polite"></p>
+          <div class="keyboard" id="keyboard" aria-label="Letter keyboard"></div>
+          <div class="bottom">
+            <button class="new-game" id="new-game" type="button">New word ↗</button>
+          </div>
+        </div>
+      </main>
+
+    </div>
+
+    <script>
+      const entries = [
+        ["ARCADE", "GAMES"], ["PIXEL", "DESIGN"], ["MONO", "DESIGN"],
+        ["ORBIT", "SPACE"], ["COMET", "SPACE"], ["NEBULA", "SPACE"],
+        ["JUNGLE", "NATURE"], ["CANOPY", "NATURE"], ["CANYON", "NATURE"],
+        ["PENGUIN", "ANIMALS"], ["OTTER", "ANIMALS"], ["RAVEN", "ANIMALS"],
+        ["MARBLE", "OBJECTS"], ["LANTERN", "OBJECTS"], ["KETTLE", "OBJECTS"],
+        ["RHYTHM", "MUSIC"], ["MELODY", "MUSIC"], ["GUITAR", "MUSIC"],
+        ["BREEZE", "WEATHER"], ["THUNDER", "WEATHER"], ["FROST", "WEATHER"],
+        ["ROCKET", "TRAVEL"], ["VOYAGE", "TRAVEL"], ["TICKET", "TRAVEL"],
+      ];
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const wordEl = document.querySelector("#word");
+      const keyboardEl = document.querySelector("#keyboard");
+      const hintEl = document.querySelector("#hint");
+      const mistakesEl = document.querySelector("#mistakes");
+      const messageEl = document.querySelector("#message");
+      const parts = [...document.querySelectorAll(".part")];
+      let answer = "";
+      let lastAnswer = "";
+      let guessed = new Set();
+      let mistakes = 0;
+      let finished = false;
+
+      function startGame() {
+        const choices = entries.filter(([word]) => word !== lastAnswer);
+        const [word, category] = choices[Math.floor(Math.random() * choices.length)];
+        answer = word;
+        lastAnswer = word;
+        guessed = new Set();
+        mistakes = 0;
+        finished = false;
+        hintEl.textContent = `HINT: ${category}`;
+        messageEl.textContent = "";
+        render();
+      }
+
+      function guess(letter) {
+        if (finished || guessed.has(letter) || !alphabet.includes(letter)) return;
+        guessed.add(letter);
+        if (!answer.includes(letter)) mistakes++;
+        const won = [...answer].every((character) => guessed.has(character));
+        finished = won || mistakes === 6;
+        if (won) messageEl.innerHTML = "<strong>Well done.</strong> You found the word.";
+        else if (finished) messageEl.innerHTML = `<strong>Game over.</strong> The word was ${answer}.`;
+        else messageEl.textContent = answer.includes(letter) ? "" : "Not in the word.";
+        render();
+      }
+
+      function render() {
+        mistakesEl.textContent = `${mistakes} / 6 WRONG`;
+        parts.forEach((part) => part.classList.toggle("visible", Number(part.dataset.step) <= mistakes));
+        wordEl.replaceChildren(...[...answer].map((letter) => {
+          const slot = document.createElement("span");
+          const show = guessed.has(letter) || finished;
+          slot.className = `slot${finished && !guessed.has(letter) ? " revealed" : ""}`;
+          slot.textContent = show ? letter : "";
+          slot.setAttribute("aria-label", show ? letter : "blank");
+          return slot;
+        }));
+        keyboardEl.replaceChildren(...[...alphabet].map((letter) => {
+          const key = document.createElement("button");
+          key.type = "button";
+          key.className = `key${guessed.has(letter) ? answer.includes(letter) ? " correct" : " wrong" : ""}`;
+          key.textContent = letter;
+          key.setAttribute("aria-label", `Guess ${letter}`);
+          key.disabled = finished || guessed.has(letter);
+          key.addEventListener("click", () => guess(letter));
+          return key;
+        }));
+      }
+
+      document.querySelector("#new-game").addEventListener("click", startGame);
+      document.addEventListener("keydown", (event) => {
+        if (event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.key === "Enter" && finished) startGame();
+        else if (/^[a-z]$/i.test(event.key)) guess(event.key.toUpperCase());
+      });
+      startGame();
+    </script>
+  </body>
+</html>
