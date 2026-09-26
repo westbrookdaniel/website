@@ -1,5 +1,7 @@
 export function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en-au", { dateStyle: "medium" }).format(new Date(date));
+  const value = new Date(date);
+  const month = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(value);
+  return `${value.getUTCDate()} ${month} ${value.getUTCFullYear()}`;
 }
 
 export function readingTime(content: string) {

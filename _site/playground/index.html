@@ -25,100 +25,53 @@
     <script>
       console.log("Hello! Checkout https://github.com/westbrookdaniel/website");
     </script>
-    <title>Daniel Westbrook - Web Developer</title>
+    <title>Playground - Daniel Westbrook</title>
   </head>
   <body hx-boost="true" class="flex flex-col min-h-screen">
     <header class="pt-6 sm:pt-8 lg:pt-16 pb-16 relative max-w-[80ch] mx-auto w-full">
       <div class="side-p flex w-full">
         <nav class="flex gap-2 flex-1">
-          <a class="button active" href="/" preload="mouseover">Home</a>
+          <a class="button" href="/" preload="mouseover">Home</a>
           <a class="button" href="/blog" preload="mouseover">Blog</a>
         </nav>
       </div>
     </header>
-    <main class="pt-16 pb-24 relative max-w-[80ch] mx-auto flex-1 w-full"><div class="side-p mb-16">
-  <h1 class="font-heading">Daniel Westbrook</h1>
-  <p class="font-heading text-balance">
-    <span>is currently developing at</span>
-    <a class="hover:underline" target="_blank" href="https://www.coreplan.io/"> CorePlan </a>
-  </p>
-  <p class="font-heading text-balance">
-    <span>with other projects available on</span>
-    <a class="hover:underline" target="_blank" href="https://github.com/westbrookdaniel/">GitHub</a>
+    <main class="pt-16 pb-24 relative max-w-[80ch] mx-auto flex-1 w-full"><div class="side-p mb-22">
+  <h1 class="font-heading text-balance">Playground</h1>
+  <p class="text-neutral-500 text-balance mt-4 max-w-[60ch]">
+    Small experiments and games. Each one has its own page.
   </p>
 </div>
 
-<div class="side-p space-y-8">
+<div class="side-p">
   <ul>
-<a
-  href="/blog/closing-the-loop"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Closing the Loop</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">10 May 2026</p>
-  </div>
-</a>
-<a
-  href="/blog/does-the-rule-of-least-power-hold-up"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Does the Rule of Least Power Hold Up?</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">19 Mar 2026</p>
-  </div>
-</a>
-<a
-  href="/blog/build-more-yourself"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Build more yourself</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">13 Sep 2025</p>
-  </div>
-</a>
+    <li>
+      <a
+        href="/playground/cards"
+        preload="mouseover"
+        class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
+      >
+        <div class="flex justify-between gap-4">
+          <span class="truncate text-neutral-100">Cards</span>
+          <span class="text-nowrap">Solitaire ↗</span>
+        </div>
+        <p>Three quiet card games: Klondike, FreeCell, and Pyramid.</p>
+      </a>
+    </li>
+    <li>
+      <a
+        href="/playground/hangman"
+        preload="mouseover"
+        class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
+      >
+        <div class="flex justify-between gap-4">
+          <span class="truncate text-neutral-100">Hangman</span>
+          <span class="text-nowrap">Word game ↗</span>
+        </div>
+        <p>Guess the word, one letter at a time.</p>
+      </a>
+    </li>
   </ul>
-
-  <div class="flex w-full justify-between items-center">
-    <a
-      href="https://github.com/westbrookdaniel?tab=repositories"
-      preload="mouseover"
-      class="button active icon-button"
-    >
-      Repositories  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                      <path
-                        d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.22-5.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L6.22 8.72Z"
-                      />
-                      <path
-                        d="M3.5 6.75c0-.69.56-1.25 1.25-1.25H7A.75.75 0 0 0 7 4H4.75A2.75 2.75 0 0 0 2 6.75v4.5A2.75 2.75 0 0 0 4.75 14h4.5A2.75 2.75 0 0 0 12 11.25V9a.75.75 0 0 0-1.5 0v2.25c0 .69-.56 1.25-1.25 1.25h-4.5c-.69 0-1.25-.56-1.25-1.25v-4.5Z"
-                      />
-                    </svg>
-
-    </a>
-
-    <a href="/blog" preload="mouseover" class="button active icon-button">
-      See All Posts <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                      <path
-                        fill-rule="evenodd"
-                        d="M2 8a.75.75 0 0 1 .75-.75h8.69L8.22 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06-1.06l3.22-3.22H2.75A.75.75 0 0 1 2 8Z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-
-    </a>
-  </div>
 </div>
 </main>
     <footer class="pb-6 sm:pb-8 lg:pb-16 pt-16 relative max-w-[80ch] mx-auto w-full">

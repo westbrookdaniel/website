@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { buildTailwind, copyPublicAssets, resetOutputDir, writeOutputFile } from "./assets";
 import { TemplateRenderer, createRenderer, loadPosts } from "./content";
 import type { RenderablePost } from "../lib/types";
@@ -23,6 +24,7 @@ export async function buildSite() {
     ]);
 
     await runTask("Render static pages", () => renderStaticPages(renderer, posts));
+    await runTask("Copy playground pages", copyPlaygroundPages);
     await runTask("Render blog posts", () => renderBlogPosts(renderer, posts));
 
     logger.complete(performance.now() - buildStart);
@@ -51,6 +53,14 @@ function renderStaticPages(renderer: TemplateRenderer, posts: RenderablePost[]) 
   });
   writeOutputFile("blog/index.html", blogHtml);
 
+  const playgroundContent = renderer.render("pages/playground.html", {});
+  const playgroundHtml = renderWithLayout(renderer, {
+    meta: { title: "Playground - Daniel Westbrook" },
+    nav: { homeActive: false, blogActive: false },
+    content: playgroundContent,
+  });
+  writeOutputFile("playground/index.html", playgroundHtml);
+
   const notFoundContent = renderer.render("pages/404.html", {});
   const notFoundHtml = renderWithLayout(renderer, {
     meta: { title: "Not Found - Daniel Westbrook" },
@@ -58,6 +68,15 @@ function renderStaticPages(renderer: TemplateRenderer, posts: RenderablePost[]) 
     content: notFoundContent,
   });
   writeOutputFile("404.html", notFoundHtml);
+}
+
+function copyPlaygroundPages() {
+  const pages = new Bun.Glob("pages/playground/*.html");
+  for (const path of pages.scanSync()) {
+    const slug = path.split("/").at(-1)?.replace(/\.html$/, "");
+    if (!slug) continue;
+    writeOutputFile(`playground/${slug}/index.html`, readFileSync(path, "utf-8"));
+  }
 }
 
 async function renderBlogPosts(renderer: TemplateRenderer, posts: RenderablePost[]) {
