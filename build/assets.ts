@@ -77,4 +77,5 @@ export async function buildJustice() {
     minify: true,
   });
   if (!result.success) throw new AggregateError(result.logs, "Justice bundle failed");
+  cpSync("node_modules/@kitlangton/justice/LICENSE", join(OUTPUT_DIR, "public/justice.LICENSE.txt"));
 }
