@@ -16,6 +16,7 @@
     "@tailwindcss/typography": "0.5.16",
     "@types/bun": "1.2.21",
     "@types/mustache": "4.2.6",
+    "happy-dom": "20.14.5",
     "htmx.org": "2.0.8",
     "marked": "16.2.1",
     "marked-shiki": "1.2.1",
@@ -25,5 +26,8 @@
   },
   "optionalDependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "4.1.13"
+  },
+  "dependencies": {
+    "@kitlangton/justice": "0.3.2"
   }
 }

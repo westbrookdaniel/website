@@ -68,3 +68,14 @@ export function writeOutputFile(relativePath: string, content: string) {
   mkdirSync(dirname(filePath), { recursive: true });
   writeFileSync(filePath, content);
 }
+
+export async function buildJustice() {
+  const result = await Bun.build({
+    entrypoints: ["./client/justice.ts"],
+    outdir: "./_site/public",
+    target: "browser",
+    minify: true,
+  });
+  if (!result.success) throw new AggregateError(result.logs, "Justice bundle failed");
+  cpSync("node_modules/@kitlangton/justice/LICENSE", join(OUTPUT_DIR, "public/justice.LICENSE.txt"));
+}
