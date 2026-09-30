@@ -26,7 +26,7 @@ async function main() {
     await buildSite();
   }, 100);
 
-  ["components", "pages", "lib"].forEach((path) => {
+  ["components", "pages", "lib", "client", "public"].forEach((path) => {
     const watcher = watch(path, { recursive: true }, handler);
     process.on("SIGINT", () => watcher.close());
   });
