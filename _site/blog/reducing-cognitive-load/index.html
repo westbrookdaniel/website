@@ -25,102 +25,49 @@
     <script>
       console.log("Hello! Checkout https://github.com/westbrookdaniel/website");
     </script>
-    <title>Daniel Westbrook - Web Developer</title>
+    <title>Reducing cognitive load - Daniel Westbrook</title>
   </head>
-  <body hx-boost="true" class="flex flex-col min-h-screen">
+  <body hx-boost="true">
     <header class="pt-6 sm:pt-8 lg:pt-16 pb-16 relative max-w-[80ch] mx-auto w-full">
       <div class="side-p flex w-full">
         <nav class="flex gap-2 flex-1">
-          <a class="button active" href="/" preload="mouseover">Home</a>
-          <a class="button" href="/blog" preload="mouseover">Blog</a>
+          <a class="button" href="/" preload="mouseover">Home</a>
+          <a class="button active" href="/blog" preload="mouseover">Blog</a>
         </nav>
       </div>
     </header>
-    <main class="pt-16 pb-24 relative max-w-[80ch] mx-auto flex-1 w-full"><div class="side-p mb-16">
-  <h1 class="font-heading">Daniel Westbrook</h1>
-  <p class="font-heading text-balance">
-    <span>is currently developing at</span>
-    <a class="hover:underline" target="_blank" href="https://www.coreplan.io/"> CorePlan </a>
-  </p>
-  <p class="font-heading text-balance">
-    <span>with other projects available on</span>
-    <a class="hover:underline" target="_blank" href="https://github.com/westbrookdaniel/">GitHub</a>
-  </p>
+
+    <main class="pt-24 pb-32 relative max-w-[80ch] mx-auto flex-1 w-full">
+      <div class="side-p mb-24">
+        <h1 class="font-heading text-balance mb-2">Reducing cognitive load</h1>
+        <p class="text-neutral-500 text-balance text-sm max-w-[60ch] mb-1">Handing over work without keeping it all in my head</p>
+        <div class="flex gap-4 text-sm">
+          <p class="text-neutral-500">30 Sep 2026</p>
+          <p class="text-neutral-500">2 min read</p>
+        </div>
+      </div>
+
+      <div class="side-p space-y-8">
+        <div class="prose prose-neutral prose-invert max-w-[80ch]"><p>Keeping my brain focused on what matters has always been important to me. Agents can do more of the work, but I still have to keep track of the threads, decisions and unfinished tasks. A pull request here, a message there, something waiting on a reply. It all takes up space.</p>
+<p>I used to think “orchestrator threads” were the answer: one place to manage the other agents. I wasn’t far off, but I’ve changed my mind about what that conversation should be. I originally hated the idea of a thread with permanent context. I wanted a clean slate each day. But my work doesn’t reset each morning, and neither do conversations with people.</p>
+<p>An ongoing conversation means I shouldn’t have to reconstruct where we left off. What did we decide? What’s still waiting? What needs my attention? If an agent can keep track of that and follow through, I can stop carrying the whole list in my head.</p>
+<p>I want my main AI surface to be proactive and flexible enough to fit different ways of working. I want to trust it with responsibility and know it will finish the task. I want it to ask questions when it doesn’t know, including asking other people. I want it to say no and push back. I want to be able to treat it like an employee.</p>
+<p>That’s where I think we’re heading. The thing I care about is being able to hand something over and let it leave my head, knowing it will come back when it actually needs me.</p>
 </div>
+      </div>
 
-<div class="side-p space-y-8">
-  <ul>
-<a
-  href="/blog/reducing-cognitive-load"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Reducing cognitive load</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">30 Sep 2026</p>
-  </div>
-</a>
-<a
-  href="/blog/closing-the-loop"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Closing the Loop</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">10 May 2026</p>
-  </div>
-</a>
-<a
-  href="/blog/does-the-rule-of-least-power-hold-up"
-  preload="mouseover"
-  class="block text-sm space-y-2 text-neutral-500 hover:bg-neutral-800 hover:text-neutral-100 rounded-lg px-4 py-3 -mx-4 active:translate-y-px active:scale-[.99]"
->
-  <div class="flex justify-between gap-4">
-    <div class="w-px flex-1 flex gap-4 text-sm">
-      <p class="hidden text-nowrap sm:block text-neutral-500">2 min read</p>
-      <p class="truncate">Does the Rule of Least Power Hold Up?</p>
-    </div>
-    <p class="text-nowrap text-neutral-500">19 Mar 2026</p>
-  </div>
-</a>
-  </ul>
+      <div class="side-p flex justify-start mt-20">
+        <a class="button active" href="/blog"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                                 <path
+                                                   fill-rule="evenodd"
+                                                   d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z"
+                                                   clip-rule="evenodd"
+                                                 />
+                                               </svg>
+ Back To Posts </a>
+      </div>
+    </main>
 
-  <div class="flex w-full justify-between items-center">
-    <a
-      href="https://github.com/westbrookdaniel?tab=repositories"
-      preload="mouseover"
-      class="button active icon-button"
-    >
-      Repositories  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                      <path
-                        d="M6.22 8.72a.75.75 0 0 0 1.06 1.06l5.22-5.22v1.69a.75.75 0 0 0 1.5 0v-3.5a.75.75 0 0 0-.75-.75h-3.5a.75.75 0 0 0 0 1.5h1.69L6.22 8.72Z"
-                      />
-                      <path
-                        d="M3.5 6.75c0-.69.56-1.25 1.25-1.25H7A.75.75 0 0 0 7 4H4.75A2.75 2.75 0 0 0 2 6.75v4.5A2.75 2.75 0 0 0 4.75 14h4.5A2.75 2.75 0 0 0 12 11.25V9a.75.75 0 0 0-1.5 0v2.25c0 .69-.56 1.25-1.25 1.25h-4.5c-.69 0-1.25-.56-1.25-1.25v-4.5Z"
-                      />
-                    </svg>
-
-    </a>
-
-    <a href="/blog" preload="mouseover" class="button active icon-button">
-      See All Posts <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                      <path
-                        fill-rule="evenodd"
-                        d="M2 8a.75.75 0 0 1 .75-.75h8.69L8.22 4.03a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 0 1-1.06-1.06l3.22-3.22H2.75A.75.75 0 0 1 2 8Z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-
-    </a>
-  </div>
-</div>
-</main>
     <footer class="pb-6 sm:pb-8 lg:pb-16 pt-16 relative max-w-[80ch] mx-auto w-full">
       <div class="side-p w-full flex justify-between items-end">
         <div class="flex gap-3">
