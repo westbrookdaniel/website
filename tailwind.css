@@ -37,3 +37,23 @@
     @apply bg-neutral-800/35!;
   }
 }
+
+/* Inline line boxes keep one source text stream for selection and screen readers. */
+.justice-prose {
+  text-align: left;
+  text-wrap: wrap;
+}
+.justice-line {
+  display: inline-block;
+  white-space: nowrap;
+  text-indent: 0;
+}
+/* Native wrapping adapts to the printer's independent font metrics and measure. */
+@media print {
+  .justice-line {
+    display: inline;
+    white-space: normal;
+    word-spacing: normal !important;
+    letter-spacing: normal !important;
+  }
+}

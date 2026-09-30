@@ -2,6 +2,12 @@
 /// <reference lib="dom" />
 /// <reference lib="dom.iterable" />
 
+// Typography is optional: native HTML remains readable without JS or these APIs.
+if ("Segmenter" in Intl && "ResizeObserver" in window) {
+  // @ts-ignore This browser bundle is emitted by buildJustice into _site/public.
+  import("./justice.js").then(({ startJustice }) => startJustice()).catch(() => {});
+}
+
 /** @type {import("htmx.org").default} */
 const htmx = window.htmx;
 

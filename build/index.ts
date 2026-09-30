@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { buildTailwind, copyPublicAssets, resetOutputDir, writeOutputFile } from "./assets";
+import { buildJustice, buildTailwind, copyPublicAssets, resetOutputDir, writeOutputFile } from "./assets";
 import { TemplateRenderer, createRenderer, loadPosts } from "./content";
 import type { RenderablePost } from "../lib/types";
 
@@ -16,6 +16,7 @@ export async function buildSite() {
     await Promise.all([
       runTask("Copy public assets", copyPublicAssets),
       runTask("Build Tailwind CSS", buildTailwind),
+      runTask("Bundle Justice typography", buildJustice),
     ]);
 
     const [renderer, posts] = await Promise.all([
